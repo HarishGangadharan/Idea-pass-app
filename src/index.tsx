@@ -4,9 +4,15 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { applyMiddleware, compose, createStore } from 'redux';
+import createSagaMiddleware from "redux-saga";
 import App from './App';
 import rootReducer from './reducers';
 import registerServiceWorker from './registerServiceWorker';
+
+import rootSaga from "./sagas";
+
+// create the saga middleware
+const sagaMiddleware = createSagaMiddleware();
 
 const history = createBrowserHistory();
 
@@ -16,9 +22,13 @@ const store = createStore(
   composeEnhancer(
     applyMiddleware(
       routerMiddleware(history),
+      sagaMiddleware
     ),
   ),
 );
+
+// then run the saga
+sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <Provider store={store}>
