@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 // import { Dispatch } from 'redux';
-import { decrement, increment } from '../actions/counter';
+import { decrement, increment } from '../actions/counter/counter';
 import { IState } from '../reducers';
 
 

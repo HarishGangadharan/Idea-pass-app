@@ -3,7 +3,7 @@ import {
   DECREMENT_SUCCESS,
   INCREMENT,
   INCREMENT_SUCCESS
-} from "../constants/counterActions";
+} from "./counterConstants";
 
 export const increment = () => ({
   type: INCREMENT,

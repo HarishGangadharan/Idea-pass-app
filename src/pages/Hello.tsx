@@ -1,5 +1,5 @@
 import * as React from 'react'
-import HelloChild from './HelloChild'
+import HelloChild from '../components/HelloChild'
 
 const Hello = () => (
   <div>

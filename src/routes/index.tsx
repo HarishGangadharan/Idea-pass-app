@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router';
-import Counter from '../components/Counter';
-import Hello from '../components/Hello';
-import Home from '../components/Home';
 import NavBar from '../components/NavBar';
-import NoMatch from '../components/NoMatch';
+import Counter from '../pages/Counter';
+import Hello from '../pages/Hello';
+import Home from '../pages/Home';
+import NoMatch from '../pages/NoMatch';
 
 const routes = (
   <div>

@@ -4,7 +4,7 @@ import {
   DECREMENT_SUCCESS,
   INCREMENT,
   INCREMENT_SUCCESS
-} from "../constants/counterActions";
+} from "../actions/counter/counterConstants";
 
 const counterReducer = (state = 0, action: Action) => {
   switch (action.type) {

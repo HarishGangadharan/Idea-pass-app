@@ -1,6 +1,6 @@
 import { put } from "redux-saga/effects";
 
-import { decrementSuccess, incrementSuccess } from "../actions/counter";
+import { decrementSuccess, incrementSuccess } from "../actions/counter/counter";
 // import { fetchData } from "./api";
 
 // worker Saga: will be fired on INCREMENT actions
