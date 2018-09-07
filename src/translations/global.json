@@ -1,0 +1,14 @@
+{
+  "greeting": [
+    "வணக்கம் ${name}!",
+    "Hello ${name}!",
+    "Bonjour ${name}!",
+    "S̄wạs̄dī ${name}!",
+    "Hola ${name}!"
+  ],
+  "title": [
+    "My Article title EN",
+    "My Article title FR",
+    "My Article title ES"
+  ]
+}

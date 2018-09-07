@@ -12,6 +12,10 @@ import MenuIcon from '@material-ui/icons/Menu';
 import * as React from 'react';
 import { NavLink } from 'react-router-dom';
 
+import { renderToStaticMarkup } from 'react-dom/server';
+import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
+import globalTranslations from '../translations/global.json';
+
 const styles = ({colors, transparentBackground}: Theme) => 
   createStyles({
     dropdownBtn: {
@@ -41,25 +45,52 @@ const styles = ({colors, transparentBackground}: Theme) =>
     },
 });
 
-interface IApp {
+interface INavProps extends LocalizeContextProps {
   classes: any
 }
 
-class NavBar extends React.Component<IApp, {}>{
-  public state = {
-    languageSelection: null,
-  };
+interface INavState {
+  languageSelection: any
+}
 
+class NavBar extends React.Component<INavProps, INavState>{
+  constructor(props: INavProps) {
+    super(props);
+    this.state = {
+      languageSelection: null,
+    }
+    this.props.initialize({
+      languages: [
+        { name: 'Tamil', code: 'tn' },
+        { name: 'English', code: 'en' },
+        { name: 'French', code: 'fr' },
+        { name: 'Thai', code: 'th' },
+        { name: 'Spanish', code: 'es' }
+      ],
+      options: { renderToStaticMarkup },
+      translation: globalTranslations
+    });
+  }
+
+  public componentDidUpdate(prevProps: INavProps) {
+    const prevLangCode = prevProps.activeLanguage && prevProps.activeLanguage.code;
+    const curLangCode = this.props.activeLanguage && this.props.activeLanguage.code;
+    const hasLanguageChanged = prevLangCode !== curLangCode;
+    // tslint:disable-next-line:no-console
+    console.log('test', hasLanguageChanged, this.props);
+  }
+  
   public handleClick = (event: any) => {
     this.setState({ languageSelection: event.currentTarget });
   };
 
-  public handleClose = () => {
+  public handleClose = (code: string) => {
+    this.props.setActiveLanguage(code);
     this.setState({ languageSelection: null });
   };
 
   public render() {
-    const { classes } = this.props;
+    const { activeLanguage, classes, languages } = this.props;
     const { languageSelection } = this.state;
     return (
       <div className={classes.root}>
@@ -99,17 +130,17 @@ class NavBar extends React.Component<IApp, {}>{
                 aria-haspopup="true"
                 onClick={this.handleClick}
               >
-                Select Language
+                {activeLanguage? activeLanguage.name : ''}
               </Button>
               <Menu
                 id="simple-menu"
                 anchorEl={languageSelection}
                 open={Boolean(languageSelection)}
-                onClose={this.handleClose}
+                onClose={this.handleClose.bind}
               >
-                <MenuItem onClick={this.handleClose}>English</MenuItem>
-                <MenuItem onClick={this.handleClose}>Spanish</MenuItem>
-                <MenuItem onClick={this.handleClose}>French</MenuItem>
+              {languages.map((lang, index) => (
+                <MenuItem key={index} onClick={this.handleClose.bind(this, lang.code)}>{lang.name}</MenuItem>
+              ))}
               </Menu>
             </div>
             <IconButton
@@ -125,5 +156,5 @@ class NavBar extends React.Component<IApp, {}>{
   }
 }
 
-export default withStyles(styles)(NavBar);
+export default withStyles(styles)(withLocalize(NavBar));
  
