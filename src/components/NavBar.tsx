@@ -18,7 +18,9 @@ import * as React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router'
 import { NavLink } from 'react-router-dom';
+import compose from 'recompose/compose';
 import { changeTheme } from '../actions/theme/theme';
 import { IState } from '../reducers';
 import { themes } from '../themes/index';
@@ -26,54 +28,60 @@ import globalTranslations from '../translations/global.json';
 
 const drawerWidth = 240;
 
-const styles = ({breakpoints, palette, mixins}: Theme) =>
-  createStyles({
-    drawerPaper: {
-      width: drawerWidth,
-      [breakpoints.up('md')]: {
-        position: 'relative',
-      },
+const styles = ({ breakpoints, colors, transparentBackground, palette, mixins }: Theme) =>
+createStyles({
+  drawerPaper: {
+    width: drawerWidth,
+    [breakpoints.up('md')]: {
+      position: 'relative',
+    }
+  },
+  dropdownBtn: {
+    [breakpoints.down('md')]: {
+      color: palette.primary.light
     },
-    dropdownBtn: {
-      '&:hover': {
-        backgroundColor: palette.secondary.light
-      },
-      color: palette.primary.light,
-      textTransform: 'capitalize',
+    '&:hover': {
+      backgroundColor: transparentBackground.light
     },
-    flex: {
-      alignItems: 'center',
-      display: 'flex',
-      flexGrow: 1,
-      justifyContent: 'flex-end',
-    },
-    linkBtn: {
-      '&.active': {
-        backgroundColor: palette.secondary.light
-      },
-      '&:hover': {
-        backgroundColor: palette.secondary.light
-      },
-      borderRadius: '3px',
-      color: palette.primary.light,
-      margin: '0 3px',
-      padding: '5px 10px',
-      textDecoration: 'none',
-    },
-    navIconHide: {
-      [breakpoints.up('md')]: {
-        display: 'none',
-      },
-      flex: 0,
-      'margin-left': 'auto',
-    },
-    root: {
-      display: 'flex',
-      flexDirection: 'column',
-      marginBottom: '10px'
-    },
+    color: colors.primaryText,
+    textTransform: 'capitalize'
+  },
+  flex: {
+    alignItems: 'center',
+    display: 'flex',
+    flexGrow: 1,
+    justifyContent: 'flex-end'
+  },
+  linkBtn: {
+    [breakpoints.down('md')]: {
+    color: palette.primary.light
+  },
+  '&.active': {
+    backgroundColor: transparentBackground.dark
+  },
+  '&:hover': {
+    backgroundColor: transparentBackground.light
+  },
+  borderRadius: '3px',
+  color: colors.primaryText,
+  margin: '0 3px',
+  padding: '5px 10px',
+  textDecoration: 'none',
+  },
+  navIconHide: {
+    [breakpoints.up('md')]: {
+    display: 'none',
+  },
+  flex: 0,
+    marginLeft: 'auto',
+  },
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginBottom: '10px'
+  },
     toolbar: mixins.toolbar,
-  });
+});
 
 interface INavState {
   languageSelection: any,
@@ -336,4 +344,9 @@ const mapDispatchToProps = (dispatch: any) => ({
   setActiveTheme: (theme: string) => dispatch(changeTheme(theme))
 })
 
-export default connect<IStateProps, IDispatchProps>(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(withLocalize(NavBar)));
+export default compose(
+  withStyles(styles),
+  withRouter,
+  connect<IStateProps, IDispatchProps>(mapStateToProps, mapDispatchToProps),
+  withLocalize
+)(NavBar);
