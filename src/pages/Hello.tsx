@@ -15,7 +15,7 @@ class Hello extends React.Component<IProps> {
       <div>
         {value ? value: "Parent"}<br/>
         <h3>Active Language is {activeLanguage? activeLanguage.name : ''}</h3>
-        <h1><Translate id="greeting" data={{ name: 'IDEA PaaS' }} /></h1>
+        <h1><Translate id="greeting" data={{ name: 'App Name' }} /></h1>
         </div>
     )
   }
