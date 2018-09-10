@@ -1,9 +1,7 @@
 {
   "greeting": [
-    "வணக்கம் ${name}!",
     "Hello ${name}!",
     "Bonjour ${name}!",
-    "S̄wạs̄dī ${name}!",
     "Hola ${name}!"
   ],
   "title": [

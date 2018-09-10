@@ -10,12 +10,14 @@ import Typography from '@material-ui/core/Typography';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuIcon from '@material-ui/icons/Menu';
 import * as React from 'react';
-import { NavLink } from 'react-router-dom';
-
 import { renderToStaticMarkup } from 'react-dom/server';
 import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
+import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+import { changeTheme } from '../actions/theme/theme';
+import { IState } from '../reducers';
+import { themes } from '../themes/index';
 import globalTranslations from '../translations/global.json';
-
 const styles = ({colors, transparentBackground}: Theme) => 
   createStyles({
     dropdownBtn: {
@@ -45,26 +47,25 @@ const styles = ({colors, transparentBackground}: Theme) =>
     },
 });
 
-interface INavProps extends LocalizeContextProps {
-  classes: any
-}
 
 interface INavState {
-  languageSelection: any
+  languageSelection: any,
+  themeSelection: any,
+  availableThemes: string[]
 }
 
 class NavBar extends React.Component<INavProps, INavState>{
   constructor(props: INavProps) {
     super(props);
     this.state = {
+      availableThemes: (()=> Object.keys(themes))(),
       languageSelection: null,
+      themeSelection: null,
     }
     this.props.initialize({
       languages: [
-        { name: 'Tamil', code: 'tn' },
         { name: 'English', code: 'en' },
         { name: 'French', code: 'fr' },
-        { name: 'Thai', code: 'th' },
         { name: 'Spanish', code: 'es' }
       ],
       options: { renderToStaticMarkup },
@@ -89,9 +90,18 @@ class NavBar extends React.Component<INavProps, INavState>{
     this.setState({ languageSelection: null });
   };
 
+  public handleThemeClick = (event: any) => {
+    this.setState({ themeSelection: event.currentTarget });
+  };
+
+  public handleThemeClose = (theme: string) => {
+    this.props.setActiveTheme(theme);
+    this.setState({ themeSelection: null });
+  };
+
   public render() {
-    const { activeLanguage, classes, languages } = this.props;
-    const { languageSelection } = this.state;
+    const { activeLanguage, activeTheme, classes, languages } = this.props;
+    const { availableThemes, languageSelection, themeSelection } = this.state;
     return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -142,6 +152,24 @@ class NavBar extends React.Component<INavProps, INavState>{
                 <MenuItem key={index} onClick={this.handleClose.bind(this, lang.code)}>{lang.name}</MenuItem>
               ))}
               </Menu>
+              <Button
+                className={classes.dropdownBtn}
+                aria-owns={themeSelection ? 'simple-menu' : undefined}
+                aria-haspopup="true"
+                onClick={this.handleThemeClick}
+              >
+                {activeTheme}
+              </Button>
+              <Menu
+                id="simple-menu"
+                anchorEl={themeSelection}
+                open={Boolean(themeSelection)}
+                onClose={this.handleThemeClose.bind}
+              >
+              {availableThemes.map((theme, index) => (
+                <MenuItem key={index} onClick={this.handleThemeClose.bind(this, theme)}>{theme}</MenuItem>
+              ))}
+              </Menu>
             </div>
             <IconButton
               aria-haspopup="true"
@@ -156,5 +184,28 @@ class NavBar extends React.Component<INavProps, INavState>{
   }
 }
 
-export default withStyles(styles)(withLocalize(NavBar));
- 
+
+interface INavProps extends LocalizeContextProps {
+  classes: any,
+  activeTheme: string,
+  setActiveTheme(theme: string): void
+}
+
+interface IStateProps {
+  activeTheme: string
+}
+
+interface IDispatchProps {
+  setActiveTheme(theme: string): void
+}
+
+const mapStateToProps = (state: IState) => ({
+  activeTheme: state.theme.activeTheme,
+})
+
+const mapDispatchToProps = (dispatch: any) => ({
+  setActiveTheme: (theme: string) => dispatch(changeTheme(theme))
+})
+
+
+export default connect<IStateProps, IDispatchProps>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withLocalize(NavBar)));
