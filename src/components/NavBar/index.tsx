@@ -2,9 +2,9 @@ import {
   AppBar, Button, Divider,
   Drawer, Hidden, IconButton, List,
   ListItem, ListItemText, Menu, MenuItem,
-  Toolbar, Typography, withStyles
+  Theme, Toolbar, Typography, withStyles
 } from '@material-ui/core';
-import { AccountCircle, Menu as MenuIcon } from '@material-ui/icons';
+import { AccountCircle, FiberManualRecord, Menu as MenuIcon } from '@material-ui/icons';
 import * as React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
@@ -21,7 +21,7 @@ import { styles } from './style';
 interface INavState {
   languageSelection: any,
   themeSelection: any,
-  availableThemes: string[],
+  availableThemes: Theme[],
   openSideNav: boolean,
   direction: string
 }
@@ -30,7 +30,10 @@ class NavBar extends React.Component<INavProps, INavState>{
   constructor(props: INavProps) {
     super(props);
     this.state = {
-      availableThemes: (() => Object.keys(themes))(),
+      availableThemes: Object.keys(themes).map(key => {
+        themes[key].code = key;
+        return themes[key];
+      }),
       direction: 'rtl',
       languageSelection: null,
       openSideNav: false,
@@ -129,9 +132,9 @@ class NavBar extends React.Component<INavProps, INavState>{
           id="simple-menu"
           anchorEl={languageSelection}
           open={Boolean(languageSelection)}
-          onClose={this.handleLangClose.bind(this, activeLanguage ? activeLanguage.code : '')}>
+          onClose={() => this.handleLangClose(activeLanguage ? activeLanguage.code : '')}>
           {languages.map((lang, index) => (
-            <MenuItem key={index} onClick={this.handleLangClose.bind(this, lang.code)}>{lang.name}</MenuItem>
+            <MenuItem key={index} onClick={() => this.handleLangClose(lang.code)}>{lang.name}</MenuItem>
           ))}
         </Menu>
         <Button
@@ -145,9 +148,12 @@ class NavBar extends React.Component<INavProps, INavState>{
           id="simple-menu"
           anchorEl={themeSelection}
           open={Boolean(themeSelection)}
-          onClose={this.handleThemeClose.bind(this, activeTheme)}>
-          {availableThemes.map((theme, index) => (
-            <MenuItem key={index} onClick={this.handleThemeClose.bind(this, theme)}>{theme}</MenuItem>
+          onClose={() => this.handleThemeClose(activeTheme)}>
+          {availableThemes.map((theme: any, index) => (
+            <MenuItem className={classes.themes} key={index} onClick={() => this.handleThemeClose(theme.code)}>
+              <FiberManualRecord className={classes.themeIcon} style={{color: theme.palette.primary.main}}/>
+              {theme.code}
+            </MenuItem>
           ))}
         </Menu>
         <IconButton
@@ -205,9 +211,9 @@ class NavBar extends React.Component<INavProps, INavState>{
             id="simple-menu"
             anchorEl={languageSelection}
             open={Boolean(languageSelection)}
-            onClose={this.handleLangClose.bind(this, activeLanguage ? activeLanguage.code : '')}>
+            onClose={() => this.handleLangClose(activeLanguage ? activeLanguage.code : '')}>
             {languages.map((lang, index) => (
-              <MenuItem key={index} onClick={this.handleLangClose.bind(this, lang.code)}>{lang.name}</MenuItem>
+              <MenuItem key={index} onClick={() => this.handleLangClose(lang.code)}>{lang.name}</MenuItem>
             ))}
           </Menu>
         </ListItem>
@@ -223,9 +229,12 @@ class NavBar extends React.Component<INavProps, INavState>{
             id="simple-menu"
             anchorEl={themeSelection}
             open={Boolean(themeSelection)}
-            onClose={this.handleThemeClose.bind(this, activeTheme)}>
-            {availableThemes.map((theme, index) => (
-              <MenuItem key={index} onClick={this.handleThemeClose.bind(this, theme)}>{theme}</MenuItem>
+            onClose={() => this.handleThemeClose(activeTheme)}>
+            {availableThemes.map((theme: any, index) => (
+              <MenuItem className={classes.themes} key={index} onClick={() => this.handleThemeClose(theme.code)}>
+                <FiberManualRecord className={classes.themeIcon} style={{color: theme.palette.primary.main}} />
+                {theme.code}
+              </MenuItem>
             ))}
           </Menu>
         </ListItem>

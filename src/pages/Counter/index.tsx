@@ -1,43 +1,60 @@
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
+import { Button, Grid } from '@material-ui/core';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import { decrement, increment } from '../../actions/counter/counter';
+import { decrement, decrementAsync, increment, incrementAsync } from '../../actions/counter/counter';
 import { IState } from '../../reducers';
 
 interface IStateProps {
-  count: number
+  count: number,
+  isLoading: boolean
 }
 
 interface IDispatchProps {
-  increment: () => void
-  decrement: () => void
+  decrement: () => void,
+  decrementAsync: () => void,
+  increment: () => void,
+  incrementAsync: () => void,
 }
 
 const Counter = (props: RouteComponentProps<any> & IStateProps & IDispatchProps) => (
-  <Grid spacing={8}     
-    container={true} 
+  <Grid spacing={8}
+    container={true}
     direction="row"
     justify="center"
     alignItems="center">
-    <Grid item={true} lg={4} container={true}
+    <Grid item={true} lg={6} container={true}
       direction="row"
-      justify="space-between"
+      justify="space-around"
       alignItems="center">
-      <Grid item={true} lg={2} xs={4}>
-        <Button variant="fab" color="primary" aria-label="Add" onClick={props.increment}>
-          <AddIcon />
+      <Grid item={true} container={true}
+        direction="row"
+        justify="space-around"
+        alignItems="center" lg={2} xs={4}>
+        <Button variant="outlined" color="secondary" aria-label="Sub" onClick={props.decrement} disabled={props.isLoading}>
+          Decrement
+        </Button>
+        <br />
+        <Button variant="outlined" color="secondary" aria-label="Sub" onClick={props.decrementAsync} disabled={props.isLoading}>
+          Decrement Async
         </Button>
       </Grid>
-      <Grid item={true} lg={2} xs={4}>
-        Counter: {props.count}
+      <Grid item={true} container={true}
+        direction="column"
+        justify="space-between"
+        alignItems="center" alignContent="center" lg={2} xs={4}>
+        <div>Counter: {props.count}</div>
       </Grid>
-      <Grid item={true} lg={2} xs={4}>
-        <Button variant="fab" color="secondary" aria-label="Sub" onClick={props.decrement}>
-          <RemoveIcon />
+      <Grid item={true} container={true}
+        direction="row"
+        justify="space-around"
+        alignItems="center" lg={2} xs={4}>
+        <Button variant="outlined" color="primary" aria-label="Add" onClick={props.increment} disabled={props.isLoading}>
+          Increment
+        </Button>
+        <br />
+        <Button variant="outlined" color="primary" aria-label="Add" onClick={props.incrementAsync} disabled={props.isLoading}>
+          Increment Async
         </Button>
       </Grid>
     </Grid>
@@ -45,12 +62,15 @@ const Counter = (props: RouteComponentProps<any> & IStateProps & IDispatchProps)
 );
 
 const mapStateToProps = (state: IState) => ({
-  count: state.count
+  count: state.counter.count,
+  isLoading: state.counter.isLoading
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
   decrement: () => dispatch(decrement()),
-  increment: () => dispatch(increment())
+  decrementAsync: () => dispatch(decrementAsync()),
+  increment: () => dispatch(increment()),
+  incrementAsync: () => dispatch(incrementAsync())
 });
 
 export default connect<IStateProps, IDispatchProps, RouteComponentProps<any>>(mapStateToProps, mapDispatchToProps)(Counter);

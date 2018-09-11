@@ -1,17 +1,17 @@
 import { RouterState } from 'connected-react-router';
 import { localizeReducer } from 'react-localize-redux';
 import { combineReducers } from 'redux';
-import counterReducer from './counter';
+import { counterReducer, ICounterReducer } from './counter';
 import themeReducer from './theme';
 
 const rootReducer = combineReducers({
-  count: counterReducer,
+  counter: counterReducer,
   localize: localizeReducer,
   theme: themeReducer
 });
 
 export interface IState {
-  count: number,
+  counter: ICounterReducer,
   languageSelection: any,
   router: RouterState,
   theme: any
