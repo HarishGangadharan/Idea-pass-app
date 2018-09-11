@@ -1,5 +1,5 @@
-import * as React from 'react'
-import HelloChild from "../components/HelloChild";
+import * as React from 'react';
+import HelloChild from "../../components/HelloChild";
 
 class Hello extends React.Component {
   public render() {
@@ -7,7 +7,7 @@ class Hello extends React.Component {
       <div>
         <HelloChild />
       </div>
-    )
+    );
   }
 }
 

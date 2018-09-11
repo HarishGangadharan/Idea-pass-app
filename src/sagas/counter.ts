@@ -30,4 +30,4 @@ function* onDecrement(action: any) {
  export {
     onDecrement,
     onIncrement
- }
+ };

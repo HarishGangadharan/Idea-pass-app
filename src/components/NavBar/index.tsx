@@ -1,78 +1,22 @@
 import {
-  AppBar, Button, createStyles, Divider,
+  AppBar, Button, Divider,
   Drawer, Hidden, IconButton, List,
   ListItem, ListItemText, Menu, MenuItem,
-  Theme, Toolbar, Typography, withStyles
+  Toolbar, Typography, withStyles
 } from '@material-ui/core';
 import { AccountCircle, Menu as MenuIcon } from '@material-ui/icons';
 import * as React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router'
+import { withRouter } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import compose from 'recompose/compose';
-import { changeTheme } from '../actions/theme/theme';
-import { IState } from '../reducers';
-import { themes } from '../themes/index';
-import defaultLanguage from '../translations/en.welcome.json';
-
-const drawerWidth = 240;
-
-const styles = ({ breakpoints, colors, transparentBackground, palette, mixins }: Theme) =>
-createStyles({
-  drawerPaper: {
-    width: drawerWidth,
-    [breakpoints.up('md')]: {
-      position: 'relative',
-    }
-  },
-  dropdownBtn: {
-    [breakpoints.down('md')]: {
-      color: palette.primary.light
-    },
-    '&:hover': {
-      backgroundColor: transparentBackground.light
-    },
-    color: colors.primaryText,
-    textTransform: 'capitalize'
-  },
-  flex: {
-    alignItems: 'center',
-    display: 'flex',
-    flexGrow: 1,
-    justifyContent: 'flex-end'
-  },
-  linkBtn: {
-    [breakpoints.down('md')]: {
-      color: palette.primary.light
-    },
-    '&.active': {
-      backgroundColor: transparentBackground.dark
-    },
-    '&:hover': {
-      backgroundColor: transparentBackground.light
-    },
-    borderRadius: '3px',
-    color: colors.primaryText,
-    margin: '0 3px',
-    padding: '5px 10px',
-    textDecoration: 'none'
-  },
-  navIconHide: {
-    [breakpoints.up('md')]: {
-      display: 'none'
-    },
-    flex: 0,
-    marginLeft: 'auto'
-  },
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginBottom: '10px'
-  },
-  toolbar: mixins.toolbar
-});
+import { changeTheme } from '../../actions/theme/theme';
+import { IState } from '../../reducers';
+import { themes } from '../../themes/index';
+import defaultLanguage from '../../translations/en.welcome.json';
+import { styles } from './style';
 
 interface INavState {
   languageSelection: any,
@@ -90,8 +34,8 @@ class NavBar extends React.Component<INavProps, INavState>{
       direction: 'rtl',
       languageSelection: null,
       openSideNav: false,
-      themeSelection: null,
-    }
+      themeSelection: null
+    };
     this.props.initialize({
       languages: [
         { name: 'English', code: 'en' },
@@ -107,7 +51,6 @@ class NavBar extends React.Component<INavProps, INavState>{
   public componentDidUpdate(prevProps: INavProps) {
     const hasActiveLanguageChanged =
       prevProps.activeLanguage !== this.props.activeLanguage;
-
     if (hasActiveLanguageChanged) {
       this.addTranslationsForActiveLanguage();
     }
@@ -115,12 +58,10 @@ class NavBar extends React.Component<INavProps, INavState>{
 
   public addTranslationsForActiveLanguage() {
     const { activeLanguage } = this.props;
-
     if (!activeLanguage) {
       return;
     }
-
-    import(`../translations/${activeLanguage.code}.welcome.json`).then(
+    import(`../../translations/${activeLanguage.code}.welcome.json`).then(
       translations => {
         this.props.addTranslationForLanguage(translations, activeLanguage.code);
       }
@@ -129,27 +70,27 @@ class NavBar extends React.Component<INavProps, INavState>{
 
   public handleDrawerToggle = () => {
     this.setState(state => ({ openSideNav: !state.openSideNav }));
-  };
+  }
 
   public handleLangClick = (event: any) => {
     this.setState({ languageSelection: event.currentTarget });
-  };
+  }
 
   public handleLangClose = (code: string) => {
     this.props.setActiveLanguage(code);
     this.handleDrawerToggle();
     this.setState({ languageSelection: null });
-  };
+  }
 
   public handleThemeClick = (event: any) => {
     this.setState({ themeSelection: event.currentTarget });
-  };
+  }
 
   public handleThemeClose = (theme: string) => {
     this.handleDrawerToggle();
     this.props.setActiveTheme(theme);
     this.setState({ themeSelection: null });
-  };
+  }
 
   public render() {
     const { activeLanguage, activeTheme, classes, languages } = this.props;
@@ -324,16 +265,16 @@ class NavBar extends React.Component<INavProps, INavState>{
             open={this.state.openSideNav}
             onClose={this.handleDrawerToggle}
             classes={{
-              paper: classes.drawerPaper,
+              paper: classes.drawerPaper
             }}
             ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
+              keepMounted: true // Better open performance on mobile.
             }}>
             {sideNavLinks}
           </Drawer>
         </Hidden>
       </div>
-    )
+    );
   }
 }
 
@@ -352,12 +293,12 @@ interface IDispatchProps {
 }
 
 const mapStateToProps = (state: IState) => ({
-  activeTheme: state.theme.activeTheme,
-})
+  activeTheme: state.theme.activeTheme
+});
 
 const mapDispatchToProps = (dispatch: any) => ({
   setActiveTheme: (theme: string) => dispatch(changeTheme(theme))
-})
+});
 
 export default compose(
   withStyles(styles),

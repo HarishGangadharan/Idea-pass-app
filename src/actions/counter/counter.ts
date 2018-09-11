@@ -6,17 +6,17 @@ import {
 } from "./counterConstants";
 
 export const increment = () => ({
-  type: INCREMENT,
-})
+  type: INCREMENT
+});
 
 export const incrementSuccess = () => ({
-  type: INCREMENT_SUCCESS,
-})
+  type: INCREMENT_SUCCESS
+});
 
 export const decrement = () => ({
-  type: DECREMENT,
-})
+  type: DECREMENT
+});
 
 export const decrementSuccess = () => ({
-  type: DECREMENT_SUCCESS,
-})
+  type: DECREMENT_SUCCESS
+});

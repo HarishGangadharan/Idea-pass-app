@@ -8,7 +8,7 @@ const rootReducer = combineReducers({
   count: counterReducer,
   localize: localizeReducer,
   theme: themeReducer
-})
+});
 
 export interface IState {
   count: number,
@@ -17,4 +17,4 @@ export interface IState {
   theme: any
 }
 
-export default rootReducer
+export default rootReducer;

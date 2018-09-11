@@ -5,8 +5,8 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import { decrement, increment } from '../actions/counter/counter';
-import { IState } from '../reducers';
+import { decrement, increment } from '../../actions/counter/counter';
+import { IState } from '../../reducers';
 
 interface IStateProps {
   count: number
@@ -42,15 +42,15 @@ const Counter = (props: RouteComponentProps<any> & IStateProps & IDispatchProps)
       </Grid>
     </Grid>
   </Grid>
-)
+);
 
 const mapStateToProps = (state: IState) => ({
-  count: state.count,
-})
+  count: state.count
+});
 
 const mapDispatchToProps = (dispatch: any) => ({
   decrement: () => dispatch(decrement()),
-  increment: () => dispatch(increment()),
-})
+  increment: () => dispatch(increment())
+});
 
-export default connect<IStateProps, IDispatchProps, RouteComponentProps<any>>(mapStateToProps, mapDispatchToProps)(Counter)
+export default connect<IStateProps, IDispatchProps, RouteComponentProps<any>>(mapStateToProps, mapDispatchToProps)(Counter);

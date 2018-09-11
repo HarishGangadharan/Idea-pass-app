@@ -6,6 +6,6 @@ import {
 import { onDecrement, onIncrement } from "./counter";
 
 export default function* rootSaga() {
-  yield takeLatest(DECREMENT, onDecrement),
-  yield takeLatest(INCREMENT, onIncrement)
+  yield takeLatest(DECREMENT, onDecrement);
+  yield takeLatest(INCREMENT, onIncrement);
 }
