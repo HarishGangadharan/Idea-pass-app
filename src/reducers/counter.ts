@@ -1,4 +1,3 @@
-import { Action } from "redux";
 import {
   DECREMENT,
   DECREMENT_ASYNC,
@@ -8,11 +7,13 @@ import {
   INCREMENT_ASYNC,
   INCREMENT_ASYNC_SUCCESS,
   INCREMENT_SUCCESS
-} from "../actions/counter/counterConstants";
+} from "../actions/counter/constants";
+
+import { IActionProps } from "./index";
 
 interface ICounterReducer {
-  count: number,
-  isLoading: boolean
+  count: number;
+  isLoading: boolean;
 }
 
 const initialState = {
@@ -20,7 +21,7 @@ const initialState = {
   isLoading: false
 };
 
-const counterReducer = (state = initialState, action: Action) => {
+const counterReducer = (state = initialState, action: IActionProps) => {
   switch (action.type) {
     case INCREMENT:
       return {

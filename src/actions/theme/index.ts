@@ -1,6 +1,6 @@
 import {
   CHANGE_THEME
-} from "./themeConstants";
+} from "./constants";
 
 export const changeTheme = (selectedTheme: string) => ({
   selectedTheme,

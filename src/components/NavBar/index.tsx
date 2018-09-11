@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import compose from 'recompose/compose';
-import { changeTheme } from '../../actions/theme/theme';
+import { changeTheme } from '../../actions/theme';
 import { IState } from '../../reducers';
 import { themes } from '../../themes/index';
 import defaultLanguage from '../../translations/en.welcome.json';
@@ -69,30 +69,6 @@ class NavBar extends React.Component<INavProps, INavState>{
         this.props.addTranslationForLanguage(translations, activeLanguage.code);
       }
     );
-  }
-
-  public handleDrawerToggle = () => {
-    this.setState(state => ({ openSideNav: !state.openSideNav }));
-  }
-
-  public handleLangClick = (event: any) => {
-    this.setState({ languageSelection: event.currentTarget });
-  }
-
-  public handleLangClose = (code: string) => {
-    this.props.setActiveLanguage(code);
-    this.handleDrawerToggle();
-    this.setState({ languageSelection: null });
-  }
-
-  public handleThemeClick = (event: any) => {
-    this.setState({ themeSelection: event.currentTarget });
-  }
-
-  public handleThemeClose = (theme: string) => {
-    this.handleDrawerToggle();
-    this.props.setActiveTheme(theme);
-    this.setState({ themeSelection: null });
   }
 
   public render() {
@@ -199,7 +175,7 @@ class NavBar extends React.Component<INavProps, INavState>{
             </NavLink>
           </ListItem>
         </List>
-        <ListItem >
+        <ListItem>
           <Button
             className={classes.dropdownBtn}
             aria-owns={languageSelection ? 'simple-menu' : undefined}
@@ -284,6 +260,30 @@ class NavBar extends React.Component<INavProps, INavState>{
         </Hidden>
       </div>
     );
+  }
+
+  private handleDrawerToggle = () => {
+    this.setState(state => ({ openSideNav: !state.openSideNav }));
+  }
+
+  private handleLangClick = (event: any) => {
+    this.setState({ languageSelection: event.currentTarget });
+  }
+
+  private handleLangClose = (code: string) => {
+    this.props.setActiveLanguage(code);
+    this.handleDrawerToggle();
+    this.setState({ languageSelection: null });
+  }
+
+  private handleThemeClick = (event: any) => {
+    this.setState({ themeSelection: event.currentTarget });
+  }
+
+  private handleThemeClose = (theme: string) => {
+    this.handleDrawerToggle();
+    this.props.setActiveTheme(theme);
+    this.setState({ themeSelection: null });
   }
 }
 

@@ -1,12 +1,16 @@
-import {
-  CHANGE_THEME
-} from "../actions/theme/themeConstants";
+import { CHANGE_THEME } from "../actions/theme/constants";
 
 const inititalState = {
-  activeTheme: 'theme1'
+  activeTheme: "theme1"
 };
 
-const themeReducer = (state = inititalState, action: any) => {
+import { IActionProps } from "./index";
+
+export interface IthemeReducer {
+  activeTheme: string;
+}
+
+export const themeReducer = (state = inititalState, action: IActionProps) => {
   switch (action.type) {
     case CHANGE_THEME:
       return {
@@ -19,5 +23,3 @@ const themeReducer = (state = inititalState, action: any) => {
       };
   }
 };
-
-export default themeReducer;

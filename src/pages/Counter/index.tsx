@@ -2,7 +2,7 @@ import { Button, Grid } from '@material-ui/core';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import { decrement, decrementAsync, increment, incrementAsync } from '../../actions/counter/counter';
+import { decrement, decrementAsync, increment, incrementAsync } from '../../actions/counter';
 import { IState } from '../../reducers';
 
 interface IStateProps {

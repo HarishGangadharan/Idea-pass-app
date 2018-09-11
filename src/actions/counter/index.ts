@@ -7,7 +7,7 @@ import {
   INCREMENT_ASYNC,
   INCREMENT_ASYNC_SUCCESS,
   INCREMENT_SUCCESS
-} from "./counterConstants";
+} from "./constants";
 
 export const increment = () => {
   return { type: INCREMENT };

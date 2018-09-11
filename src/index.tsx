@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, compose, createStore } from 'redux';
 import createSagaMiddleware from "redux-saga";
 import App from './App';
+import { setupInterceptors } from './global/interceptors';
 import rootReducer from './reducers';
 import registerServiceWorker from './registerServiceWorker';
 
@@ -31,6 +32,8 @@ const store = createStore(
 
 // then run the saga
 sagaMiddleware.run(rootSaga);
+
+setupInterceptors(store);
 
 class Main extends React.Component<any, any> {
   constructor(props: any) {
