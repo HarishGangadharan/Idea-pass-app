@@ -1,19 +1,10 @@
-import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
-import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import { createStyles, Theme, withStyles } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MenuIcon from '@material-ui/icons/Menu';
+import {
+  AppBar, Button, createStyles, Divider,
+  Drawer, Hidden, IconButton, List,
+  ListItem, ListItemText, Menu, MenuItem,
+  Theme, Toolbar, Typography, withStyles
+} from '@material-ui/core';
+import { AccountCircle, Menu as MenuIcon } from '@material-ui/icons';
 import * as React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
@@ -24,7 +15,7 @@ import compose from 'recompose/compose';
 import { changeTheme } from '../actions/theme/theme';
 import { IState } from '../reducers';
 import { themes } from '../themes/index';
-import globalTranslations from '../translations/global.json';
+import defaultLanguage from '../translations/en.welcome.json';
 
 const drawerWidth = 240;
 
@@ -54,33 +45,33 @@ createStyles({
   },
   linkBtn: {
     [breakpoints.down('md')]: {
-    color: palette.primary.light
-  },
-  '&.active': {
-    backgroundColor: transparentBackground.dark
-  },
-  '&:hover': {
-    backgroundColor: transparentBackground.light
-  },
-  borderRadius: '3px',
-  color: colors.primaryText,
-  margin: '0 3px',
-  padding: '5px 10px',
-  textDecoration: 'none',
+      color: palette.primary.light
+    },
+    '&.active': {
+      backgroundColor: transparentBackground.dark
+    },
+    '&:hover': {
+      backgroundColor: transparentBackground.light
+    },
+    borderRadius: '3px',
+    color: colors.primaryText,
+    margin: '0 3px',
+    padding: '5px 10px',
+    textDecoration: 'none'
   },
   navIconHide: {
     [breakpoints.up('md')]: {
-    display: 'none',
-  },
-  flex: 0,
-    marginLeft: 'auto',
+      display: 'none'
+    },
+    flex: 0,
+    marginLeft: 'auto'
   },
   root: {
     display: 'flex',
     flexDirection: 'column',
     marginBottom: '10px'
   },
-    toolbar: mixins.toolbar,
+  toolbar: mixins.toolbar
 });
 
 interface INavState {
@@ -108,8 +99,32 @@ class NavBar extends React.Component<INavProps, INavState>{
         { name: 'Spanish', code: 'es' }
       ],
       options: { renderToStaticMarkup },
-      translation: globalTranslations
+      translation: defaultLanguage
     });
+    this.addTranslationsForActiveLanguage();
+  }
+
+  public componentDidUpdate(prevProps: INavProps) {
+    const hasActiveLanguageChanged =
+      prevProps.activeLanguage !== this.props.activeLanguage;
+
+    if (hasActiveLanguageChanged) {
+      this.addTranslationsForActiveLanguage();
+    }
+  }
+
+  public addTranslationsForActiveLanguage() {
+    const { activeLanguage } = this.props;
+
+    if (!activeLanguage) {
+      return;
+    }
+
+    import(`../translations/${activeLanguage.code}.welcome.json`).then(
+      translations => {
+        this.props.addTranslationForLanguage(translations, activeLanguage.code);
+      }
+    );
   }
 
   public handleDrawerToggle = () => {
