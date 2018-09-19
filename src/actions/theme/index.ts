@@ -1,8 +1,6 @@
-import {
-  CHANGE_THEME
-} from "./constants";
+import Constants from "./constants";
 
 export const changeTheme = (selectedTheme: string) => ({
   selectedTheme,
-  type: CHANGE_THEME
+  type: Constants.CHANGE_THEME
 });

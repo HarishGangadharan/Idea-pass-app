@@ -1,4 +1,4 @@
-import { CHANGE_THEME } from "../actions/theme/constants";
+import Constants from "../actions/theme/constants";
 
 const inititalState = {
   activeTheme: "theme1"
@@ -12,7 +12,7 @@ export interface IthemeReducer {
 
 export const themeReducer = (state = inititalState, action: IActionProps) => {
   switch (action.type) {
-    case CHANGE_THEME:
+    case Constants.CHANGE_THEME:
       return {
         ...state,
         activeTheme: action.selectedTheme

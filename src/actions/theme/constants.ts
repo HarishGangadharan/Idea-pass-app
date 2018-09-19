@@ -1,5 +1,4 @@
-const CHANGE_THEME = 'CHANGE_THEME';
-
-export {
-    CHANGE_THEME
-};
+import keyMirror from "key-mirror";
+export default keyMirror({
+  CHANGE_THEME: null
+});

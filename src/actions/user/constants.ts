@@ -1,9 +1,6 @@
-const FETCH_USERS = 'FETCH_USERS';
-const FETCH_USERS_SUCCESS = 'FETCH_USERS_SUCCESS';
-const FETCH_USERS_FAIL = 'FETCH_USERS_FAIL';
-
-export {
-  FETCH_USERS,
-  FETCH_USERS_FAIL,
-  FETCH_USERS_SUCCESS
-};
+import keyMirror from "key-mirror";
+export default keyMirror({
+  FETCH_USERS: null,
+  FETCH_USERS_FAIL: null,
+  FETCH_USERS_SUCCESS: null
+});

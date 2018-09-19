@@ -1,22 +1,19 @@
 import { takeLatest } from "redux-saga/effects";
+import CounterConstants from "../actions/counter/constants";
+import UserConstants from "../actions/user/constants";
 
 import {
-  DECREMENT,
-  DECREMENT_ASYNC,
-  INCREMENT,
-  INCREMENT_ASYNC
-} from "../actions/counter/constants";
-import {
-  FETCH_USERS
-} from "../actions/user/constants";
-
-import { onDecrement, onDecrementAsync, onIncrement, onIncrementAsync } from "./counter";
+  onDecrement,
+  onDecrementAsync,
+  onIncrement,
+  onIncrementAsync
+} from "./counter";
 import { onFetchUsers } from "./user";
 
 export default function* rootSaga() {
-  yield takeLatest(DECREMENT, onDecrement),
-  yield takeLatest(DECREMENT_ASYNC, onDecrementAsync);
-  yield takeLatest(INCREMENT, onIncrement);
-  yield takeLatest(INCREMENT_ASYNC, onIncrementAsync);
-  yield takeLatest(FETCH_USERS, onFetchUsers);
+  yield takeLatest(CounterConstants.DECREMENT, onDecrement),
+    yield takeLatest(CounterConstants.DECREMENT_ASYNC, onDecrementAsync),
+    yield takeLatest(CounterConstants.INCREMENT, onIncrement),
+    yield takeLatest(CounterConstants.INCREMENT_ASYNC, onIncrementAsync),
+    yield takeLatest(UserConstants.FETCH_USERS, onFetchUsers);
 }

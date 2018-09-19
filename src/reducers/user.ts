@@ -1,8 +1,4 @@
-import {
-  FETCH_USERS,
-  FETCH_USERS_FAIL,
-  FETCH_USERS_SUCCESS
-} from "../actions/user/constants";
+import Constants from "../actions/user/constants";
 
 const initialState = {
   loading: false,
@@ -21,19 +17,19 @@ export const userReducer = (
   action: IActionProps
 ) => {
   switch (action.type) {
-    case FETCH_USERS:
+    case Constants.FETCH_USERS:
       return {
         ...state,
         loading: true
       };
       break;
-    case FETCH_USERS_FAIL:
+    case Constants.FETCH_USERS_FAIL:
       return {
         ...state,
         loading: false
       };
       break;
-    case FETCH_USERS_SUCCESS:
+    case Constants.FETCH_USERS_SUCCESS:
       return {
         ...state,
         loading: false,

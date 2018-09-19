@@ -1,42 +1,33 @@
-import {
-  DECREMENT,
-  DECREMENT_ASYNC,
-  DECREMENT_ASYNC_SUCCESS,
-  DECREMENT_SUCCESS,
-  INCREMENT,
-  INCREMENT_ASYNC,
-  INCREMENT_ASYNC_SUCCESS,
-  INCREMENT_SUCCESS
-} from "./constants";
+import Constants from "./constants";
 
 export const increment = () => {
-  return { type: INCREMENT };
+  return { type: Constants.INCREMENT };
 };
 
 export const incrementAsync = () => ({
-  type: INCREMENT_ASYNC
+  type: Constants.INCREMENT_ASYNC
 });
 
 export const incrementSuccess = () => ({
-  type: INCREMENT_SUCCESS
+  type: Constants.INCREMENT_SUCCESS
 });
 
 export const incrementAsyncSuccess = () => ({
-  type: INCREMENT_ASYNC_SUCCESS
+  type: Constants.INCREMENT_ASYNC_SUCCESS
 });
 
 export const decrement = () => ({
-  type: DECREMENT
+  type: Constants.DECREMENT
 });
 
 export const decrementAsync = () => ({
-  type: DECREMENT_ASYNC
+  type: Constants.DECREMENT_ASYNC
 });
 
 export const decrementSuccess = () => ({
-  type: DECREMENT_SUCCESS
+  type: Constants.DECREMENT_SUCCESS
 });
 
 export const decrementAsyncSuccess = () => ({
-  type: DECREMENT_ASYNC_SUCCESS
+  type: Constants.DECREMENT_ASYNC_SUCCESS
 });

@@ -1,13 +1,4 @@
-import {
-  DECREMENT,
-  DECREMENT_ASYNC,
-  DECREMENT_ASYNC_SUCCESS,
-  DECREMENT_SUCCESS,
-  INCREMENT,
-  INCREMENT_ASYNC,
-  INCREMENT_ASYNC_SUCCESS,
-  INCREMENT_SUCCESS
-} from "../actions/counter/constants";
+import Constants from "../actions/counter/constants";
 
 import { IActionProps } from "./index";
 
@@ -23,45 +14,45 @@ const initialState = {
 
 const counterReducer = (state = initialState, action: IActionProps) => {
   switch (action.type) {
-    case INCREMENT:
+    case Constants.INCREMENT:
       return {
         ...state,
         isLoading: true
       };
-    case INCREMENT_SUCCESS:
+    case Constants.INCREMENT_SUCCESS:
       return {
         ...state,
         count: state.count + 1,
         isLoading: false
       };
-    case INCREMENT_ASYNC:
+    case Constants.INCREMENT_ASYNC:
       return {
         ...state,
         isLoading: true
       };
-    case INCREMENT_ASYNC_SUCCESS:
+    case Constants.INCREMENT_ASYNC_SUCCESS:
       return {
         ...state,
         count: state.count + 1,
         isLoading: false
       };
-    case DECREMENT:
+    case Constants.DECREMENT:
       return {
         ...state,
         isLoading: true
       };
-    case DECREMENT_SUCCESS:
+    case Constants.DECREMENT_SUCCESS:
       return {
         ...state,
         count: state.count - 1,
         isLoading: false
       };
-    case DECREMENT_ASYNC:
+    case Constants.DECREMENT_ASYNC:
       return {
         ...state,
         isLoading: true
       };
-    case DECREMENT_ASYNC_SUCCESS:
+    case Constants.DECREMENT_ASYNC_SUCCESS:
       return {
         ...state,
         count: state.count - 1,
