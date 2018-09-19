@@ -1,27 +1,21 @@
-import {
-  AppBar, Button, Divider,
-  Drawer, Hidden, IconButton, List,
-  ListItem, ListItemText, Menu, MenuItem,
-  Theme, Toolbar, Typography, withStyles
-} from '@material-ui/core';
-import { AccountCircle, FiberManualRecord, Menu as MenuIcon } from '@material-ui/icons';
 import * as React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { NavLink } from 'react-router-dom';
-import compose from 'recompose/compose';
+import { compose } from 'redux';
 import { changeTheme } from '../../actions/theme';
 import { IState } from '../../reducers';
-import { themes } from '../../themes/index';
+import { themes } from '../../themes';
 import defaultLanguage from '../../translations/en.welcome.json';
-import { styles } from './style';
+
+import ThemeContext from '../../ThemeContext';
+
+import '../../assets/styles/NavBar.css';
 
 interface INavState {
-  languageSelection: any,
-  themeSelection: any,
-  availableThemes: Theme[],
+  availableThemes: object[],
   openSideNav: boolean,
   direction: string
 }
@@ -35,9 +29,7 @@ class NavBar extends React.Component<INavProps, INavState>{
         return themes[key];
       }),
       direction: 'rtl',
-      languageSelection: null,
-      openSideNav: false,
-      themeSelection: null
+      openSideNav: false
     };
     this.props.initialize({
       languages: [
@@ -59,231 +51,101 @@ class NavBar extends React.Component<INavProps, INavState>{
     }
   }
 
-  public addTranslationsForActiveLanguage() {
+  public render() {
+    const { activeLanguage, activeTheme, languages } = this.props;
+    const { availableThemes } = this.state;
+
+    return (
+        <ThemeContext.Consumer>
+            {theme => (
+                <nav className="navbar navbar-expand-lg navbar-container" data-theme={theme}>
+                    <div className="navbar-brand"> App Name </div>
+                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon" />
+                    </button>
+                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul className="navbar-nav mr-auto">
+                            <li className="nav-item">
+                                <NavLink
+                                    exact={true}
+                                    to="/"
+                                    activeClassName="active"
+                                    className="nav-link">
+                                    Home
+                                </NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink
+                                    exact={true}
+                                    to="/hello"
+                                    activeClassName="active"
+                                    className="nav-link">
+                                    Hello
+                                </NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink
+                                    exact={true}
+                                    to="/counter"
+                                    activeClassName="active"
+                                    className="nav-link">
+                                    Counter
+                                </NavLink>
+                            </li>
+                            <li className="nav-item dropdown">
+                                <a href="#" role="button" className="nav-link dropdown-toggle" id="navbarDropdown"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {activeLanguage ? activeLanguage.name : ''}
+                                </a>
+                                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    {languages.map((lang, index) => (
+                                        <a key={index} className="dropdown-item" href="#"
+                                           onClick={() => this.handleLangSelection(lang.code)}>{lang.name}</a>
+                                    ))}
+                                </div>
+                            </li>
+                            <li className="nav-item dropdown">
+                                <a href="#" role="button" className="nav-link dropdown-toggle themeName" id="themeDropdown"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {activeTheme}
+                                </a>
+                                <div className="dropdown-menu" aria-labelledby="themeDropdown">
+                                    {availableThemes.map((availableTheme: any, index) => (
+                                        <a key={index} className="dropdown-item themeName"
+                                           onClick={() => this.handleThemeSelection(availableTheme.code)}>
+                                            <span style={{ backgroundColor: availableTheme.primaryColor }} className="themeIcon"/>
+                                            {availableTheme.code}
+                                        </a>
+                                    ))}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            )}
+        </ThemeContext.Consumer>
+    );
+  }
+
+  private addTranslationsForActiveLanguage() {
     const { activeLanguage } = this.props;
     if (!activeLanguage) {
       return;
     }
     import(`../../translations/${activeLanguage.code}.welcome.json`).then(
-      translations => {
+        translations => {
         this.props.addTranslationForLanguage(translations, activeLanguage.code);
       }
     );
   }
 
-  public render() {
-    const { activeLanguage, activeTheme, classes, languages } = this.props;
-    const { availableThemes, languageSelection, themeSelection } = this.state;
-    const navLinks = (
-      <div className={classes.flex}>
-        <NavLink
-          exact={true}
-          to="/"
-          activeClassName="active"
-          className={classes.linkBtn}>
-          Home
-        </NavLink>
-        <NavLink
-          exact={true}
-          to="/hello"
-          activeClassName="active"
-          className={classes.linkBtn}>
-          Hello
-        </NavLink>
-        <NavLink
-          exact={true}
-          to="/counter"
-          activeClassName="active"
-          className={classes.linkBtn}>
-          Counter
-        </NavLink>
-        <Button
-          className={classes.dropdownBtn}
-          aria-owns={languageSelection ? 'simple-menu' : undefined}
-          aria-haspopup="true"
-          onClick={this.handleLangClick}>
-          {activeLanguage ? activeLanguage.name : ''}
-        </Button>
-        <Menu
-          id="simple-menu"
-          anchorEl={languageSelection}
-          open={Boolean(languageSelection)}
-          onClose={() => this.handleLangClose(activeLanguage ? activeLanguage.code : '')}>
-          {languages.map((lang, index) => (
-            <MenuItem key={index} onClick={() => this.handleLangClose(lang.code)}>{lang.name}</MenuItem>
-          ))}
-        </Menu>
-        <Button
-          className={classes.dropdownBtn}
-          aria-owns={themeSelection ? 'simple-menu' : undefined}
-          aria-haspopup="true"
-          onClick={this.handleThemeClick}>
-          {activeTheme}
-        </Button>
-        <Menu
-          id="simple-menu"
-          anchorEl={themeSelection}
-          open={Boolean(themeSelection)}
-          onClose={() => this.handleThemeClose(activeTheme)}>
-          {availableThemes.map((theme: any, index) => (
-            <MenuItem className={classes.themes} key={index} onClick={() => this.handleThemeClose(theme.code)}>
-              <FiberManualRecord className={classes.themeIcon} style={{color: theme.palette.primary.main}}/>
-              {theme.code}
-            </MenuItem>
-          ))}
-        </Menu>
-        <IconButton
-          aria-haspopup="true"
-          color="inherit">
-          <AccountCircle />
-        </IconButton>
-      </div>
-    );
-
-    const sideNavLinks = (
-      <div className={classes.toolbar}>
-        <List onClick={this.handleDrawerToggle}>
-          <ListItem button={true}>
-            <ListItemText primary="Main Menu" />
-          </ListItem>
-          <Divider />
-          <ListItem>
-            <NavLink
-              exact={true}
-              to="/"
-              activeClassName="active"
-              className={classes.linkBtn}>
-              Home
-            </NavLink>
-          </ListItem>
-          <ListItem>
-            <NavLink
-              exact={true}
-              to="/hello"
-              activeClassName="active"
-              className={classes.linkBtn}>
-              Hello
-            </NavLink>
-          </ListItem>
-          <ListItem>
-            <NavLink
-              exact={true}
-              to="/counter"
-              activeClassName="active"
-              className={classes.linkBtn}>
-              Counter
-            </NavLink>
-          </ListItem>
-        </List>
-        <ListItem>
-          <Button
-            className={classes.dropdownBtn}
-            aria-owns={languageSelection ? 'simple-menu' : undefined}
-            aria-haspopup="true"
-            onClick={this.handleLangClick}>
-            {activeLanguage ? activeLanguage.name : ''}
-          </Button>
-          <Menu
-            id="simple-menu"
-            anchorEl={languageSelection}
-            open={Boolean(languageSelection)}
-            onClose={() => this.handleLangClose(activeLanguage ? activeLanguage.code : '')}>
-            {languages.map((lang, index) => (
-              <MenuItem key={index} onClick={() => this.handleLangClose(lang.code)}>{lang.name}</MenuItem>
-            ))}
-          </Menu>
-        </ListItem>
-        <ListItem>
-          <Button
-            className={classes.dropdownBtn}
-            aria-owns={themeSelection ? 'simple-menu' : undefined}
-            aria-haspopup="true"
-            onClick={this.handleThemeClick}>
-            {activeTheme}
-          </Button>
-          <Menu
-            id="simple-menu"
-            anchorEl={themeSelection}
-            open={Boolean(themeSelection)}
-            onClose={() => this.handleThemeClose(activeTheme)}>
-            {availableThemes.map((theme: any, index) => (
-              <MenuItem className={classes.themes} key={index} onClick={() => this.handleThemeClose(theme.code)}>
-                <FiberManualRecord className={classes.themeIcon} style={{color: theme.palette.primary.main}} />
-                {theme.code}
-              </MenuItem>
-            ))}
-          </Menu>
-        </ListItem>
-        <ListItem>
-          <IconButton
-            aria-haspopup="true"
-            color="inherit">
-            <AccountCircle />
-          </IconButton>
-        </ListItem>
-        <Divider />
-      </div>
-    );
-
-    return (
-      <div className={classes.root}>
-        <AppBar position="static">
-          <Toolbar variant="dense">
-            <Typography variant="title" color="inherit">
-              App Name
-            </Typography>
-            <Hidden smDown={true} className={classes.flex}>
-              {navLinks}
-            </Hidden>
-            <IconButton
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={this.handleDrawerToggle}
-              className={classes.navIconHide}>
-              <MenuIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <Hidden mdUp={true}>
-          <Drawer
-            anchor={this.state.direction === 'rtl' ? 'right' : 'left'}
-            open={this.state.openSideNav}
-            onClose={this.handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper
-            }}
-            ModalProps={{
-              keepMounted: true // Better open performance on mobile.
-            }}>
-            {sideNavLinks}
-          </Drawer>
-        </Hidden>
-      </div>
-    );
-  }
-
-  private handleDrawerToggle = () => {
-    this.setState(state => ({ openSideNav: !state.openSideNav }));
-  }
-
-  private handleLangClick = (event: any) => {
-    this.setState({ languageSelection: event.currentTarget });
-  }
-
-  private handleLangClose = (code: string) => {
+  private handleLangSelection = (code: string) => {
     this.props.setActiveLanguage(code);
-    this.handleDrawerToggle();
-    this.setState({ languageSelection: null });
   }
 
-  private handleThemeClick = (event: any) => {
-    this.setState({ themeSelection: event.currentTarget });
-  }
-
-  private handleThemeClose = (theme: string) => {
-    this.handleDrawerToggle();
+  private handleThemeSelection = (theme: string) => {
     this.props.setActiveTheme(theme);
-    this.setState({ themeSelection: null });
   }
 }
 
@@ -310,7 +172,6 @@ const mapDispatchToProps = (dispatch: any) => ({
 });
 
 export default compose(
-  withStyles(styles),
   withRouter,
   connect<IStateProps, IDispatchProps>(mapStateToProps, mapDispatchToProps),
   withLocalize

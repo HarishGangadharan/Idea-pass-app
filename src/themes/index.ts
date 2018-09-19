@@ -1,11 +1,28 @@
-import theme1 from './theme1';
-import theme2 from './theme2';
-import theme3 from './theme3';
-import theme4 from './theme4';
+import styles from '../assets/styles/themeConstants.css';
 
 export const themes = {
-  theme1,
-  theme2,
-  theme3,
-  theme4
+  theme1: {
+      primaryColor: styles.theme1PrimaryColor,
+      primaryTextColor: styles.theme1PrimaryTextColor,
+      primaryTextColorDisabled: styles.theme1PrimaryTextColorDisabled,
+      primaryBackgroundColor: styles.theme1PrimaryBackgroundColor
+  },
+  theme2: {
+      primaryColor: styles.theme2PrimaryColor,
+      primaryTextColor: styles.theme1PrimaryTextColor,
+      primaryTextColorDisabled: styles.theme1PrimaryTextColorDisabled,
+      primaryBackgroundColor: styles.theme2PrimaryBackgroundColor
+  },
+  theme3: {
+      primaryColor: styles.theme3PrimaryColor,
+      primaryTextColor: styles.theme3PrimaryTextColor,
+      primaryTextColorDisabled: styles.theme3PrimaryTextColorDisabled,
+      primaryBackgroundColor: styles.theme3PrimaryBackgroundColor
+  },
+  theme4: {
+      primaryColor: styles.theme4PrimaryColor,
+      primaryTextColor: styles.theme4PrimaryTextColor,
+      primaryTextColorDisabled: styles.theme4PrimaryTextColorDisabled,
+      primaryBackgroundColor: styles.theme4PrimaryBackgroundColor
+  }
 };

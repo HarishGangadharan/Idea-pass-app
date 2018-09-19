@@ -4,17 +4,21 @@ import * as React from 'react';
 import routes from './routes';
 import WithRoot from './WithRoot';
 
+import './assets/styles/App.css';
+
 interface IAppProps {
   history: History;
 }
 
 const App = ({ history }: IAppProps) => {
   return (
-    <WithRoot>
-      <ConnectedRouter history={history}>
-        { routes }
-      </ConnectedRouter>
-    </WithRoot>
+      <div className="appContainer">
+          <WithRoot>
+              <ConnectedRouter history={history}>
+                  { routes }
+              </ConnectedRouter>
+          </WithRoot>
+      </div>
   );
 };
 

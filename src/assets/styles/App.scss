@@ -1,0 +1,38 @@
+@import "./themeConstants.scss";
+
+.appContainer {
+  font-size: 14px;
+
+  @mixin applyThemeForButton($index) {
+    .btn {
+      border-color: map_get(nth($themes, $index), 'primaryBackgroundColor');
+      background-color: map_get(nth($themes, $index), 'primaryBackgroundColor');
+      color: map_get(nth($themes, $index), 'primaryTextColor');
+
+      &:hover {
+        color: map_get(nth($themes, $index), 'primaryColor');
+        background-color: map_get(nth($themes, $index), 'primaryBackgroundColor');
+      }
+
+      &.btn-outline-primary {
+        color: map_get(nth($themes, $index), 'primaryColor');
+        background-color: map_get(nth($themes, $index), 'primaryBackgroundColor');
+
+        &:hover {
+          background-color: map_get(nth($themes, $index), 'primaryColor');
+          color: map_get(nth($themes, $index), 'primaryTextColor');
+        }
+      }
+    }
+  }
+
+  // Global overrides
+  .themeWrapper {
+
+    @for $i from 1 through length($themes) {
+      &[data-theme='theme#{$i}'] {
+        @include applyThemeForButton($i);
+      }
+    }
+  }
+}
