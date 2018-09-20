@@ -5,8 +5,8 @@
 
   @mixin applyThemeForButton($index) {
     .btn {
-      border-color: map_get(nth($themes, $index), 'primaryBackgroundColor');
-      background-color: map_get(nth($themes, $index), 'primaryBackgroundColor');
+      border-color: map_get(nth($themes, $index), 'primaryColor');
+      background-color: map_get(nth($themes, $index), 'primaryColor');
       color: map_get(nth($themes, $index), 'primaryTextColor');
 
       &:hover {
@@ -16,6 +16,7 @@
 
       &.btn-outline-primary {
         color: map_get(nth($themes, $index), 'primaryColor');
+        border-color: map_get(nth($themes, $index), 'primaryColor');
         background-color: map_get(nth($themes, $index), 'primaryBackgroundColor');
 
         &:hover {

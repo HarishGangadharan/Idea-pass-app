@@ -1,14 +1,13 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { LocalizeProvider } from 'react-localize-redux';
 import { Provider } from 'react-redux';
 import { applyMiddleware, compose, createStore } from 'redux';
 import createSagaMiddleware from "redux-saga";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 import App from './App';
 import { setupInterceptors } from './global/interceptors';

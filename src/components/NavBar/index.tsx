@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Glyphicon, MenuItem, Nav, Navbar, NavDropdown, NavItem } from 'react-bootstrap';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
 import { connect } from 'react-redux';
@@ -12,7 +13,7 @@ import defaultLanguage from '../../translations/en.welcome.json';
 
 import ThemeContext from '../../ThemeContext';
 
-import '../../assets/styles/NavBar.css';
+import './NavBar.css';
 
 interface INavState {
   availableThemes: object[],
@@ -56,75 +57,72 @@ class NavBar extends React.Component<INavProps, INavState>{
     const { availableThemes } = this.state;
 
     return (
-        <ThemeContext.Consumer>
-            {theme => (
-                <nav className="navbar navbar-expand-lg navbar-container" data-theme={theme}>
-                    <div className="navbar-brand"> App Name </div>
-                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon" />
-                    </button>
-                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul className="navbar-nav mr-auto">
-                            <li className="nav-item">
-                                <NavLink
-                                    exact={true}
-                                    to="/"
-                                    activeClassName="active"
-                                    className="nav-link">
-                                    Home
-                                </NavLink>
-                            </li>
-                            <li className="nav-item">
-                                <NavLink
-                                    exact={true}
-                                    to="/hello"
-                                    activeClassName="active"
-                                    className="nav-link">
-                                    Hello
-                                </NavLink>
-                            </li>
-                            <li className="nav-item">
-                                <NavLink
-                                    exact={true}
-                                    to="/counter"
-                                    activeClassName="active"
-                                    className="nav-link">
-                                    Counter
-                                </NavLink>
-                            </li>
-                            <li className="nav-item dropdown">
-                                <a href="#" role="button" className="nav-link dropdown-toggle" id="navbarDropdown"
-                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {activeLanguage ? activeLanguage.name : ''}
-                                </a>
-                                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    {languages.map((lang, index) => (
-                                        <a key={index} className="dropdown-item" href="#"
-                                           onClick={() => this.handleLangSelection(lang.code)}>{lang.name}</a>
-                                    ))}
-                                </div>
-                            </li>
-                            <li className="nav-item dropdown">
-                                <a href="#" role="button" className="nav-link dropdown-toggle themeName" id="themeDropdown"
-                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {activeTheme}
-                                </a>
-                                <div className="dropdown-menu" aria-labelledby="themeDropdown">
-                                    {availableThemes.map((availableTheme: any, index) => (
-                                        <a key={index} className="dropdown-item themeName"
-                                           onClick={() => this.handleThemeSelection(availableTheme.code)}>
-                                            <span style={{ backgroundColor: availableTheme.primaryColor }} className="themeIcon"/>
-                                            {availableTheme.code}
-                                        </a>
-                                    ))}
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            )}
-        </ThemeContext.Consumer>
+      <ThemeContext.Consumer>
+        {theme => (
+          <div className="navbar-container" data-theme={theme}>
+            <Navbar collapseOnSelect={true}>
+              <Navbar.Header>
+                <Navbar.Brand>
+                  <a href="#">App Name</a>
+                </Navbar.Brand>
+                <Navbar.Toggle />
+              </Navbar.Header>
+              <Navbar.Collapse>
+                <Nav pullRight={true}>
+                  <NavItem eventKey={1} href="#">
+                    <NavLink
+                      exact={true}
+                      to="/"
+                      activeClassName="active"
+                      className="nav-link">
+                      Home
+                    </NavLink>
+                  </NavItem>
+                  <NavItem eventKey={2} href="#">
+                    <NavLink
+                      exact={true}
+                      to="/hello"
+                      activeClassName="active"
+                      className="nav-link">
+                      Hello
+                    </NavLink>
+                  </NavItem>
+                  <NavItem eventKey={3} href="#">
+                    <NavLink
+                      exact={true}
+                      to="/counter"
+                      activeClassName="active"
+                      className="nav-link">
+                      Counter
+                    </NavLink>
+                  </NavItem>
+                  <NavDropdown eventKey={4} title={activeLanguage ? activeLanguage.name : ''} id="basic-nav-dropdown">
+                    {languages.map((lang, index) => (
+                      <MenuItem
+                        key={index}
+                        eventKey={4.1}
+                        onClick={() => this.handleLangSelection(lang.code)}
+                      >{lang.name}</MenuItem>
+                    ))}
+                  </NavDropdown>
+                  <NavDropdown eventKey={5} title={activeTheme} id="basic-nav-dropdown-2">
+                    {availableThemes.map((availableTheme: any, index) => (
+                      <MenuItem key={index} eventKey={5.1} className="themeName"
+                                onClick={() => this.handleThemeSelection(availableTheme.code)}>
+                        <span style={{ backgroundColor: availableTheme.primaryColor }} className="themeIcon"/>
+                        {availableTheme.code}
+                      </MenuItem>
+                    ))}
+                  </NavDropdown>
+                  <NavItem eventKey={6} href="#">
+                    <Glyphicon glyph="user"/>
+                  </NavItem>
+                </Nav>
+              </Navbar.Collapse>
+            </Navbar>
+          </div>
+        )}
+      </ThemeContext.Consumer>
     );
   }
 

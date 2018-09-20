@@ -23,9 +23,6 @@
       "check-typecast",
       "check-type-operator",
       "check-preblock"
-    ],
-    "ordered-imports": false,
-    "no-console": false,
-    "object-literal-sort-keys": false
+    ]
   }
 }

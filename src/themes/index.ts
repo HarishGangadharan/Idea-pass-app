@@ -1,28 +1,28 @@
-import styles from '../assets/styles/themeConstants.css';
+import styles from '../themeConstants.css';
 
 export const themes = {
   theme1: {
-      primaryColor: styles.theme1PrimaryColor,
-      primaryTextColor: styles.theme1PrimaryTextColor,
-      primaryTextColorDisabled: styles.theme1PrimaryTextColorDisabled,
-      primaryBackgroundColor: styles.theme1PrimaryBackgroundColor
+    primaryBackgroundColor: styles.theme1PrimaryBackgroundColor,
+    primaryColor: styles.theme1PrimaryColor,
+    primaryTextColor: styles.theme1PrimaryTextColor,
+    primaryTextColorDisabled: styles.theme1PrimaryTextColorDisabled
   },
   theme2: {
-      primaryColor: styles.theme2PrimaryColor,
-      primaryTextColor: styles.theme1PrimaryTextColor,
-      primaryTextColorDisabled: styles.theme1PrimaryTextColorDisabled,
-      primaryBackgroundColor: styles.theme2PrimaryBackgroundColor
+    primaryBackgroundColor: styles.theme2PrimaryBackgroundColor,
+    primaryColor: styles.theme2PrimaryColor,
+    primaryTextColor: styles.theme1PrimaryTextColor,
+    primaryTextColorDisabled: styles.theme1PrimaryTextColorDisabled
   },
   theme3: {
-      primaryColor: styles.theme3PrimaryColor,
-      primaryTextColor: styles.theme3PrimaryTextColor,
-      primaryTextColorDisabled: styles.theme3PrimaryTextColorDisabled,
-      primaryBackgroundColor: styles.theme3PrimaryBackgroundColor
+    primaryBackgroundColor: styles.theme3PrimaryBackgroundColor,
+    primaryColor: styles.theme3PrimaryColor,
+    primaryTextColor: styles.theme3PrimaryTextColor,
+    primaryTextColorDisabled: styles.theme3PrimaryTextColorDisabled
   },
   theme4: {
-      primaryColor: styles.theme4PrimaryColor,
-      primaryTextColor: styles.theme4PrimaryTextColor,
-      primaryTextColorDisabled: styles.theme4PrimaryTextColorDisabled,
-      primaryBackgroundColor: styles.theme4PrimaryBackgroundColor
+    primaryBackgroundColor: styles.theme4PrimaryBackgroundColor,
+    primaryColor: styles.theme4PrimaryColor,
+    primaryTextColor: styles.theme4PrimaryTextColor,
+    primaryTextColorDisabled: styles.theme4PrimaryTextColorDisabled
   }
 };

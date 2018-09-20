@@ -16,10 +16,6 @@
 Dockerfile.dev
 docker-compose.yml
 
-# Lock
-yarn.lock
-package-json.lock
-
 # misc
 .DS_Store
 .env.local
@@ -33,4 +29,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # Generated css
-/src/assets/styles/*.css
+/src/**/*.css
