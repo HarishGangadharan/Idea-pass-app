@@ -1,15 +1,10 @@
 @import "../../themeConstants.scss";
 
+/* inject:scss */
+@import '../../theme1.scss';
+/* endinject */
+
 .homeContainer {
-
-  @mixin applyTheme($index) {
-    color: map_get(nth($themes, $index), 'primaryColor');
-    background-color: map_get(nth($themes, $index), 'primaryBackgroundColor');
-  }
-
-  @for $i from 1 through 4 {
-    &[data-theme='theme#{$i}'] {
-      @include applyTheme($i);
-    }
-  }
+  color: $primaryColor;
+  background-color: $primaryBackgroundColor;
 }

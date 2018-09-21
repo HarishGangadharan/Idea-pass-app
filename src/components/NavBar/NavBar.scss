@@ -1,42 +1,35 @@
 @import "../../themeConstants.scss";
 
+/* inject:scss */
+@import '../../theme1.scss';
+/* endinject */
+
 .navbar-container {
   margin-bottom: 10px;
 
   .navbar {
     border-radius: 0;
-  }
-
-  @mixin applyThemeForNavbar($index) {
-    background-color: map_get(nth($themes, $index), 'primaryColor');
+    background-color: $primaryColor;
     .navbar-brand {
-      color: map_get(nth($themes, $index), 'primaryTextColor');
+      color: $primaryTextColor;
     }
     .nav-link {
-      color: map_get(nth($themes, $index), 'primaryTextColorDisabled');
+      color: $primaryTextColorDisabled;
 
       &.active, &:hover {
-        color: map_get(nth($themes, $index), 'primaryTextColor');
+        color: $primaryTextColor;
       }
     }
 
     .glyphicon {
-      color: map_get(nth($themes, $index), 'primaryTextColor');
+      color: $primaryTextColor;
     }
 
     .dropdown-toggle {
-      color: map_get(nth($themes, $index), 'primaryTextColorDisabled');
+      color: $primaryTextColorDisabled;
       text-transform: capitalize;
       &:active, &:hover {
-        color: map_get(nth($themes, $index), 'primaryTextColor');
-      }
-    }
-  }
-
-  @for $i from 1 through 4 {
-    &[data-theme='theme#{$i}'] {
-      .navbar {
-        @include applyThemeForNavbar($i);
+        color: $primaryTextColor;
       }
     }
   }
