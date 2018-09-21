@@ -8,13 +8,22 @@
   .navbar {
     border-radius: 0;
     background-color: $primaryColor;
+
+    span[role=button] {
+      padding: 15px;
+      display: inline-block;
+      line-height: 20px;
+    }
+
     .navbar-brand {
       color: $primaryTextColor;
     }
+
     .nav-link {
       color: $primaryTextColorDisabled;
 
-      &.active, &:hover {
+      &.active,
+      &:hover {
         color: $primaryTextColor;
       }
     }
@@ -26,7 +35,9 @@
     .dropdown-toggle {
       color: $primaryTextColorDisabled;
       text-transform: capitalize;
-      &:active, &:hover {
+
+      &:active,
+      &:hover {
         color: $primaryTextColor;
       }
     }

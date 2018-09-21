@@ -2,6 +2,7 @@ import { RouterState } from 'connected-react-router';
 import { localizeReducer } from 'react-localize-redux';
 import { combineReducers } from 'redux';
 import { counterReducer, ICounterReducer } from './counter';
+import { formReducer, IFormReducer } from './form';
 import { globalReducer, IGlobalReducer } from './global';
 import { IMetaformState, metaformsReducer } from './metaforms';
 import { IthemeReducer, themeReducer } from './theme';
@@ -9,6 +10,7 @@ import { IuserReducer, userReducer } from './user';
 
 const rootReducer = combineReducers({
   counter: counterReducer,
+  form: formReducer,
   global: globalReducer,
   localize: localizeReducer,
   metaform: metaformsReducer,
@@ -23,6 +25,7 @@ export interface IActionProps {
 
 export interface IState {
   counter: ICounterReducer;
+  form: IFormReducer,
   languageSelection: any;
   router: RouterState;
   theme: IthemeReducer;

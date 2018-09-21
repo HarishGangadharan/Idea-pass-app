@@ -25,8 +25,9 @@ class NavBar extends React.Component<INavProps, INavState> {
   private static loadStyleSheet(theme: string) {
     const links = document.querySelectorAll('link[rel=stylesheet]');
     links.forEach(link => {
-      // @ts-ignore
-      link.parentNode.removeChild(link);
+      if (link.parentNode) {
+        link.parentNode.removeChild(link);
+      }
     });
 
     const sheet = document.createElement('link');
@@ -68,7 +69,7 @@ class NavBar extends React.Component<INavProps, INavState> {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav pullRight={true}>
-              <NavItem eventKey={1} href="#">
+              <NavItem eventKey={1} componentClass="span">
                 <NavLink
                   exact={true}
                   to="/"
@@ -77,7 +78,7 @@ class NavBar extends React.Component<INavProps, INavState> {
                   Home
                 </NavLink>
               </NavItem>
-              <NavItem eventKey={2} href="#">
+              <NavItem eventKey={2} componentClass="span">
                 <NavLink
                   exact={true}
                   to="/hello"
@@ -86,7 +87,7 @@ class NavBar extends React.Component<INavProps, INavState> {
                   Hello
                 </NavLink>
               </NavItem>
-              <NavItem eventKey={3} href="#">
+              <NavItem eventKey={3} componentClass="span">
                 <NavLink
                   exact={true}
                   to="/counter"
@@ -95,7 +96,16 @@ class NavBar extends React.Component<INavProps, INavState> {
                   Counter
                 </NavLink>
               </NavItem>
-              <NavDropdown eventKey={4} title={activeLanguage ? activeLanguage.name : ''} id="basic-nav-dropdown">
+              <NavItem eventKey={4} componentClass="span">
+                <NavLink
+                  exact={true}
+                  to="/formBuilder"
+                  activeClassName="active"
+                  className="nav-link">
+                  Form
+                </NavLink>
+              </NavItem>
+              <NavDropdown eventKey={5} title={activeLanguage ? activeLanguage.name : ''} id="basic-nav-dropdown">
                 {languages.map((lang, index) => (
                   <MenuItem
                     key={index}
@@ -104,16 +114,16 @@ class NavBar extends React.Component<INavProps, INavState> {
                   >{lang.name}</MenuItem>
                 ))}
               </NavDropdown>
-              <NavDropdown eventKey={5} title={activeTheme} id="basic-nav-dropdown-2">
+              <NavDropdown eventKey={6} title={activeTheme} id="basic-nav-dropdown-2">
                 {availableThemes.map((availableTheme: any, index) => (
                   <MenuItem key={index} eventKey={5.1} className="themeName"
-                            onClick={() => this.handleThemeSelection(availableTheme.code)}>
-                    <span style={{ backgroundColor: availableTheme.primaryColor }} className="themeIcon"/>
+                    onClick={() => this.handleThemeSelection(availableTheme.code)}>
+                    <span style={{ backgroundColor: availableTheme.primaryColor }} className="themeIcon" />
                     {availableTheme.code}
                   </MenuItem>
                 ))}
               </NavDropdown>
-              <NavDropdown eventKey={5} title={<Glyphicon glyph="user"/>} id="basic-nav-dropdown-2">
+              <NavDropdown eventKey={7} title={<Glyphicon glyph="user"/>} id="basic-nav-dropdown-2">
                     {this.userMenu.map((menu: any, index) => (
                       <MenuItem key={index} eventKey={5.1} className="themeName"
                       onClick={() => menu.onClick()}>

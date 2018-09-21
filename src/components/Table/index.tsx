@@ -39,7 +39,7 @@ interface ITableContext {
 /**
  * Shape of state available on table refresh (Check for onUpdate() definition)
  */
-interface ITableState {
+export interface ITableState {
   page: number, // newest Page
   sizePerPage: number,  // newest sizePerPage
   sortField: string,  // newest sort field
