@@ -1,5 +1,3 @@
-@import "../../themeConstants.scss";
-
 /* inject:scss */
 @import '../../theme1.scss';
 /* endinject */
@@ -32,6 +30,10 @@
         color: $primaryTextColor;
       }
     }
+  }
+
+  .themeName {
+    text-transform: capitalize;
   }
 
   .themeIcon {

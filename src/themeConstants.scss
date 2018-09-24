@@ -1,35 +1,22 @@
-$themes: (
-        primaryBackgroundColor: #ffffff,
-        primaryTextColor: #ffffff,
-        primaryTextColorDisabled: rgba(255,255,255,.5),
-        primaryColor: #673ab7
-) (
-        primaryBackgroundColor: #ffffff,
-        primaryTextColor: #ffffff,
-        primaryTextColorDisabled: rgba(255,255,255,.5),
-        primaryColor: #0d47a1
-) (
-        primaryBackgroundColor: #ffffff,
-        primaryTextColor: #ffffff,
-        primaryTextColorDisabled: rgba(255,255,255,.5),
-        primaryColor: #3d5afe
-) (
-        primaryBackgroundColor: #ffffff,
-        primaryTextColor: #ffffff,
-        primaryTextColorDisabled: rgba(255,255,255,.5),
-        primaryColor: #8bc34a
-);
-
-@mixin exportTheme($index) {
-  theme#{$index}PrimaryBackgroundColor: map_get(nth($themes, $index), 'primaryBackgroundColor');
-  theme#{$index}PrimaryTextColor: map_get(nth($themes, $index), 'primaryTextColor');
-  theme#{$index}PrimaryTextColorDisabled: map_get(nth($themes, $index), 'primaryTextColorDisabled');
-  theme#{$index}PrimaryColor: map_get(nth($themes, $index), 'primaryColor');
-}
-
 :export {
-  @include exportTheme(1);
-  @include exportTheme(2);
-  @include exportTheme(3);
-  @include exportTheme(4);
+  @import "theme1.scss";
+  theme1PrimaryBackgroundColor: $primaryBackgroundColor;
+  theme1PrimaryTextColor: $primaryTextColor;
+  theme1PrimaryTextColorDisabled: $primaryTextColorDisabled;
+  theme1PrimaryColor: $primaryColor;
+  @import "theme2.scss";
+  theme2PrimaryBackgroundColor: $primaryBackgroundColor;
+  theme2PrimaryTextColor: $primaryTextColor;
+  theme2PrimaryTextColorDisabled: $primaryTextColorDisabled;
+  theme2PrimaryColor: $primaryColor;
+  @import "theme3.scss";
+  theme3PrimaryBackgroundColor: $primaryBackgroundColor;
+  theme3PrimaryTextColor: $primaryTextColor;
+  theme3PrimaryTextColorDisabled: $primaryTextColorDisabled;
+  theme3PrimaryColor: $primaryColor;
+  @import "theme4.scss";
+  theme4PrimaryBackgroundColor: $primaryBackgroundColor;
+  theme4PrimaryTextColor: $primaryTextColor;
+  theme4PrimaryTextColorDisabled: $primaryTextColorDisabled;
+  theme4PrimaryColor: $primaryColor;
 }

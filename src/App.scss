@@ -6,26 +6,24 @@
   font-size: 14px;
 
   // Global overrides
-  .themeWrapper {
-    .btn {
+  .btn {
+    border-color: $primaryColor;
+    background-color: $primaryColor;
+    color: $primaryTextColor;
+
+    &:hover {
+      color: $primaryColor;
+      background-color: $primaryBackgroundColor;
+    }
+
+    &.btn-outline-primary {
+      color: $primaryColor;
       border-color: $primaryColor;
-      background-color: $primaryColor;
-      color: $primaryTextColor;
+      background-color: $primaryBackgroundColor;
 
       &:hover {
-        color: $primaryColor;
-        background-color: $primaryBackgroundColor;
-      }
-
-      &.btn-outline-primary {
-        color: $primaryColor;
-        border-color: $primaryColor;
-        background-color: $primaryBackgroundColor;
-
-        &:hover {
-          background-color: $primaryColor;
-          color: $primaryTextColor;
-        }
+        background-color: $primaryColor;
+        color: $primaryTextColor;
       }
     }
   }
