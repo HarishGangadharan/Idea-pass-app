@@ -8,6 +8,8 @@
     ]
   },
   "rules": {
+    "no-trailing-whitespace": true,
+    "quotemark": [true, "single", "jsx-double"],
     "eofline": true,
     "jsx-no-lambda": false,
     "trailing-comma": [true, {"multiline": "never", "singleline": "never"}],

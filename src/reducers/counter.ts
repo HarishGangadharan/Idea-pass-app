@@ -1,6 +1,6 @@
-import Constants from "../actions/counter/constants";
+import Constants from '../actions/counter/constants';
 
-import { IActionProps } from "./index";
+import { IActionProps } from './index';
 
 interface ICounterReducer {
   count: number;

@@ -1,10 +1,10 @@
-import Constants from "../actions/theme/constants";
+import Constants from '../actions/theme/constants';
 
 const inititalState = {
-  activeTheme: "theme1"
+  activeTheme: 'theme1'
 };
 
-import { IActionProps } from "./index";
+import { IActionProps } from './index';
 
 export interface IthemeReducer {
   activeTheme: string;

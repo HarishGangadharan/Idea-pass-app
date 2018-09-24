@@ -1,4 +1,4 @@
-import keyMirror from "key-mirror";
+import keyMirror from 'key-mirror';
 export default keyMirror({
   DECREMENT: null,
   DECREMENT_ASYNC: null,

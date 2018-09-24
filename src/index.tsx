@@ -5,7 +5,7 @@ import * as ReactDOM from 'react-dom';
 import { LocalizeProvider } from 'react-localize-redux';
 import { Provider } from 'react-redux';
 import { applyMiddleware, compose, createStore } from 'redux';
-import createSagaMiddleware from "redux-saga";
+import createSagaMiddleware from 'redux-saga';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -14,23 +14,19 @@ import { setupInterceptors } from './global/interceptors';
 import rootReducer from './reducers';
 import registerServiceWorker from './registerServiceWorker';
 
-import rootSaga from "./sagas";
+import rootSaga from './sagas';
 
 // create the saga middleware
 const sagaMiddleware = createSagaMiddleware();
 
 const history = createBrowserHistory();
 
-const composeEnhancer: typeof compose = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancer: typeof compose =
+  (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
   connectRouter(history)(rootReducer),
-  composeEnhancer(
-    applyMiddleware(
-      routerMiddleware(history),
-      sagaMiddleware
-    )
-  )
+  composeEnhancer(applyMiddleware(routerMiddleware(history), sagaMiddleware))
 );
 
 // then run the saga
@@ -57,9 +53,6 @@ class Main extends React.Component<any, any> {
   }
 }
 
-ReactDOM.render(
-  <Main />,
-  document.getElementById('root') as HTMLElement
-);
+ReactDOM.render(<Main />, document.getElementById('root') as HTMLElement);
 
 registerServiceWorker();

@@ -1,4 +1,4 @@
 import keyMirror from 'key-mirror';
 export default keyMirror({
-  CHANGE_THEME: null
+  SET_LOGGED_IN_STATUS: null
 });

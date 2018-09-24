@@ -1,7 +1,9 @@
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import * as React from 'react';
-import routes from './routes';
+import AppWrapper from './components/AppWrapper';
+import ErrorBoundary from './components/ErrorWrapper';
+
 
 import './App.css';
 
@@ -12,9 +14,11 @@ interface IAppProps {
 const App = ({ history }: IAppProps) => {
   return (
     <div className="appContainer">
-      <ConnectedRouter history={history}>
-        { routes }
-      </ConnectedRouter>
+      <ErrorBoundary>
+        <ConnectedRouter history={history}>
+          <AppWrapper/>
+        </ConnectedRouter>
+      </ErrorBoundary>
     </div>
   );
 };

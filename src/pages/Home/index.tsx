@@ -1,15 +1,15 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Language,
   LocalizeContextProps,
   Translate,
   withLocalize
-} from "react-localize-redux";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import { compose } from "redux";
-import { fetchUsers } from "../../actions/user";
-import { IState } from "../../reducers";
+} from 'react-localize-redux';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { compose } from 'redux';
+import { fetchUsers } from '../../actions/user';
+import { IState } from '../../reducers';
 
 import './Home.css';
 
@@ -29,10 +29,10 @@ class Home extends React.PureComponent<IProps> {
         <div className="row flex-column">
           <h3>Home</h3>
           <h3>
-            Active Language is {activeLanguage ? activeLanguage.name : ""}{" "}
+            Active Language is {activeLanguage ? activeLanguage.name : ''}{' '}
           </h3>
           <h3>
-            <Translate id="greeting" data={{ name: "App Name" }} />
+            <Translate id="greeting" data={{ name: 'App Name' }} />
           </h3>
         </div>
         <div className="row mb-2">

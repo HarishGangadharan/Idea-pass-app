@@ -1,7 +1,7 @@
-import { delay } from "redux-saga";
-import { put } from "redux-saga/effects";
+import { delay } from 'redux-saga';
+import { put } from 'redux-saga/effects';
 
-import { decrementAsyncSuccess, decrementSuccess, incrementAsyncSuccess, incrementSuccess } from "../actions/counter";
+import { decrementAsyncSuccess, decrementSuccess, incrementAsyncSuccess, incrementSuccess } from '../actions/counter';
 // import { fetchData } from "./api";
 
 // worker Saga: will be fired on INCREMENT actions

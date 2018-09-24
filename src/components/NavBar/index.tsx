@@ -1,22 +1,24 @@
 import * as React from 'react';
 import { Glyphicon, MenuItem, Nav, Navbar, NavDropdown, NavItem } from 'react-bootstrap';
-import { renderToStaticMarkup } from 'react-dom/server';
 import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import { compose } from 'redux';
 import { changeTheme } from '../../actions/theme';
+import { logoutUser } from '../../actions/user';
 import { IState } from '../../reducers';
 import { themes } from '../../themes';
-import defaultLanguage from '../../translations/en.welcome.json';
 
 import './NavBar.css';
 
 interface INavState {
-  availableThemes: object[],
-  openSideNav: boolean,
-  direction: string
+  availableThemes: any[];
+  openSideNav: boolean;
+}
+
+interface INavProps extends LocalizeContextProps, IStateProps, IDispatchProps {
+  classes: any;
 }
 
 class NavBar extends React.Component<INavProps, INavState> {
@@ -33,6 +35,7 @@ class NavBar extends React.Component<INavProps, INavState> {
     sheet.type = 'text/css';
     document.head.appendChild(sheet);
   }
+  private userMenu: any[];
 
   constructor(props: INavProps) {
     super(props);
@@ -41,33 +44,19 @@ class NavBar extends React.Component<INavProps, INavState> {
         themes[key].code = key;
         return themes[key];
       }),
-      direction: 'rtl',
       openSideNav: false
     };
-    this.props.initialize({
-      languages: [
-        { name: 'English', code: 'en' },
-        { name: 'French', code: 'fr' },
-        { name: 'Spanish', code: 'es' }
-      ],
-      options: { renderToStaticMarkup },
-      translation: defaultLanguage
-    });
-    this.addTranslationsForActiveLanguage();
-  }
-
-  public componentDidUpdate(prevProps: INavProps) {
-    const hasActiveLanguageChanged =
-      prevProps.activeLanguage !== this.props.activeLanguage;
-    if (hasActiveLanguageChanged) {
-      this.addTranslationsForActiveLanguage();
-    }
+    this.userMenu = [
+      {
+        name: 'Logout',
+        onClick: () => this.props.logoutUser()
+      }
+    ];
   }
 
   public render() {
     const { activeLanguage, activeTheme, languages } = this.props;
     const { availableThemes } = this.state;
-
     return (
       <div className="navbar-container">
         <Navbar collapseOnSelect={true}>
@@ -124,25 +113,18 @@ class NavBar extends React.Component<INavProps, INavState> {
                   </MenuItem>
                 ))}
               </NavDropdown>
-              <NavItem eventKey={6} href="#">
-                <Glyphicon glyph="user"/>
-              </NavItem>
+              <NavDropdown eventKey={5} title={<Glyphicon glyph="user"/>} id="basic-nav-dropdown-2">
+                    {this.userMenu.map((menu: any, index) => (
+                      <MenuItem key={index} eventKey={5.1} className="themeName"
+                      onClick={() => menu.onClick()}>
+                         {menu.name}
+                      </MenuItem>
+                    ))}
+              </NavDropdown>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
       </div>
-    );
-  }
-
-  private addTranslationsForActiveLanguage() {
-    const { activeLanguage } = this.props;
-    if (!activeLanguage) {
-      return;
-    }
-    import(`../../translations/${activeLanguage.code}.welcome.json`).then(
-        translations => {
-        this.props.addTranslationForLanguage(translations, activeLanguage.code);
-      }
     );
   }
 
@@ -155,18 +137,13 @@ class NavBar extends React.Component<INavProps, INavState> {
   }
 }
 
-interface INavProps extends LocalizeContextProps {
-  classes: any,
-  activeTheme: string,
-  setActiveTheme(theme: string): void
-}
-
 interface IStateProps {
-  activeTheme: string
+  activeTheme: string;
 }
 
 interface IDispatchProps {
-  setActiveTheme(theme: string): void
+  logoutUser(): void;
+  setActiveTheme(theme: string): void;
 }
 
 const mapStateToProps = (state: IState) => ({
@@ -174,11 +151,15 @@ const mapStateToProps = (state: IState) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
+  logoutUser: () => dispatch(logoutUser()),
   setActiveTheme: (theme: string) => dispatch(changeTheme(theme))
 });
 
 export default compose(
   withRouter,
-  connect<IStateProps, IDispatchProps>(mapStateToProps, mapDispatchToProps),
+  connect<IStateProps, IDispatchProps>(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   withLocalize
 )(NavBar);
