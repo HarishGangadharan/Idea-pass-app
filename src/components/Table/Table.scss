@@ -1,0 +1,41 @@
+/* inject:scss */
+@import '../../theme1.scss';
+/* endinject */
+
+.customTableContainer {
+  .pagination {
+    > li {
+      > a {
+        color: $primaryColor;
+      }
+    }
+
+    > .active {
+      a {
+        color: $primaryTextColor;
+        background-color: $primaryColor;
+        border-color: $primaryColor;
+      }
+    }
+  }
+
+  .table-header {
+    background-color: $primaryColor;
+    color: $primaryTextColor;
+    border-color: $primaryColor;
+  }
+
+  .table-rows {
+    background-color: $primaryBackgroundColor;
+    color: $secondaryTextColor;
+  }
+
+  .table-toolbar {
+    margin-bottom: 20px;
+
+    .table-options {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}

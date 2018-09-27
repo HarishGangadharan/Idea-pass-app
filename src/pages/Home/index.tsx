@@ -9,6 +9,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { compose } from 'redux';
 import { fetchUsers } from '../../actions/user';
+import Table from '../../components/Table';
+import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
 
 import './Home.css';
@@ -17,11 +19,33 @@ interface IProps extends LocalizeContextProps {
   value: string;
   activeLanguage: Language;
   fetchUsers: () => any;
-  users: any[];
+  users: object[];
   loading: boolean;
 }
 
-class Home extends React.PureComponent<IProps> {
+interface IHomeState {
+  columns: Column[]
+}
+
+class Home extends React.PureComponent<IProps, IHomeState> {
+  public columns: Column[];
+
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      columns: [
+        (new Column()).withKey('id').withLabel('ID'),
+        (new Column()).withKey('name').withLabel('Name'),
+        (new Column()).withKey('phone').withLabel('Phone Number'),
+        (new Column()).withKey('company.name').withLabel('Company')
+      ]
+    };
+  }
+
+  public componentDidMount() {
+    this.props.fetchUsers();
+  }
+
   public render() {
     const { activeLanguage, users, loading } = this.props;
     return (
@@ -39,31 +63,27 @@ class Home extends React.PureComponent<IProps> {
           <div className="flex-grow-1">
             <h4>Users</h4>
           </div>
-          <button disabled={loading} className="btn"
-                  aria-label="Add" onClick={this.props.fetchUsers}>
-            {!loading && 'Fetch Users'}
-            {loading && 'Loading...'}
-          </button>
         </div>
         <div className="row">
-          <table className="table">
-            <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Name</th>
-              <th scope="col">Phone Number</th>
-            </tr>
-            </thead>
-            <tbody>
-            {users.map((user, index) => (
-              <tr key={user.id}>
-                <th scope="row">{index}</th>
-                <td>{user.name}</td>
-                <td>{user.phone}</td>
-              </tr>
-            ))}
-            </tbody>
-          </table>
+          <Table
+            id="users"
+            data={users}
+            columns={this.state.columns}
+            loading={loading}
+            length={10}
+            currentPage={1}
+            total={users ? users.length : 0}
+            isExportable={true}
+            enableGlobalSearch={true}
+            onUpdate={() => {
+              this.props.fetchUsers();
+            }}
+            onColumnHide={(columns: Column[]) => {
+              this.setState({
+                columns
+              });
+            }}
+          />
         </div>
       </div>
     );
