@@ -14,9 +14,10 @@ export const fetchUsersFail = (error: any) => ({
   type: Constants.FETCH_USERS_FAIL
 });
 
-export const loginUser = (user: any) => ({
-  type: Constants.LOGIN_USER,
-  user
+export const loginUser = (email: string, password: string) => ({
+  email,
+  password,
+  type: Constants.LOGIN_USER
 });
 
 export const loginUserSuccess = (response: any) => ({

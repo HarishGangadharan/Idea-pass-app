@@ -20,12 +20,12 @@ function* onFetchUsers() {
 }
 
 function* onLoginUser(action: any) {
-  const { user } = action;
+  const { email, password } = action;
   try {
-    const data = yield call(loginUser, user);
-    persistAuthToken(data.data.accessToken.id);
-    yield put(updateLoggedInStatus({ loggedIn: Boolean(data) }));
-    yield put(loginUserSuccess(data));
+    const response = yield call(loginUser, email, password);
+    persistAuthToken(response.data.accessToken);
+    yield put(updateLoggedInStatus({ loggedIn: Boolean(response) }));
+    yield put(loginUserSuccess(response));
   } catch (error) {
     yield put(loginUserFail(error));
   }

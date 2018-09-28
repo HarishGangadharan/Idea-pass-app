@@ -16,31 +16,27 @@ interface ILoginProps extends IDispatchProps, IMapStateProps {
 interface ILoginState {
   email: string,
   emailValid: boolean,
-  password: string
-}
-
-interface IUserKeys {
-  email: string,
-  password: string
+  password: string,
+  pristine: boolean
 }
 
 class Login extends React.Component<ILoginProps, ILoginState> {
-  public inputKeys: IUserKeys;
   constructor(props: ILoginProps) {
     super(props);
     this.state = {
       email: '',
       emailValid: false,
-      password: ''
+      password: '',
+      pristine: true
     };
   }
 
   public render() {
     const { loading } = this.props;
-    const { emailValid, email, password } = this.state;
+    const { emailValid, email, password, pristine } = this.state;
     return (
       <div className="container login-container">
-        <div className="col-sm-9 col-md-7 col-lg-5 content">
+        <div className="content">
           <div className="card card-signin my-5">
             <div className="card-body">
               <h5 className="card-title text-center">Sign In</h5>
@@ -52,7 +48,8 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                     onChange={event => {
                       this.setState({
                         email: event.target.value,
-                        emailValid: isEmailValid(event.target.value)
+                        emailValid: isEmailValid(event.target.value),
+                        pristine: false
                       });
                     }}
                     value={email}
@@ -64,7 +61,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                     required={true}
                   />
                   {
-                    !emailValid  &&
+                    !pristine && !emailValid  &&
                     <span className="error-text">Enter valid email</span>
                   }
                 </div>
@@ -78,7 +75,8 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                     autoComplete="off"
                     onChange={event =>
                       this.setState({
-                        password:  event.target.value
+                        password:  event.target.value,
+                        pristine: false
                       })
                     }
                     className="form-control"
@@ -86,7 +84,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                     required={true}
                   />
                    {
-                    !password  &&
+                     !pristine && !password  &&
                     <span className="error-text">Enter password</span>
                    }
                 </div>
@@ -109,12 +107,12 @@ class Login extends React.Component<ILoginProps, ILoginState> {
   private onLoginClick = (event: any) => {
     event.preventDefault();
     const { email, password } = this.state;
-    this.props.loginUser({email, password});
+    this.props.loginUser(email, password);
   }
 }
 
 interface IDispatchProps {
-  loginUser: (user: IUserKeys) => void;
+  loginUser: (email: string , password: string) => void;
 }
 
 interface IMapStateProps {
@@ -126,7 +124,7 @@ const mapStateTopProps = (state: IState) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  loginUser: (user: IUserKeys) => dispatch(loginUser(user))
+  loginUser: (email: string , password: string) => dispatch(loginUser(email, password))
 });
 
 export default compose(

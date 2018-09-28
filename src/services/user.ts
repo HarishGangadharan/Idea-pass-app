@@ -6,11 +6,15 @@ export const getUsers = () =>
     url: '/users'
   });
 
-export const loginUser = (data: any) =>
+export const loginUser = (email: string , password: string) =>
   axios({
-    data,
+    data: {
+      email,
+      password,
+      strategy: 'local'
+    },
     method: 'post',
-    url: '/api/Financiers/login'
+    url: '/authentication'
   });
 
 export const logoutUser = () =>
