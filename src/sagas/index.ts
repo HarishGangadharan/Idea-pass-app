@@ -1,5 +1,6 @@
 import { takeLatest } from 'redux-saga/effects';
 import CounterConstants from '../actions/counter/constants';
+import MetaFormActions from '../actions/metaforms/constants';
 import UserConstants from '../actions/user/constants';
 import {
   onDecrement,
@@ -7,6 +8,7 @@ import {
   onIncrement,
   onIncrementAsync
 } from './counter';
+import { onFetchMetaForms } from './metaform';
 import { onFetchUsers, onLoginUser, onLogoutUser } from './user';
 
 export default function* rootSaga() {
@@ -17,4 +19,5 @@ export default function* rootSaga() {
   yield takeLatest(UserConstants.FETCH_USERS, onFetchUsers);
   yield takeLatest(UserConstants.LOGIN_USER, onLoginUser);
   yield takeLatest(UserConstants.LOGOUT_USER, onLogoutUser);
+  yield takeLatest(MetaFormActions.FETCH_ALL_METAFORMS, onFetchMetaForms);
 }
