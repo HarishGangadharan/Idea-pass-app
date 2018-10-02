@@ -1,41 +1,54 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-// import HelloChild from '../../components/HelloChild';
-
-import { fetchAllMetaforms } from '../../actions/metaforms';
+import { RouteComponentProps } from 'react-router';
+import { fetchFormSchemaRequest } from '../../actions/formschema';
 import Table, { ITableState } from '../../components/Table';
 import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
 
-interface IMetaformProps {
+interface IFormSchemasProps {
   data: object[],
   total: number,
   loading: boolean,
-  fetchAllMetaforms: any
+  fetchFormSchemaRequest: any
 }
 
-interface IMetaformState {
+interface IFormSchemasState {
   columns: Column[],
   currentPage: number,
   length: number
 }
 
-class Hello extends React.Component<IMetaformProps, IMetaformState>{
-  constructor(props: IMetaformProps) {
+class Hello extends React.Component<IFormSchemasProps & RouteComponentProps, IFormSchemasState>{
+  constructor(props: IFormSchemasProps & RouteComponentProps) {
     super(props);
     this.state = {
       columns: [
         (new Column()).withKey('_id').withLabel('ID'),
         (new Column()).withKey('name').withLabel('Name'),
-        (new Column()).withKey('createdAt').withLabel('Created At')
+        (new Column()).withKey('createdAt').withLabel('Created At'),
+        (new Column()).withKey('action').withLabel('Actions').withCellFormatter((cell: any, row: any) => (
+          <div>
+            <button className="btn btn-primary" onClick={() => this.renderFormSchema(row._id)}>View</button>&nbsp;
+            <button className="btn btn-primary" onClick={() => this.builderFormSchema(row._id)}>Edit</button>
+          </div>
+        ))
       ],
       currentPage: 1,
       length: 10
     };
   }
 
+  public renderFormSchema(id: string) {
+    this.props.history.push(`/formRenderer/${id}`);
+  }
+
+  public builderFormSchema(id: string) {
+    this.props.history.push(`/formBuilder/${id}`);
+  }
+
   public componentDidMount() {
-   this.fetchMetaForms();
+    this.fetchFormSchemas();
   }
 
   public render() {
@@ -55,27 +68,26 @@ class Hello extends React.Component<IMetaformProps, IMetaformState>{
             this.setState({
               currentPage: page,
               length: sizePerPage
-            }, this.fetchMetaForms);
+            }, this.fetchFormSchemas);
           }}
         />
       </div>
     );
   }
 
-  private fetchMetaForms = () => {
-    const { currentPage, length } = this.state;
-    this.props.fetchAllMetaforms(length, currentPage);
+  private fetchFormSchemas = () => {
+    this.props.fetchFormSchemaRequest();
   }
 }
 
 const mapStateToProps = (state: IState) => ({
-  data: state.metaform.data,
-  loading: state.metaform.loading,
-  total: state.metaform.total
+  data: state.formSchema.formSchemas.data,
+  loading: state.formSchema.isLoading,
+  total: state.formSchema.formSchemas.total
 });
 
 const mapDispatchToProps = ({
-  fetchAllMetaforms
+  fetchFormSchemaRequest
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Hello);

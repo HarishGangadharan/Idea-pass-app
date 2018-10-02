@@ -14,10 +14,6 @@ class Builder extends React.Component<IBuilderProps> {
     super(props);
   }
 
-  public shouldComponentUpdate() {
-    return false;
-  }
-
   public render() {
     const { renderSchema, renderComponent, builderOptions, formBuilderSchema } = this.props;
     return (

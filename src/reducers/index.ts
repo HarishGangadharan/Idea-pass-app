@@ -2,18 +2,18 @@ import { RouterState } from 'connected-react-router';
 import { localizeReducer } from 'react-localize-redux';
 import { combineReducers } from 'redux';
 import { counterReducer, ICounterReducer } from './counter';
-import { formReducer, IFormReducer } from './form';
+import { formFieldDataReducer, IFormFieldDataReducer } from './formfielddata';
+import { formSchemaReducer, IFormSchemaReducer } from './formschema';
 import { globalReducer, IGlobalReducer } from './global';
-import { IMetaformState, metaformsReducer } from './metaforms';
 import { IthemeReducer, themeReducer } from './theme';
 import { IuserReducer, userReducer } from './user';
 
 const rootReducer = combineReducers({
   counter: counterReducer,
-  form: formReducer,
+  formFieldData: formFieldDataReducer,
+  formSchema: formSchemaReducer,
   global: globalReducer,
   localize: localizeReducer,
-  metaform: metaformsReducer,
   theme: themeReducer,
   user: userReducer
 });
@@ -25,13 +25,13 @@ export interface IActionProps {
 
 export interface IState {
   counter: ICounterReducer;
-  form: IFormReducer,
+  formFieldData: IFormFieldDataReducer,
+  formSchema: IFormSchemaReducer,
   languageSelection: any;
   router: RouterState;
   theme: IthemeReducer;
   user: IuserReducer;
   global: IGlobalReducer;
-  metaform: IMetaformState;
 }
 
 export default rootReducer;

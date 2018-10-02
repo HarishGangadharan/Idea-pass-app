@@ -84,7 +84,7 @@ class NavBar extends React.Component<INavProps, INavState> {
                   to="/hello"
                   activeClassName="active"
                   className="nav-link">
-                  Hello
+                  Schemas
                 </NavLink>
               </NavItem>
               <NavItem eventKey={3} componentClass="span">

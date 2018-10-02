@@ -1,7 +1,6 @@
 import { takeLatest } from 'redux-saga/effects';
 import CounterConstants from '../actions/counter/constants';
-import FormConstants from '../actions/form/constants';
-import MetaFormActions from '../actions/metaforms/constants';
+import FormSchemaConstants from '../actions/formschema/constants';
 import UserConstants from '../actions/user/constants';
 
 import {
@@ -10,8 +9,7 @@ import {
   onIncrement,
   onIncrementAsync
 } from './counter';
-import { updateForm } from './form';
-import { onFetchMetaForms } from './metaform';
+import { createFormSchema, fetchFormSchema } from './formschema';
 import { onFetchUsers, onLoginUser, onLogoutUser } from './user';
 
 export default function* rootSaga() {
@@ -22,6 +20,6 @@ export default function* rootSaga() {
   yield takeLatest(UserConstants.FETCH_USERS, onFetchUsers);
   yield takeLatest(UserConstants.LOGIN_USER, onLoginUser);
   yield takeLatest(UserConstants.LOGOUT_USER, onLogoutUser);
-  yield takeLatest(MetaFormActions.FETCH_ALL_METAFORMS, onFetchMetaForms);
-  yield takeLatest(FormConstants.FORM_REQUEST, updateForm);
+  yield takeLatest(FormSchemaConstants.FETCH_FORM_SCHEMA_REQUEST, fetchFormSchema);
+  yield takeLatest(FormSchemaConstants.CREATE_FORM_SCHEMA_REQUEST, createFormSchema);
 }

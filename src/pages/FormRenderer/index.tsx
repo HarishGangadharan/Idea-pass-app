@@ -1,19 +1,28 @@
 import 'formiojs/dist/formio.full.min.css';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { RouteComponentProps } from 'react-router';
+import { matchPath, RouteComponentProps } from 'react-router';
+import { fetchFormSchemaRequest } from '../../actions/formschema';
 import Renderer from '../../components/FormRender';
 import { IState } from '../../reducers';
 
+interface IRendererProps {
+  fetchFormSchemaRequest: (schemaId?: string) => void;
+}
 
 interface IStateProps {
   formRendererSchema: any,
   isLoading: boolean
 }
 
-class FormRenderer extends React.Component<IStateProps & RouteComponentProps> {
-  constructor(props: IStateProps & RouteComponentProps) {
-    super(props);
+class FormRenderer extends React.Component<IRendererProps & IStateProps & RouteComponentProps> {
+  constructor(props: IRendererProps & IStateProps & RouteComponentProps) {
+    super(props); const match: any = matchPath(this.props.history.location.pathname, {
+      path: '/formRenderer/:id'
+    });
+    if (match) {
+      this.props.fetchFormSchemaRequest(match.params.id);
+    }
   }
 
   public renderData(data: any) {
@@ -22,19 +31,23 @@ class FormRenderer extends React.Component<IStateProps & RouteComponentProps> {
   }
 
   public render() {
-    const { formRendererSchema } = this.props;
+    const { formRendererSchema, isLoading } = this.props;
     return (
       <div className="container">
-        <Renderer formRendererSchema={formRendererSchema}
-          renderData={(data: any) => this.renderData(data)}/>
+        {!isLoading && <Renderer formRendererSchema={formRendererSchema.formData}
+          renderData={(data: any) => this.renderData(data)}/>}
       </div>
     );
   }
 }
 
-const mapStateToProps = (state: IState) => ({
-  formRendererSchema: state.form.formJson,
-  isLoading: state.form.isLoading
+const mapDispatchToProps = (dispatch: any) => ({
+  fetchFormSchemaRequest: (schemaId?: string) => dispatch(fetchFormSchemaRequest(schemaId))
 });
 
-export default connect<IStateProps>(mapStateToProps)(FormRenderer);
+const mapStateToProps = (state: IState) => ({
+  formRendererSchema: state.formSchema.currentFormSchema,
+  isLoading: state.formSchema.isLoading
+});
+
+export default connect<IStateProps, IRendererProps>(mapStateToProps, mapDispatchToProps)(FormRenderer);
