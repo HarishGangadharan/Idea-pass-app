@@ -10,8 +10,8 @@ interface IBuilderProps {
 }
 
 class Builder extends React.Component<IBuilderProps> {
-  constructor(props: IBuilderProps) {
-    super(props);
+  public shouldComponentUpdate() {
+    return false;
   }
 
   public render() {

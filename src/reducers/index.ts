@@ -3,7 +3,7 @@ import { localizeReducer } from 'react-localize-redux';
 import { combineReducers } from 'redux';
 import { counterReducer, ICounterReducer } from './counter';
 import { formFieldDataReducer, IFormFieldDataReducer } from './formfielddata';
-import { formSchemaReducer, IFormSchemaReducer } from './formschema';
+import { formSchemaReducers, IFormSchemaReducer } from './formschema';
 import { globalReducer, IGlobalReducer } from './global';
 import { IthemeReducer, themeReducer } from './theme';
 import { IuserReducer, userReducer } from './user';
@@ -11,7 +11,7 @@ import { IuserReducer, userReducer } from './user';
 const rootReducer = combineReducers({
   counter: counterReducer,
   formFieldData: formFieldDataReducer,
-  formSchema: formSchemaReducer,
+  formSchema: formSchemaReducers,
   global: globalReducer,
   localize: localizeReducer,
   theme: themeReducer,

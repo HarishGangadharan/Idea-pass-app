@@ -11,9 +11,13 @@ class FormSchemaService {
 
   public static fetchFormSchema = (schemaId?: string) => axios({
     method: 'get',
-    url: schemaId ? `/formschema/${schemaId}` : `/formschema/`
+    url: `/formschema/${schemaId}`
   })
 
+  public static getAllFormSchema = (limit: number, currentPage: number) => axios({
+    method: 'get',
+    url: `/formschema?$limit=${limit}&$skip=${limit * (currentPage - 1)}`
+  })
 }
 
 export default FormSchemaService;

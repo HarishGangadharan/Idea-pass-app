@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import { fetchFormSchemaRequest } from '../../actions/formschema';
+import { fetchFormSchemaList } from '../../actions/formschema';
 import Table, { ITableState } from '../../components/Table';
 import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
@@ -10,7 +10,7 @@ interface IFormSchemasProps {
   data: object[],
   total: number,
   loading: boolean,
-  fetchFormSchemaRequest: any
+  fetchFormSchemaList: any
 }
 
 interface IFormSchemasState {
@@ -29,8 +29,8 @@ class FormSchemaList extends React.Component<IFormSchemasProps & RouteComponentP
         (new Column()).withKey('createdAt').withLabel('Created At'),
         (new Column()).withKey('action').withLabel('Actions').withCellFormatter((cell: any, row: any) => (
           <div>
-            <button className="btn btn-primary" onClick={() => this.renderFormSchema(row._id)}>View</button>&nbsp;
-            <button className="btn btn-primary" onClick={() => this.builderFormSchema(row._id)}>Edit</button>
+            <i className="glyphicon glyphicon-eye-open cursor-pointer" onClick={() => this.renderFormSchema(row._id)} />&nbsp;
+            <i className="glyphicon glyphicon-edit cursor-pointer" onClick={() => this.builderFormSchema(row._id)} />
           </div>
         ))
       ],
@@ -81,18 +81,19 @@ class FormSchemaList extends React.Component<IFormSchemasProps & RouteComponentP
   }
 
   private fetchFormSchemas = () => {
-    this.props.fetchFormSchemaRequest();
+    const { currentPage, length } = this.state;
+    this.props.fetchFormSchemaList(length, currentPage);
   }
 }
 
 const mapStateToProps = (state: IState) => ({
-  data: state.formSchema.formSchemas.data,
-  loading: state.formSchema.isLoading,
-  total: state.formSchema.formSchemas.total
+  data: state.formSchema.list.data,
+  loading: state.formSchema.list.loading,
+  total: state.formSchema.list.total
 });
 
 const mapDispatchToProps = ({
-  fetchFormSchemaRequest
+  fetchFormSchemaList
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormSchemaList);

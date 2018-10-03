@@ -1,3 +1,4 @@
+import { combineReducers } from 'redux';
 import { IActionProps } from '.';
 import FormSchemaConstants from '../actions/formschema/constants';
 
@@ -10,82 +11,92 @@ interface IFormSchema {
   nameSingular: string;
   type: string;
   _id?: string;
+  [key: string]: any;
 }
 
 interface IFormSchemas {
   data: IFormSchema[];
   total: number;
-  limit: number;
+  loading: boolean;
 }
 
 interface IFormSchemaReducer {
-  currentFormSchema: IFormSchema;
-  formSchemas: IFormSchemas;
-  isLoading: boolean;
+  currentFormSchema: IFormSchema,
+  list: IFormSchemas;
 }
 
-const initialState = {
-  currentFormSchema: {
-    formData: {
-      display: 'form'
-    },
-    name: '',
-    nameSingular: '',
-    type: 'data'
-  },
-  formSchemas: {
-    data: [],
-    limit: 10,
-    total: 0
-  },
-  isLoading: false
+const listInitialState: IFormSchemas = {
+  data: [],
+  loading: false,
+  total: 0
 };
 
-const formSchemaReducer = (state: IFormSchemaReducer = initialState, action: IActionProps) => {
+const currentFormInitialState: IFormSchema = {
+  formData: {
+    display: 'form'
+  },
+  loading: false,
+  name: '',
+  nameSingular: '',
+  type: 'data'
+};
+
+const formSchemaReducer = (state: IFormSchema = currentFormInitialState, action: IActionProps): IFormSchema => {
   switch (action.type) {
     case FormSchemaConstants.CREATE_FORM_SCHEMA_REQUEST:
       return {
         ...state,
-        isLoading: true
+        loading: true
       };
     case FormSchemaConstants.CREATE_FORM_SCHEMA_SUCCESS:
-      return {
-        ...state,
-        currentFormSchema: Object.assign({}, initialState.currentFormSchema),
-        isLoading: false
-      };
+      return currentFormInitialState;
     case FormSchemaConstants.CREATE_FORM_SCHEMA_FAILURE:
-      return {
-        ...state,
-        currentFormSchema: Object.assign({}, initialState.currentFormSchema),
-        isLoading: false
-      };
+      return currentFormInitialState;
     case FormSchemaConstants.FETCH_FORM_SCHEMA_REQUEST:
       return {
         ...state,
-        isLoading: true
+        loading: true
       };
     case FormSchemaConstants.FETCH_FORM_SCHEMA_SUCCESS:
       return {
         ...state,
-        currentFormSchema: action.payload,
-        isLoading: false
+        loading: false,
+        ...action.payload
+      };
+    case FormSchemaConstants.FETCH_FORM_SCHEMA_FAILURE:
+      return currentFormInitialState;
+    default:
+      return state;
+  }
+};
+
+const formSchemaListReducer = (state: IFormSchemas = listInitialState, action: IActionProps): IFormSchemas => {
+  switch (action.type) {
+    case FormSchemaConstants.FETCH_FORM_SCHEMA_LIST:
+      return {
+        ...state,
+        loading: true
       };
     case FormSchemaConstants.FETCH_FORM_SCHEMA_LIST_SUCCESS:
       return {
         ...state,
-        formSchemas: action.payload,
-        isLoading: false
+        data: action.payload.data,
+        loading: false,
+        total: action.payload.total
       };
-    case FormSchemaConstants.FETCH_FORM_SCHEMA_FAILURE:
+    case FormSchemaConstants.FETCH_FORM_SCHEMA_LIST_FAILURE:
       return {
         ...state,
-        currentFormSchema: Object.assign({}, initialState.currentFormSchema),
-        isLoading: false
+        loading: false
       };
     default:
       return state;
   }
 };
 
-export { formSchemaReducer, IFormSchemaReducer, IFormSchema, IFormSchemas };
+const formSchemaReducers = combineReducers({
+  currentFormSchema: formSchemaReducer,
+  list: formSchemaListReducer
+});
+
+export { formSchemaReducers, IFormSchemaReducer, IFormSchema, IFormSchemas };

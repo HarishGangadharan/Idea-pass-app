@@ -9,7 +9,7 @@ import {
   onIncrement,
   onIncrementAsync
 } from './counter';
-import { createFormSchema, fetchFormSchema } from './formschema';
+import { createFormSchema, fetchFormList, fetchFormSchema } from './formschema';
 import { onFetchUsers, onLoginUser, onLogoutUser } from './user';
 
 export default function* rootSaga() {
@@ -20,6 +20,7 @@ export default function* rootSaga() {
   yield takeLatest(UserConstants.FETCH_USERS, onFetchUsers);
   yield takeLatest(UserConstants.LOGIN_USER, onLoginUser);
   yield takeLatest(UserConstants.LOGOUT_USER, onLogoutUser);
+  yield takeLatest(FormSchemaConstants.FETCH_FORM_SCHEMA_LIST, fetchFormList);
   yield takeLatest(FormSchemaConstants.FETCH_FORM_SCHEMA_REQUEST, fetchFormSchema);
   yield takeLatest(FormSchemaConstants.CREATE_FORM_SCHEMA_REQUEST, createFormSchema);
 }

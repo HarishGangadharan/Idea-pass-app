@@ -13,9 +13,9 @@ export const loggedInRoutes = () => (
     <Route exact={true} path="/" component={Home} />
     <Route path="/formschemalist" component={FormSchemaList} />
     <Route path="/counter" component={Counter} />
-    <Route path="/formbuilder" component={FormBuilder} />
-    <Route path="/formbuilder/:id" component={FormBuilder} />
-    <Route path="/formrenderer/:id" component={FormRenderer} />
+    <Route exact={true} path="/formBuilder" component={FormBuilder} />
+    <Route path="/formBuilder/:id" component={FormBuilder} />
+    <Route exact={true} path="/formRenderer/:id" component={FormRenderer} />
     <Route component={NoMatch} />
   </Switch>
 );

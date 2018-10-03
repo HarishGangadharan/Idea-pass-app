@@ -7,7 +7,7 @@ import Renderer from '../../components/FormRender';
 import { IState } from '../../reducers';
 
 interface IRendererProps {
-  fetchFormSchemaRequest: (schemaId?: string) => void;
+  fetchFormSchemaRequest: (schemaId: string) => void;
 }
 
 interface IStateProps {
@@ -42,12 +42,12 @@ class FormRenderer extends React.Component<IRendererProps & IStateProps & RouteC
 }
 
 const mapDispatchToProps = (dispatch: any) => ({
-  fetchFormSchemaRequest: (schemaId?: string) => dispatch(fetchFormSchemaRequest(schemaId))
+  fetchFormSchemaRequest: (schemaId: string) => dispatch(fetchFormSchemaRequest(schemaId))
 });
 
 const mapStateToProps = (state: IState) => ({
   formRendererSchema: state.formSchema.currentFormSchema,
-  isLoading: state.formSchema.isLoading
+  isLoading: state.formSchema.currentFormSchema.loading
 });
 
 export default connect<IStateProps, IRendererProps>(mapStateToProps, mapDispatchToProps)(FormRenderer);

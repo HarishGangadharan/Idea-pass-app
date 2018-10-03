@@ -16,7 +16,8 @@ export const createFormSchemaFailure = (error: any) => ({
   type: FormSchemaConstants.CREATE_FORM_SCHEMA_FAILURE
 });
 
-export const fetchFormSchemaRequest = (schemaId?: string) => ({
+export const fetchFormSchemaRequest = (schemaId: string, callback?: (formSchemaId: string, formData: any, name: string) => void) => ({
+  callback,
   schemaId,
   type: FormSchemaConstants.FETCH_FORM_SCHEMA_REQUEST
 });
@@ -29,6 +30,12 @@ export const fetchFormSchemaSuccess = (data: any) => ({
 export const fetchFormSchemaFailure = (error: any) => ({
   error,
   type: FormSchemaConstants.FETCH_FORM_SCHEMA_FAILURE
+});
+
+export const fetchFormSchemaList = (limit: number, currentPage: number) => ({
+  currentPage,
+  limit,
+  type: FormSchemaConstants.FETCH_FORM_SCHEMA_LIST
 });
 
 export const fetchFormSchemaListSuccess = (data: any) => ({
