@@ -24,6 +24,8 @@ class FormBuilder extends React.Component<IFBuilderProps & IFBuilderStateProps &
     });
     if (match) {
       this.props.fetchFormSchemaRequest(match.params.id);
+    } else {
+      this.props.fetchFormSchemaRequest('0');
     }
   }
 

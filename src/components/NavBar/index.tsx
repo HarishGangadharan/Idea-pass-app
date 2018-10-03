@@ -63,7 +63,7 @@ class NavBar extends React.Component<INavProps, INavState> {
         <Navbar collapseOnSelect={true}>
           <Navbar.Header>
             <Navbar.Brand>
-              <a href="#">App Name</a>
+              <a href="#">Idea PaaS</a>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
@@ -81,31 +81,13 @@ class NavBar extends React.Component<INavProps, INavState> {
               <NavItem eventKey={2} componentClass="span">
                 <NavLink
                   exact={true}
-                  to="/hello"
+                  to="/formschemalist"
                   activeClassName="active"
                   className="nav-link">
                   Schemas
                 </NavLink>
               </NavItem>
-              <NavItem eventKey={3} componentClass="span">
-                <NavLink
-                  exact={true}
-                  to="/counter"
-                  activeClassName="active"
-                  className="nav-link">
-                  Counter
-                </NavLink>
-              </NavItem>
-              <NavItem eventKey={4} componentClass="span">
-                <NavLink
-                  exact={true}
-                  to="/formBuilder"
-                  activeClassName="active"
-                  className="nav-link">
-                  Form
-                </NavLink>
-              </NavItem>
-              <NavDropdown eventKey={5} title={activeLanguage ? activeLanguage.name : ''} id="basic-nav-dropdown">
+              <NavDropdown eventKey={3} title={activeLanguage ? activeLanguage.name : ''} id="basic-nav-dropdown">
                 {languages.map((lang, index) => (
                   <MenuItem
                     key={index}
@@ -114,7 +96,7 @@ class NavBar extends React.Component<INavProps, INavState> {
                   >{lang.name}</MenuItem>
                 ))}
               </NavDropdown>
-              <NavDropdown eventKey={6} title={activeTheme} id="basic-nav-dropdown-2">
+              <NavDropdown eventKey={4} title={activeTheme} id="basic-nav-dropdown-2">
                 {availableThemes.map((availableTheme: any, index) => (
                   <MenuItem key={index} eventKey={5.1} className="themeName"
                     onClick={() => this.handleThemeSelection(availableTheme.code)}>
@@ -123,7 +105,7 @@ class NavBar extends React.Component<INavProps, INavState> {
                   </MenuItem>
                 ))}
               </NavDropdown>
-              <NavDropdown eventKey={7} title={<Glyphicon glyph="user"/>} id="basic-nav-dropdown-2">
+              <NavDropdown eventKey={5} title={<Glyphicon glyph="user"/>} id="basic-nav-dropdown-2">
                     {this.userMenu.map((menu: any, index) => (
                       <MenuItem key={index} eventKey={5.1} className="themeName"
                       onClick={() => menu.onClick()}>

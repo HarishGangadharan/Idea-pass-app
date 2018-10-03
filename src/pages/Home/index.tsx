@@ -9,7 +9,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { compose } from 'redux';
 import { fetchUsers } from '../../actions/user';
-import Table from '../../components/Table';
 import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
 
@@ -47,7 +46,7 @@ class Home extends React.PureComponent<IProps, IHomeState> {
   }
 
   public render() {
-    const { activeLanguage, users, loading } = this.props;
+    const { activeLanguage }: any = this.props;
     return (
       <div className="container homeContainer">
         <div className="row flex-column">
@@ -56,34 +55,8 @@ class Home extends React.PureComponent<IProps, IHomeState> {
             Active Language is {activeLanguage ? activeLanguage.name : ''}{' '}
           </h3>
           <h3>
-            <Translate id="greeting" data={{ name: 'App Name' }} />
+            <Translate id="greeting" data={{ name: 'Idea PaaS' }} />
           </h3>
-        </div>
-        <div className="row mb-2">
-          <div className="flex-grow-1">
-            <h4>Users</h4>
-          </div>
-        </div>
-        <div className="row">
-          <Table
-            id="users"
-            data={users}
-            columns={this.state.columns}
-            loading={loading}
-            length={10}
-            currentPage={1}
-            total={users ? users.length : 0}
-            isExportable={true}
-            enableGlobalSearch={true}
-            onUpdate={() => {
-              this.props.fetchUsers();
-            }}
-            onColumnHide={(columns: Column[]) => {
-              this.setState({
-                columns
-              });
-            }}
-          />
         </div>
       </div>
     );

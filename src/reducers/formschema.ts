@@ -51,12 +51,13 @@ const formSchemaReducer = (state: IFormSchemaReducer = initialState, action: IAc
     case FormSchemaConstants.CREATE_FORM_SCHEMA_SUCCESS:
       return {
         ...state,
-        formFieldDatas: action.payload,
+        currentFormSchema: Object.assign({}, initialState.currentFormSchema),
         isLoading: false
       };
     case FormSchemaConstants.CREATE_FORM_SCHEMA_FAILURE:
       return {
         ...state,
+        currentFormSchema: Object.assign({}, initialState.currentFormSchema),
         isLoading: false
       };
     case FormSchemaConstants.FETCH_FORM_SCHEMA_REQUEST:
@@ -79,6 +80,7 @@ const formSchemaReducer = (state: IFormSchemaReducer = initialState, action: IAc
     case FormSchemaConstants.FETCH_FORM_SCHEMA_FAILURE:
       return {
         ...state,
+        currentFormSchema: Object.assign({}, initialState.currentFormSchema),
         isLoading: false
       };
     default:

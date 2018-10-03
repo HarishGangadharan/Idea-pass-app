@@ -19,7 +19,7 @@ interface IFormSchemasState {
   length: number
 }
 
-class Hello extends React.Component<IFormSchemasProps & RouteComponentProps, IFormSchemasState>{
+class FormSchemaList extends React.Component<IFormSchemasProps & RouteComponentProps, IFormSchemasState>{
   constructor(props: IFormSchemasProps & RouteComponentProps) {
     super(props);
     this.state = {
@@ -40,11 +40,11 @@ class Hello extends React.Component<IFormSchemasProps & RouteComponentProps, IFo
   }
 
   public renderFormSchema(id: string) {
-    this.props.history.push(`/formRenderer/${id}`);
+    this.props.history.push(`/formrenderer/${id}`);
   }
 
-  public builderFormSchema(id: string) {
-    this.props.history.push(`/formBuilder/${id}`);
+  public builderFormSchema(id?: string) {
+    this.props.history.push(id ? `/formbuilder/${id}` : `/formbuilder`);
   }
 
   public componentDidMount() {
@@ -55,6 +55,11 @@ class Hello extends React.Component<IFormSchemasProps & RouteComponentProps, IFo
     const { loading, data, total } = this.props;
     return (
       <div className="row">
+        <div className="container">
+          <div className="form-group">
+            <button className="btn btn-primary pull-right" onClick={() => this.builderFormSchema()}>Create New Schema</button>
+          </div>
+        </div>
         <Table
           id="users"
           data={data}
@@ -90,4 +95,4 @@ const mapDispatchToProps = ({
   fetchFormSchemaRequest
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Hello);
+export default connect(mapStateToProps, mapDispatchToProps)(FormSchemaList);
