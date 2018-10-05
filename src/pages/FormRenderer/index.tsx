@@ -2,52 +2,78 @@ import 'formiojs/dist/formio.full.min.css';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { matchPath, RouteComponentProps } from 'react-router';
+import { fetchFormFieldDataRequest, saveFormFieldDataRequest } from '../../actions/formfielddata';
 import { fetchFormSchemaRequest } from '../../actions/formschema';
 import Renderer from '../../components/FormRender';
 import { IState } from '../../reducers';
 
-interface IRendererProps {
-  fetchFormSchemaRequest: (schemaId: string) => void;
+interface IRendererDispatchMap {
+  fetchFormSchemaRequest: (schemaId?: string,  callback?: (formSchemaId: string, formData: any, name: string) => void) => void;
+  fetchFormFieldDataRequest: (name: string, dataId: string) => void;
+  saveFormFieldDataRequest: (data: any, formName: string) => void;
 }
 
-interface IStateProps {
-  formRendererSchema: any,
-  isLoading: boolean
+interface IRendererStateMap {
+  formRendererSchema: any;
+  submissionData: any;
+  isLoading: boolean;
 }
 
-class FormRenderer extends React.Component<IRendererProps & IStateProps & RouteComponentProps> {
-  constructor(props: IRendererProps & IStateProps & RouteComponentProps) {
-    super(props); const match: any = matchPath(this.props.history.location.pathname, {
+interface IRendererSate {
+  formData: any
+}
+
+class FormRenderer extends React.Component<IRendererDispatchMap & IRendererStateMap & RouteComponentProps, IRendererSate> {
+  public formio: any;
+  constructor(props: IRendererDispatchMap & IRendererStateMap & RouteComponentProps) {
+    super(props);
+    this.state = {
+      formData: {}
+    };
+    const match: any = matchPath(this.props.history.location.pathname, {
       path: '/formRenderer/:id'
     });
     if (match) {
-      this.props.fetchFormSchemaRequest(match.params.id);
+      this.props.fetchFormSchemaRequest(match.params.id, (formSchemaId: string, formData: any, name: string) => {
+        this.setState({ formData });
+      });
+      // this.props.fetchFormFieldDataRequest(this.props.formRendererSchema.name, match.params.id);
     }
   }
 
-  public renderData(data: any) {
-    // tslint:disable-next-line:no-console TODO
-    console.log('component data', data);
+  public handleSubmit = (formData: any) => {
+    const { formRendererSchema } = this.props;
+    this.props.saveFormFieldDataRequest(formData.data, formRendererSchema.name);
+    this.formio.emit('submitDone');
+  }
+
+  public getFormio = (formio: any) => {
+    this.formio = formio;
   }
 
   public render() {
-    const { formRendererSchema, isLoading } = this.props;
+    const { submissionData, isLoading } = this.props;
+    const { formData } = this.state;
     return (
       <div className="container">
-        {!isLoading && <Renderer formRendererSchema={formRendererSchema.formData}
-          renderData={(data: any) => this.renderData(data)}/>}
+        {!isLoading && <Renderer formRendererSchema={formData}
+          submission={{data: submissionData}}
+          handleSubmit={this.handleSubmit} getFormio={this.getFormio}/>}
       </div>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
-  fetchFormSchemaRequest: (schemaId: string) => dispatch(fetchFormSchemaRequest(schemaId))
+const mapDispatchToProps = ({
+  fetchFormFieldDataRequest,
+  fetchFormSchemaRequest,
+  saveFormFieldDataRequest
 });
 
 const mapStateToProps = (state: IState) => ({
   formRendererSchema: state.formSchema.currentFormSchema,
-  isLoading: state.formSchema.currentFormSchema.loading
+  isLoading: state.formSchema.currentFormSchema.loading,
+  submissionData: state.formFieldData.submissionData
 });
 
-export default connect<IStateProps, IRendererProps>(mapStateToProps, mapDispatchToProps)(FormRenderer);
+export default connect<IRendererStateMap, IRendererDispatchMap>(mapStateToProps, mapDispatchToProps)(FormRenderer);

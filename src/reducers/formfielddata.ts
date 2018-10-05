@@ -1,33 +1,37 @@
+import { combineReducers } from 'redux';
 import { IActionProps } from '.';
 import FormFieldDataConstants from '../actions/formfielddata/constants';
 
 interface IFormFieldData {
-  [key: string]: any;
+  submissionData: any;
+  isLoading: boolean;
 }
 
 interface IFormFieldDatas {
   data: IFormFieldData[];
+  isLoading: boolean;
   total: number;
   limit: number;
 }
 
 interface IFormFieldDataReducer {
-  currentFormFieldData: IFormFieldData;
-  formFieldDatas: IFormFieldDatas;
-  isLoading: boolean;
+  submissionData: IFormFieldData,
+  list: IFormFieldDatas;
 }
 
-const initialState = {
-  currentFormFieldData: {},
-  formFieldDatas: {
-    data: [],
-    limit: 10,
-    total: 0
-  },
-  isLoading: false
+const currentFormInitialState = {
+  isLoading: false,
+  submissionData: {}
 };
 
-const formFieldDataReducer = (state: IFormFieldDataReducer = initialState, action: IActionProps) => {
+const listInitialState = {
+  data: [],
+  isLoading: false,
+  limit: 10,
+  total: 0
+};
+
+const formFieldDataReducer = (state: IFormFieldData = currentFormInitialState, action: IActionProps) => {
   switch (action.type) {
     case FormFieldDataConstants.CREATE_FORM_FIELD_DATA_REQUEST:
       return {
@@ -56,13 +60,22 @@ const formFieldDataReducer = (state: IFormFieldDataReducer = initialState, actio
         formSchema: action.payload,
         isLoading: false
       };
-    case FormFieldDataConstants.FETCH_FORM_FIELD_DATA_LIST_SUCCESS:
+    case FormFieldDataConstants.FETCH_FORM_FIELD_DATA_FAILURE:
       return {
         ...state,
-        formSchema: action.payload,
         isLoading: false
       };
-    case FormFieldDataConstants.FETCH_FORM_FIELD_DATA_FAILURE:
+    case FormFieldDataConstants.SAVE_FORM_FIELD_DATA_REQUEST:
+      return {
+        ...state,
+        isLoading: true
+      };
+    case FormFieldDataConstants.SAVE_FORM_FIELD_DATA_SUCCESS:
+      return {
+        ...state,
+        isLoading: false
+      };
+    case FormFieldDataConstants.SAVE_FORM_FIELD_DATA_FAILURE:
       return {
         ...state,
         isLoading: false
@@ -72,4 +85,32 @@ const formFieldDataReducer = (state: IFormFieldDataReducer = initialState, actio
   }
 };
 
-export { formFieldDataReducer, IFormFieldDataReducer, IFormFieldData, IFormFieldDatas };
+const formFieldDataListReducer = (state: IFormFieldDatas = listInitialState, action: IActionProps) => {
+  switch (action.type) {
+    case FormFieldDataConstants.FETCH_FORM_FIELD_DATA_LIST:
+      return {
+        ...state,
+        isLoading: false
+      };
+    case FormFieldDataConstants.FETCH_FORM_FIELD_DATA_LIST_FAILURE:
+      return {
+        ...state,
+        isLoading: false
+      };
+    case FormFieldDataConstants.FETCH_FORM_FIELD_DATA_LIST_SUCCESS:
+      return {
+        ...state,
+        data: action.payload.data,
+        isLoading: false
+      };
+    default:
+      return state;
+  }
+};
+
+const formFieldDataReducers = combineReducers({
+  list: formFieldDataListReducer,
+  submissionData: formFieldDataReducer
+});
+
+export { formFieldDataReducers, IFormFieldDataReducer, IFormFieldData, IFormFieldDatas };

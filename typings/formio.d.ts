@@ -1,3 +1,4 @@
+declare module 'formiojs/*';
 declare module 'react-formio' {
   
   export interface IFormBuilderProps {
@@ -26,6 +27,7 @@ declare module 'react-formio' {
       template?: string,
       templates?: any,
     },
+    nosubmit?: boolean,
     onPrevPage?(schema?: any): any,
     onNextPage?(schema?: any): any,
     onChange?(schema?: any): any,

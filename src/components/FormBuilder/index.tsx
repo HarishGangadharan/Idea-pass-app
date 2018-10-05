@@ -1,6 +1,6 @@
 import 'formiojs/dist/formio.full.min.css';
 import * as React from 'react';
-import { FormBuilder } from 'react-formio';
+import FormBuilder from './FormBuilderWrapper';
 
 interface IBuilderProps {
   formBuilderSchema: any,

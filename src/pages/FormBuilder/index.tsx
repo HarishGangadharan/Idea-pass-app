@@ -22,12 +22,11 @@ interface IFBuilderStateProps {
   name: string;
 }
 
-class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchMap & RouteComponentProps, IFBuilderStateProps> {
-  constructor(props: IFBuilderStateMap & IFBuilderDispatchMap & RouteComponentProps) {
+class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchMap & RouteComponentProps<{id: string}>, IFBuilderStateProps> {
+  constructor(props: IFBuilderStateMap & IFBuilderDispatchMap & RouteComponentProps<{id: string}>) {
     super(props);
     this.state = {
       formData: {},
-      // @ts-ignore
       formSchemaId: this.props.match.params.id,
       name: ''
     };
@@ -45,8 +44,6 @@ class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchM
           name
         });
       });
-    } else {
-      this.props.fetchFormSchemaRequest('0');
     }
   }
 
@@ -58,14 +55,13 @@ class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchM
 
   public gotoFormSchemaList = (): void => {
     const { formData, formSchemaId, name } = this.state;
-    // @ts-ignore
     this.props.createFormSchema({
       formData,
       name,
-      nameSingular: `${name}123`,
+      nameSingular: `${name}`,
       type: 'data'
     }, formSchemaId);
-    this.props.history.push('/formschemalist');
+    // this.props.history.push('/formschemalist');
   }
 
   public renderSchema = (schema: any) => {
@@ -93,26 +89,26 @@ class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchM
 
   public render() {
     const { isLoading } = this.props;
-    const { name, formData } = this.state;
+    const { name, formData, formSchemaId } = this.state;
     return (
       <div className="container">
         {!isLoading &&
           <React.Fragment>
-              <div className="container">
-                  <div className="form-group">
-                      <label className="control-label">Form Name</label>
-                      <input type="text" defaultValue={name} className="form-control" onChange={this.setFormName}/>
-                  </div>
+            <div className="container">
+              <div className="form-group">
+                <label className="control-label">Form Name</label>
+                <input type="text" defaultValue={name} className="form-control" onChange={this.setFormName} />
               </div>
-              <Builder
-                  formBuilderSchema={formData}
-                  renderSchema={this.renderSchema}
-                  renderComponent={this.renderComponent}
-              />
+            </div>
+            <Builder
+              formBuilderSchema={formData}
+              renderSchema={this.renderSchema}
+              renderComponent={this.renderComponent}
+            />
           </React.Fragment>}
         <div className="row text-right">
           <button className="btn btn-primary" onClick={() => this.gotoFormSchemaList()} >
-            Create Form
+            {formSchemaId ? 'Update' : 'Create'} Form
           </button>
         </div>
       </div>

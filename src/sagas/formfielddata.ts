@@ -1,23 +1,17 @@
 import { call, put } from 'redux-saga/effects';
 import {
-  createFormFieldDataFailure,
-  createFormFieldDataSuccess,
   fetchFormFieldDataFailure,
-  fetchFormFieldDataSuccess
+  fetchFormFieldDataListFailure,
+  fetchFormFieldDataListSuccess,
+  fetchFormFieldDataSuccess,
+  saveFormFieldDataFailure,
+  saveFormFieldDataSuccess
 } from '../actions/formfielddata';
 import FormFieldDataService from '../services/formfielddata';
 
-function* createFormFieldData(data: any, schemaId?: string) {
+function* fetchFormFieldData(action: any) {
   try {
-    const response = yield call(FormFieldDataService.createFormFieldData, data.payload, schemaId);
-    yield put(createFormFieldDataSuccess(response));
-  } catch (error) {
-    yield put(createFormFieldDataFailure(error));
-  }
-}
-
-function* fetchFormFieldData(action: any, schemaId?: string) {
-  try {
+    const { schemaId } = action;
     const data = yield call(FormFieldDataService.fetchFormFieldData, schemaId);
     yield put(fetchFormFieldDataSuccess(data));
   } catch (error) {
@@ -25,7 +19,27 @@ function* fetchFormFieldData(action: any, schemaId?: string) {
   }
 }
 
+function* fetchFormFieldDataList() {
+  try {
+    const data = yield call(FormFieldDataService.fetchFormFieldData);
+    yield put(fetchFormFieldDataListSuccess(data));
+  } catch (error) {
+    yield put(fetchFormFieldDataListFailure(error));
+  }
+}
+
+function* saveFormFieldData(action: any) {
+  try {
+    const { data, formName, formDataId } = action;
+    yield call(FormFieldDataService.saveFormFieldData, data, formName, formDataId);
+    yield put(saveFormFieldDataSuccess());
+  } catch (error) {
+    yield put(saveFormFieldDataFailure(error));
+  }
+}
+
 export {
-  createFormFieldData,
-  fetchFormFieldData
+  fetchFormFieldData,
+  saveFormFieldData,
+  fetchFormFieldDataList
 };

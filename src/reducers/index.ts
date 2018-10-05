@@ -2,7 +2,7 @@ import { RouterState } from 'connected-react-router';
 import { localizeReducer } from 'react-localize-redux';
 import { combineReducers } from 'redux';
 import { counterReducer, ICounterReducer } from './counter';
-import { formFieldDataReducer, IFormFieldDataReducer } from './formfielddata';
+import { formFieldDataReducers, IFormFieldDataReducer } from './formfielddata';
 import { formSchemaReducers, IFormSchemaReducer } from './formschema';
 import { globalReducer, IGlobalReducer } from './global';
 import { IthemeReducer, themeReducer } from './theme';
@@ -10,7 +10,7 @@ import { IuserReducer, userReducer } from './user';
 
 const rootReducer = combineReducers({
   counter: counterReducer,
-  formFieldData: formFieldDataReducer,
+  formFieldData: formFieldDataReducers,
   formSchema: formSchemaReducers,
   global: globalReducer,
   localize: localizeReducer,

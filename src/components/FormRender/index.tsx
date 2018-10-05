@@ -1,10 +1,12 @@
 import 'formiojs/dist/formio.full.min.css';
 import * as React from 'react';
-import { Form } from 'react-formio';
+import FormRenderer from './FormRendererWrapper';
 
 interface IRendererProps {
-  formRendererSchema: any,
-  renderData(data: any): void
+  formRendererSchema: any;
+  submission?: object;
+  handleSubmit(data: any): void;
+  getFormio?(data: any): void;
 }
 
 class Renderer extends React.Component<IRendererProps> {
@@ -13,11 +15,14 @@ class Renderer extends React.Component<IRendererProps> {
   }
 
   public render() {
-    const { formRendererSchema, renderData } = this.props;
+    const { formRendererSchema, handleSubmit, getFormio, submission } = this.props;
     return (
       <div className="container">
-        <Form form={formRendererSchema}
-          onChange={(data) => renderData(data)}/>
+        <FormRenderer form={formRendererSchema}
+          submission={submission}
+          onSubmit={handleSubmit}
+          assignRef={getFormio}
+        />
       </div>
     );
   }

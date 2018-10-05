@@ -1,11 +1,11 @@
 import axios from 'axios';
 
 class FormFieldDataService {
-  public static createFormFieldData = (data: any, schemaId?: string) => {
+  public static saveFormFieldData = (data: any, formName: string, formDataId?: string) => {
     axios({
       data,
-      method: schemaId ? 'put' : 'post',
-      url: schemaId ? `/form/${schemaId}` : `/formschema/`
+      method: formDataId ? 'put' : 'post',
+      url: formDataId ? `/forms/${formName}/${formDataId}` : `/forms/${formName}`
     });
   }
 
