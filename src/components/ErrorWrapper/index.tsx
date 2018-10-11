@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Logger from '../../utils/logger';
 
 interface IErrorBoundaryState {
   hasError: boolean;
@@ -17,7 +18,7 @@ class ErrorBoundary extends React.Component<{}, IErrorBoundaryState> {
   public componentDidCatch(error: any, info: any) {
     this.setState({ hasError: true });
     // tslint:disable-next-line:no-console
-    console.log(error, info);
+    Logger.error(info, error);
     // Display fallback UI
     /** You can also log the error to an error reporting service
      * logErrorToMyService(error, info);
