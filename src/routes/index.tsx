@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router';
 import ability from 'src/ability';
+import { Can } from 'src/ability-context';
 import Admin from 'src/pages/Admin';
 import AppForm from 'src/pages/AppForm';
 import DynamicTableRender from '../pages/DynamicTableRenderer';
 import FormBuilder from '../pages/FormBuilder';
+import FormDataList from '../pages/FormDataList';
 import FormRenderer from '../pages/FormRenderer';
 import FormSchemaList from '../pages/FormSchemaList';
 import Home from '../pages/Home';
@@ -43,6 +45,11 @@ export class LoggedInRoutes extends React.Component {
         path: '/formRenderer/:id'
       },
       {
+        component: FormDataList,
+        exact: true,
+        path: '/formdatalist/:formName/:formId'
+      },
+      {
         component: AppForm,
         exact: true,
         path: '/appforms/:id',
@@ -59,20 +66,22 @@ export class LoggedInRoutes extends React.Component {
       }
     ];
     return (
-      <Switch>
-        {routes.map((route, index) => {
-          return (
-            <Route key={index}
-              exact={route.exact}
-              path={route.path}
-              render={(routeProps) => {
-                const SubjectComponent = route.subject ? (ability.can('read', route.subject) ? route.component : NoMatch) : route.component;
-                return <SubjectComponent {...routeProps} {...{subject: route.subject}}/>;
-              }}
-            />
-          );
-        })}
-      </Switch>
+      <Can I="read" a="default">
+        <Switch>
+          {routes.map((route, index) => {
+            return (
+              <Route key={index}
+                exact={route.exact}
+                path={route.path}
+                render={(routeProps) => {
+                  const SubjectComponent = route.subject ? (ability.can('read', route.subject) ? route.component : NoMatch) : route.component;
+                  return <SubjectComponent {...routeProps} {...{ subject: route.subject }} />;
+                }}
+              />
+            );
+          })}
+        </Switch>
+      </Can>
     );
   }
 }

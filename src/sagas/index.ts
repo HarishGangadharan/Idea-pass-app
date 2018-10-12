@@ -37,7 +37,7 @@ export default function* rootSaga() {
   yield takeLatest(UserConstants.LOGOUT_USER, onLogoutUser);
   yield takeLatest(FormSchemaConstants.FETCH_FORM_SCHEMA_LIST, fetchFormList);
   yield takeLatest(FormFieldDataConstants.SAVE_FORM_FIELD_DATA_REQUEST, saveFormFieldData);
-  yield takeLatest(FormFieldDataConstants.FETCH_FORM_FIELD_DATA_LIST, fetchFormFieldDataList);
+  yield takeLatest(FormFieldDataConstants.FETCH_FORM_FIELD_DATA_LIST_REQUEST, fetchFormFieldDataList);
   yield takeLatest(FormFieldDataConstants.FETCH_FORM_FIELD_DATA_REQUEST, fetchFormFieldData);
   yield takeLatest(FormSchemaConstants.FETCH_FORM_SCHEMA_REQUEST, fetchFormSchema);
   yield takeLatest(FormSchemaConstants.CREATE_FORM_SCHEMA_REQUEST, createFormSchema);

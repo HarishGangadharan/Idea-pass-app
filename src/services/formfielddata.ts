@@ -9,9 +9,14 @@ class FormFieldDataService {
     });
   }
 
-  public static fetchFormFieldData = (formDataId?: string) => axios({
+  public static fetchFormFieldData = (formName: string, submissionId?: string) => axios({
     method: 'get',
-    url: formDataId ? `/form/${formDataId}` : `/formschema/`
+    url: `/forms/${formName}/${submissionId}`
+  })
+
+  public static fetchFormFieldDataList = (formName: string, limit: number, currentPage: number) => axios({
+    method: 'get',
+    url: `/forms/${formName}?$limit=${limit}&$skip=${limit * (currentPage - 1)}`
   })
 
 }

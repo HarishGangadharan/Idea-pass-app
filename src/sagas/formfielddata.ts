@@ -11,18 +11,19 @@ import FormFieldDataService from '../services/formfielddata';
 
 function* fetchFormFieldData(action: any) {
   try {
-    const { schemaId } = action;
-    const data = yield call(FormFieldDataService.fetchFormFieldData, schemaId);
+    const { formName, submissionId } = action;
+    const data = yield call(FormFieldDataService.fetchFormFieldData, formName, submissionId);
     yield put(fetchFormFieldDataSuccess(data));
   } catch (error) {
     yield put(fetchFormFieldDataFailure(error));
   }
 }
 
-function* fetchFormFieldDataList() {
+function* fetchFormFieldDataList(action: any) {
   try {
-    const data = yield call(FormFieldDataService.fetchFormFieldData);
-    yield put(fetchFormFieldDataListSuccess(data));
+    const { currentPage, formName, limit } = action;
+    const response = yield call(FormFieldDataService.fetchFormFieldDataList, formName, limit, currentPage);
+    yield put(fetchFormFieldDataListSuccess(response.data));
   } catch (error) {
     yield put(fetchFormFieldDataListFailure(error));
   }

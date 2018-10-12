@@ -27,7 +27,8 @@ class FormSchemaList extends React.Component<IFormSchemasProps & RouteComponentP
           <Can I="read" a="roles">
             <i className="glyphicon glyphicon-eye-open cursor-pointer" onClick={() => this.renderFormSchema(row._id)} />&nbsp;
           </Can>
-          <i className="glyphicon glyphicon-edit cursor-pointer" onClick={() => this.builderFormSchema(row._id)} />
+          <i className="glyphicon glyphicon-edit cursor-pointer" onClick={() => this.builderFormSchema(row._id)} />&nbsp;
+          <i className="glyphicon glyphicon-list cursor-pointer" onClick={() => this.viewFormData(row.name, row._id)} />
         </div>
       ))
     ];
@@ -39,6 +40,10 @@ class FormSchemaList extends React.Component<IFormSchemasProps & RouteComponentP
 
   public builderFormSchema(id?: string) {
     this.props.history.push(id ? `/formbuilder/${id}` : `/formbuilder`);
+  }
+
+  public viewFormData(formName: string, formId: string) {
+    this.props.history.push(`/formDataList/${formName}/${formId}`);
   }
 
   public componentDidMount() {

@@ -16,9 +16,11 @@ export const fetchFormFieldDataFailure = (error: any) => ({
   type: FormFieldDataConstants.FETCH_FORM_FIELD_DATA_FAILURE
 });
 
-export const fetchFormFieldDataListRequest = (formName: string) => ({
+export const fetchFormFieldDataListRequest = (formName: string, limit: number, currentPage: number) => ({
+  currentPage,
   formName,
-  type: FormFieldDataConstants.FETCH_FORM_FIELD_DATA_REQUEST
+  limit,
+  type: FormFieldDataConstants.FETCH_FORM_FIELD_DATA_LIST_REQUEST
 });
 
 export const fetchFormFieldDataListSuccess = (data: any) => ({

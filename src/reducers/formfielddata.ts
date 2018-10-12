@@ -87,7 +87,7 @@ const formFieldDataReducer = (state: IFormFieldData = currentFormInitialState, a
 
 const formFieldDataListReducer = (state: IFormFieldDatas = listInitialState, action: IActionProps) => {
   switch (action.type) {
-    case FormFieldDataConstants.FETCH_FORM_FIELD_DATA_LIST:
+    case FormFieldDataConstants.FETCH_FORM_FIELD_DATA_LIST_REQUEST:
       return {
         ...state,
         isLoading: false
@@ -100,8 +100,9 @@ const formFieldDataListReducer = (state: IFormFieldDatas = listInitialState, act
     case FormFieldDataConstants.FETCH_FORM_FIELD_DATA_LIST_SUCCESS:
       return {
         ...state,
-        data: action.payload.data,
-        isLoading: false
+        data: action.data.data,
+        isLoading: false,
+        total: action.data.total
       };
     default:
       return state;

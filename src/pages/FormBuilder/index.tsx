@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import { matchPath } from 'react-router';
 import { createFormSchemaRequest, fetchFormSchemaRequest } from '../../actions/formschema';
 import Builder from '../../components/FormBuilder';
 import { IState } from '../../reducers';
@@ -33,11 +32,8 @@ class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchM
   }
 
   public componentDidMount() {
-    const match: any = matchPath(this.props.history.location.pathname, {
-      path: '/formBuilder/:id'
-    });
-    if (match) {
-      this.props.fetchFormSchemaRequest(match.params.id);
+    if (this.props.match) {
+      this.props.fetchFormSchemaRequest(this.props.match.params.id);
     }
   }
 
