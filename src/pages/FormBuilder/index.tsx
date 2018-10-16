@@ -22,8 +22,8 @@ interface IFBuilderStateProps {
   name: string;
 }
 
-class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchMap & RouteComponentProps<{id: string}>, IFBuilderStateProps> {
-  constructor(props: IFBuilderStateMap & IFBuilderDispatchMap & RouteComponentProps<{id: string}>) {
+class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchMap & RouteComponentProps<{ id: string }>, IFBuilderStateProps> {
+  constructor(props: IFBuilderStateMap & IFBuilderDispatchMap & RouteComponentProps<{ id: string }>) {
     super(props);
     this.state = {
       formData: {},
@@ -57,9 +57,9 @@ class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchM
     const { formData, formSchemaId, name } = this.state;
     this.props.createFormSchema({
       formData,
+      formType: 'data',
       name,
-      nameSingular: `${name}`,
-      type: 'data'
+      nameSingular: `${name}`
     }, formSchemaId);
     // this.props.history.push('/formschemalist');
   }
@@ -90,6 +90,28 @@ class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchM
   public render() {
     const { isLoading } = this.props;
     const { name, formData, formSchemaId } = this.state;
+    const builderOptions = {
+      editForm: {
+        textfield: [
+          {
+            components: [
+              {
+                'input': true,
+                'key': 'isAuditTrail',
+                'label': 'Audit Trail',
+                'tooltip': 'Check whether audit trail is enabled',
+                'type': 'checkbox',
+                'weight': 0
+              }
+            ],
+            ignore: false,
+            key: 'custom',
+            label: 'Custom',
+            weight: 60
+          }
+        ]
+      }
+    };
     return (
       <div className="container">
         {!isLoading &&
@@ -102,6 +124,7 @@ class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchM
             </div>
             <Builder
               formBuilderSchema={formData}
+              builderOptions={builderOptions}
               renderSchema={this.renderSchema}
               renderComponent={this.renderComponent}
             />

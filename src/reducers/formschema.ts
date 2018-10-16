@@ -9,7 +9,7 @@ interface IFormSchema {
   };
   name: string;
   nameSingular: string;
-  type: string;
+  formType: string;
   _id?: string;
   [key: string]: any;
 }
@@ -35,10 +35,10 @@ const currentFormInitialState: IFormSchema = {
   formData: {
     display: 'form'
   },
+  formType: 'data',
   loading: false,
   name: '',
-  nameSingular: '',
-  type: 'data'
+  nameSingular: ''
 };
 
 const formSchemaReducer = (state: IFormSchema = currentFormInitialState, action: IActionProps): IFormSchema => {
