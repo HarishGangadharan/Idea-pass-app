@@ -26,7 +26,6 @@ class FormSchemaList extends React.Component<IFormSchemasProps & RouteComponentP
       columns: [
         (new Column()).withKey('_id').withLabel('ID'),
         (new Column()).withKey('name').withLabel('Name'),
-        (new Column()).withKey('createdAt').withLabel('Created At'),
         (new Column()).withKey('action').withLabel('Actions').withCellFormatter((cell: any, row: any) => (
           <div>
             <i className="glyphicon glyphicon-eye-open cursor-pointer" onClick={() => this.renderFormSchema(row._id)} />&nbsp;
@@ -61,12 +60,12 @@ class FormSchemaList extends React.Component<IFormSchemasProps & RouteComponentP
           </div>
         </div>
         <Table
-          id="users"
+          keyField="_id"
           data={data}
           columns={this.state.columns}
           loading={loading}
-          length={10}
-          currentPage={1}
+          length={this.state.length}
+          currentPage={this.state.currentPage}
           total={total}
           onUpdate={(nextState: ITableState) => {
             const { page, sizePerPage } = nextState;

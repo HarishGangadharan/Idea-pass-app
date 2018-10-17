@@ -15,7 +15,7 @@ import Column from './Column';
 
 interface ITableProps {
   // Mandatory props
-  id: string,
+  keyField: string,
   data: object[],
   columns: Column[],
   loading: boolean,
@@ -62,7 +62,7 @@ export default class Table extends React.Component<ITableProps, ITableContext> {
   }
 
   public render() {
-    const { id, data, columns, loading, length, currentPage, total, onRowClick, noDataIndication,
+    const { keyField, data, columns, loading, length, currentPage, total, onRowClick, noDataIndication,
     isExportable, onColumnHide, enableGlobalSearch } = this.props;
     const tableColumns = columns.map(column => column.convertToBootstrapTableColumn());
     const { ExportCSVButton } = CSVExport;
@@ -70,7 +70,7 @@ export default class Table extends React.Component<ITableProps, ITableContext> {
     return (
       <div className="container customTableContainer">
         <ToolkitProvider
-          keyField={id}
+          keyField={keyField}
           data={data}
           columns={tableColumns}
           search={enableGlobalSearch || false}

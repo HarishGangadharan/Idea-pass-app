@@ -16,7 +16,6 @@
     "react-bootstrap-table2-paginator": "^1.0.2",
     "react-bootstrap-table2-toolkit": "^1.0.3",
     "react-dom": "^16.4.2",
-    "react-formio": "^3.0.1",
     "react-localize-redux": "^3.3.2",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
