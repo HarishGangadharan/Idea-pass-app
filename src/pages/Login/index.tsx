@@ -6,7 +6,7 @@ import { compose } from 'redux';
 import { loginUser } from '../../actions/user';
 import { IState } from '../../reducers';
 import { isEmailValid } from '../../utils/commonUtil';
-import './styles.css';
+import './login.css';
 
 
 interface ILoginProps extends IDispatchProps, IMapStateProps {

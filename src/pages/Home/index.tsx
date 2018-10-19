@@ -12,7 +12,7 @@ import { fetchUsers } from '../../actions/user';
 import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
 
-import './Home.css';
+import './home.css';
 
 interface IProps extends LocalizeContextProps {
   value: string;

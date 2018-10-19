@@ -1,0 +1,8 @@
+/* inject:scss */
+@import '../../theme2.scss';
+/* endinject */
+
+.adminContainer {
+  color: $primaryColor;
+  background-color: $primaryBackgroundColor;
+}
