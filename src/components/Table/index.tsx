@@ -10,8 +10,9 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import FilterFactory from 'react-bootstrap-table2-filter';
 import OverlayFactory from 'react-bootstrap-table2-overlay';
 import PaginationFactory from 'react-bootstrap-table2-paginator';
-import ToolkitProvider, { CSVExport, Search } from 'react-bootstrap-table2-toolkit';
-import Column from './Column';
+import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
+import Column, { IBootstrapColumn, IHeaderComponent } from './Column';
+import ExportCSVButton from './ExportCSVButton';
 
 interface ITableProps {
   // Mandatory props
@@ -28,8 +29,11 @@ interface ITableProps {
   onRowClick?: any,  // Provide callback to enable row click action
   noDataIndication?: any, // Customize no data label
   isExportable?: boolean, // Specify if Export option can be given
+  rowSelectForExport?: boolean, // Specify if row selection should be enabled for export
   enableGlobalSearch?: boolean, // Specify if global search can be enabled
-  onColumnHide?: any // Specify if Column display can be controlled ( NOTE : Maintain column in component state)
+  searchableColumns?: string[], // List of search keys, Specify which columns are search enabled
+  onColumnHide?: any, // Specify if Column display can be controlled ( NOTE : Maintain column in component state)
+  onColumnSearchToggle?: any // Callback for toggling whether column is enabled for global search
 }
 
 interface ITableContext {
@@ -63,10 +67,17 @@ export default class Table extends React.Component<ITableProps, ITableContext> {
 
   public render() {
     const { keyField, data, columns, loading, length, currentPage, total, onRowClick, noDataIndication,
-    isExportable, onColumnHide, enableGlobalSearch } = this.props;
-    const tableColumns = columns.map(column => column.convertToBootstrapTableColumn());
-    const { ExportCSVButton } = CSVExport;
+      isExportable, onColumnHide, enableGlobalSearch, rowSelectForExport } = this.props;
+    const tableColumns = enableGlobalSearch
+      ? columns.map(column => column
+        .withHeaderFormatter(this.searchableHeader)
+        .convertToBootstrapTableColumn())
+      : columns.map(column => column.convertToBootstrapTableColumn());
     const { SearchBar } = Search;
+    const selectionProps = rowSelectForExport ? { selectRow: {
+        clickToSelect: true,
+        mode: 'checkbox'
+      }} : {};
     return (
       <div className="container customTableContainer">
         <ToolkitProvider
@@ -74,7 +85,7 @@ export default class Table extends React.Component<ITableProps, ITableContext> {
           data={data}
           columns={tableColumns}
           search={enableGlobalSearch || false}
-          exportCSV={isExportable || false}
+          exportCSV={isExportable ? { onlyExportSelection: rowSelectForExport || false } : false}
         >
           {(props: IToolkitProps) => (
             <React.Fragment>
@@ -150,6 +161,7 @@ export default class Table extends React.Component<ITableProps, ITableContext> {
                 }}
                 filter={FilterFactory()}
                 overlay={ OverlayFactory({ spinner: true, background: 'rgba(192,192,192,0.3)' }) }
+                {...selectionProps}
               />
             </React.Fragment>
           )}
@@ -166,6 +178,26 @@ export default class Table extends React.Component<ITableProps, ITableContext> {
     <span className="react-bootstrap-table-pagination-total">
       &nbsp;Showing rows { from } to&nbsp;{ to } of&nbsp;{ size }
     </span>
+  )
+
+  private searchableHeader = (column: IBootstrapColumn, colIndex: number, components: IHeaderComponent) : any => (
+    <div>
+      <Checkbox
+        inline={true}
+        checked={this.props.searchableColumns
+          ? this.props.searchableColumns.find(
+            (searchableColumn: string) => this.props.columns[colIndex].searchKey === searchableColumn
+        ) !== undefined
+          : false}
+        onClick={e => {
+          // @ts-ignore
+          this.props.onColumnSearchToggle(this.props.columns[colIndex].searchKey, e.target.checked);
+        }}>
+        {column.text}
+      </Checkbox>
+      {components.sortElement}
+      {components.filterElement}
+    </div>
   )
 }
 

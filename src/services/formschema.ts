@@ -14,9 +14,9 @@ class FormSchemaService {
     url: `/formschema/${schemaId}`
   })
 
-  public static getAllFormSchema = (limit: number, currentPage: number) => axios({
+  public static getAllFormSchema = (limit: number, currentPage: number, sortField: string, sortOrder: number) => axios({
     method: 'get',
-    url: `/formschema?$limit=${limit}&$skip=${limit * (currentPage - 1)}`
+    url: `/formschema?$limit=${limit}&$skip=${limit * (currentPage - 1)}&$sort[${sortField}]=${sortOrder}`
   })
 }
 

@@ -2,12 +2,12 @@ import * as React from 'react';
 import { customFilter, dateFilter, FILTER_TYPES, multiSelectFilter, numberFilter,
   selectFilter, textFilter } from 'react-bootstrap-table2-filter';
 
-interface IHeaderComponent {
+export interface IHeaderComponent {
   sortElement: any,
   filterElement: any
 }
 
-interface IBootstrapColumn {
+export interface IBootstrapColumn {
   dataField: string,
   text: string,
   isDummyField: boolean,
@@ -25,12 +25,44 @@ interface IBootstrapColumn {
   csvExport: boolean
 }
 
+export interface IColDef {
+  key: string,
+  label: string,
+  enableSort?: boolean,
+  type?: string
+}
+
 export default class Column {
   public static COLUMN_TYPES = Object.assign({}, FILTER_TYPES, {
     CUSTOM: 'CUSTOM',
     NONE: 'NONE'
   });
+
+  /**
+   * Transform object to Column
+   */
+  public static convertObjectToColumn = (col: IColDef): Column => {
+    const columnDef: Column =  new Column().withKey(col.key).withLabel(col.label);
+    if (col.enableSort) {
+      columnDef.asSortable();
+    }
+    if (col.type) {
+      columnDef.ofType(col.type);
+      if (col.type === Column.COLUMN_TYPES.SELECT || col.type === Column.COLUMN_TYPES.MULTISELECT) {
+        columnDef.withFilterConfig({
+          options: [
+            'A',
+            'B',
+            'C'
+          ]
+        });
+      }
+    }
+    return columnDef;
+  }
+
   public isHidden: boolean;
+  public searchKey: string;
 
   private key: string;
   private label: string;
@@ -51,6 +83,7 @@ export default class Column {
     this.label = '';
     this.isActionColumn = false;
     this.isHidden = false;
+    this.searchKey = '';
     this.cellFormatter = (cell: any, row: object, rowIndex: number, formatExtraData: any) : any => cell;
     this.unit = '';
     this.sortable = false;
@@ -78,6 +111,7 @@ export default class Column {
    */
   public withKey = (key: string) : Column => {
     this.key = key;
+    this.searchKey = key;
     return this;
   }
 
@@ -90,6 +124,16 @@ export default class Column {
     this.label = label;
     return this;
   }
+
+  /**
+   * Get key of column
+   */
+  public getKey = () : string => this.key;
+
+  /**
+   * Get Label of column
+   */
+  public getLabel = () : string => this.label;
 
   /**
    * Add column type to add column filter based on the type
@@ -203,6 +247,16 @@ export default class Column {
    */
   public withFilterConfig = (filterConfig: any) : Column => {
     this.filterConfig = filterConfig;
+    return this;
+  }
+
+  /**
+   * Specify search Key to be associated with the column
+   * NOTE : Specify if the table is searchable and column key is not the same as search key
+   * @param searchKey
+   */
+  public withSearchKey = (searchKey: string) : Column => {
+    this.searchKey = searchKey;
     return this;
   }
 

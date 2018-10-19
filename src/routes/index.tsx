@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router';
 import Counter from '../pages/Counter';
+import DynamicTableRender from '../pages/DynamicTableRenderer';
 import FormBuilder from '../pages/FormBuilder';
 import FormRenderer from '../pages/FormRenderer';
 import FormSchemaList from '../pages/FormSchemaList';
@@ -16,6 +17,7 @@ export const loggedInRoutes = () => (
     <Route exact={true} path="/formBuilder" component={FormBuilder} />
     <Route path="/formBuilder/:id" component={FormBuilder} />
     <Route exact={true} path="/formRenderer/:id" component={FormRenderer} />
+    <Route exact={true} path="/dynamicTable" component={DynamicTableRender} />
     <Route component={NoMatch} />
   </Switch>
 );
