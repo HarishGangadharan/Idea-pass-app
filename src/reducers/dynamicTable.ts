@@ -14,6 +14,7 @@ export interface IMetaState {
   noDataIndicator: string;
   rowAction: any;
   rowSelectForExport: boolean;
+  enableInfiniteScroll: boolean;
 }
 
 export interface IDataState {
@@ -25,6 +26,7 @@ export interface IDataState {
 const metaInitialState: IMetaState = {
   colHide: true,
   cols: [],
+  enableInfiniteScroll: false,
   globalSearch: false,
   isExportable: false,
   keyField: 'id',
@@ -42,12 +44,13 @@ const dynamicMetaReducer = (state: IMetaState = metaInitialState, action: IActio
         loading: true
       };
     case constants.GET_TABLE_META_SUCCESS:
-      const { colHide, cols, globalSearch, isExportable,
+      const { colHide, cols, enableInfiniteScroll, globalSearch, isExportable,
         keyField, noDataIndicator, rowAction, rowSelectForExport } = action.response;
       return {
         ...state,
         colHide: colHide || false,
         cols,
+        enableInfiniteScroll: enableInfiniteScroll || false,
         globalSearch: globalSearch || false,
         isExportable: isExportable || false,
         keyField,
@@ -83,7 +86,7 @@ const dynamicDataReducer = (state: IDataState = dataInitialState, action: IActio
       const { data, total } = action.response;
       return {
         ...state,
-        data,
+        data: action.retainData ? [...state.data, ...data] : data,
         loading: false,
         total
       };

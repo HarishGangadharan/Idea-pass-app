@@ -21,6 +21,7 @@ function* fetchTableMeta(action: IActionProps) {
           label: 'Name'
         }
       ],
+      enableInfiniteScroll: false,
       globalSearch: false,
       isExportable: true,
       keyField: '_id',
@@ -39,13 +40,13 @@ function* fetchTableMeta(action: IActionProps) {
 
 function* fetchTableData(action: any) {
   try {
-    const { limit, currentPage, sortField, sortOrder, callback } = action;
+    const { limit, currentPage, sortField, sortOrder, retainData, callback } = action;
     const response = yield call(FormSchemaService.getAllFormSchema,
       limit, currentPage, sortField, sortOrder === TABLE_SORT.ASC ? 1 : -1);
     if (callback) {
       callback(response.data);
     } else {
-      yield put(getTableDataSuccess(response.data));
+      yield put(getTableDataSuccess(response.data, retainData));
     }
   } catch (error) {
     yield put(getTableDataError(error));

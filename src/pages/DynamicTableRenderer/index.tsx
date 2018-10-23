@@ -11,6 +11,7 @@ import { constructColumns } from '../../utils/commonUtil';
 interface IDynamicTableProps {
   // Table props
   columns: IColDef[];
+  enableInfiniteScroll: boolean;
   isExportable: boolean;
   colHide: boolean;
   keyField: string;
@@ -62,12 +63,13 @@ class DynamicTableRenderer extends React.Component<RouteComponentProps & IDynami
   }
 
   public render() {
-    const { loading, data, total, schemaLoading, keyField, colHide, isExportable, globalSearch } = this.props;
+    const { loading, data, total, schemaLoading, keyField, colHide, isExportable, enableInfiniteScroll, globalSearch } = this.props;
     if (!schemaLoading) {
       return (
         <Table
           keyField={keyField}
           data={data}
+          enableInfiniteScroll={enableInfiniteScroll}
           columns={this.state.columns}
           loading={loading}
           length={this.state.length}
@@ -79,7 +81,7 @@ class DynamicTableRenderer extends React.Component<RouteComponentProps & IDynami
             });
           } : undefined}
           isExportable={isExportable}
-          onFetchAll={this.fetchAllForExport}
+          onFetchAll={this.onFetchAll}
           enableGlobalSearch={globalSearch}
           onUpdate={(nextState: ITableState) => {
             const { page, sizePerPage, sortField, sortOrder } = nextState;
@@ -96,15 +98,25 @@ class DynamicTableRenderer extends React.Component<RouteComponentProps & IDynami
     return <div/>;
   }
 
-  private fetchDynamicTableList = () => {
+  private fetchDynamicTableList = (retainData: boolean = false) => {
     const { currentPage, length, sortField, sortOrder } = this.state;
-    this.props.fetchDynamicList(length, currentPage, sortField, sortOrder);
+    this.props.fetchDynamicList(length, currentPage, sortField, sortOrder, retainData);
   }
 
-  private fetchAllForExport = (onExport: any) => {
-    // Callback for exporting filtered data without pagination
-    const { sortField, sortOrder } = this.state;
-    this.props.fetchDynamicList(undefined, undefined, sortField, sortOrder, onExport);
+  private onFetchAll = (onExport: any) => {
+    if (onExport) {
+      // Callback for exporting filtered data without pagination
+      const { sortField, sortOrder } = this.state;
+      this.props.fetchDynamicList(undefined, undefined, sortField, sortOrder, false, onExport);
+    } else {
+      // Callback for populating data on infinite scroll
+      this.setState({
+        currentPage: this.state.currentPage + 1
+      }, () => {
+        const { enableInfiniteScroll } = this.props;
+        this.fetchDynamicTableList(enableInfiniteScroll);
+      });
+    }
   }
 }
 
@@ -115,6 +127,7 @@ const mapStateToProps = (state: IState) => ({
 
   colHide: state.dynamicTable.meta.colHide,
   columns: state.dynamicTable.meta.cols,
+  enableInfiniteScroll: state.dynamicTable.meta.enableInfiniteScroll,
   globalSearch: state.dynamicTable.meta.globalSearch,
   isExportable: state.dynamicTable.meta.isExportable,
   keyField: state.dynamicTable.meta.keyField,

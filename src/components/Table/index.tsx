@@ -12,6 +12,7 @@ import PaginationFactory from 'react-bootstrap-table2-paginator';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import Column, { IBootstrapColumn, IHeaderComponent } from './Column';
 import ExportCSVButton from './ExportCSVButton';
+import withInfiniteScroll from './InfiniteScrollTable';
 
 interface ITableProps {
   // Mandatory props
@@ -34,6 +35,7 @@ interface ITableProps {
   searchableColumns?: string[], // List of search keys, Specify which columns are search enabled
   onColumnHide?: any, // Specify if Column display can be controlled ( NOTE : Maintain column in component state)
   onColumnSearchToggle?: any // Callback for toggling whether column is enabled for global search
+  enableInfiniteScroll?: boolean
 }
 
 interface ITableContext {
@@ -58,6 +60,7 @@ interface IToolkitProps {
 }
 
 export default class Table extends React.Component<ITableProps, ITableContext> {
+  private static ScrollDiv = withInfiniteScroll();
   constructor(props: ITableProps) {
     super(props);
     this.state = {
@@ -67,7 +70,7 @@ export default class Table extends React.Component<ITableProps, ITableContext> {
 
   public render() {
     const { keyField, data, columns, loading, length, currentPage, total, onRowClick,
-      isExportable, onColumnHide, enableGlobalSearch, rowSelectForExport } = this.props;
+      isExportable, onColumnHide, enableGlobalSearch, rowSelectForExport, enableInfiniteScroll } = this.props;
     const tableColumns = enableGlobalSearch
       ? columns.map(column => column
         .withHeaderFormatter(this.searchableHeader)
@@ -131,40 +134,47 @@ export default class Table extends React.Component<ITableProps, ITableContext> {
                   {isExportable && <ExportCSVButton { ...props.csvProps } onFetchAll={this.props.onFetchAll} >Export CSV!!</ExportCSVButton>}
                 </div>
               </div>
-              <BootstrapTable
-                {...props.baseProps}
-                remote={true}
-                loading={loading}
-                onTableChange={this.onTableChange}
-                headerClasses="table-header"
-                rowClasses="table-rows"
-                noDataIndication={this.customNoDataIndication}
-                defaultSorted={[{
-                  dataField: keyField,
-                  order: 'asc'
-                }]}
-                pagination={ PaginationFactory({
-                  firstPageTitle: 'Go to first',
-                  hidePageListOnlyOnePage: true,
-                  hideSizePerPage: total === 0,
-                  lastPageTitle: 'Go to last',
-                  nextPageTitle: 'Go to next',
-                  page: currentPage,
-                  paginationTotalRenderer: this.customPaginationTotal,
-                  prePageTitle: 'Go to previous',
-                  showTotal: total !== 0,
-                  sizePerPage: length,
-                  totalSize: total
-                }) }
-                rowEvents={{
-                  onClick: (e: any, row: object, rowIndex: number) => {
-                    if (onRowClick) {
-                      onRowClick(row);
-                    }
-                  }
+              <Table.ScrollDiv
+                hasMore={(currentPage * length) < total}
+                enabled={enableInfiniteScroll || false}
+                onScroll={() => {
+                  this.props.onFetchAll();
                 }}
-                filter={FilterFactory()}
-                {...selectionProps}
+                content={<BootstrapTable
+                  {...props.baseProps}
+                  remote={true}
+                  loading={loading}
+                  onTableChange={this.onTableChange}
+                  headerClasses="table-header"
+                  rowClasses="table-rows"
+                  noDataIndication={this.customNoDataIndication}
+                  defaultSorted={[{
+                    dataField: keyField,
+                    order: 'asc'
+                  }]}
+                  pagination={ !enableInfiniteScroll ? PaginationFactory({
+                    firstPageTitle: 'Go to first',
+                    hidePageListOnlyOnePage: true,
+                    hideSizePerPage: total === 0,
+                    lastPageTitle: 'Go to last',
+                    nextPageTitle: 'Go to next',
+                    page: currentPage,
+                    paginationTotalRenderer: this.customPaginationTotal,
+                    prePageTitle: 'Go to previous',
+                    showTotal: total !== 0,
+                    sizePerPage: length,
+                    totalSize: total
+                  }) : undefined}
+                  rowEvents={{
+                    onClick: (e: any, row: object, rowIndex: number) => {
+                      if (onRowClick) {
+                        onRowClick(row);
+                      }
+                    }
+                  }}
+                  filter={FilterFactory()}
+                  {...selectionProps}
+                />}
               />
             </React.Fragment>
           )}

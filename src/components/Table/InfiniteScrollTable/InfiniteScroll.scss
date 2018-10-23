@@ -1,0 +1,20 @@
+.scroll-container {
+	thead {
+		display: table;
+		table-layout:fixed;
+		width: 100%;
+	}
+	tbody {
+		display: block;
+		max-height: calc(50vh);
+		overflow-y: auto;
+	}
+	tbody tr {
+		display: table;
+		table-layout:fixed;
+		width: 100%;
+	}
+	th, td {
+		width: auto;
+	}
+}
