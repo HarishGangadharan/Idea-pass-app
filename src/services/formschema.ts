@@ -14,10 +14,21 @@ class FormSchemaService {
     url: `/formschema/${schemaId}`
   })
 
-  public static getAllFormSchema = (limit: number, currentPage: number, sortField: string, sortOrder: number) => axios({
-    method: 'get',
-    url: `/formschema?$limit=${limit}&$skip=${limit * (currentPage - 1)}&$sort[${sortField}]=${sortOrder}`
-  })
+  public static getAllFormSchema = (limit: number, currentPage: number, sortField: string, sortOrder: number) => {
+    let queryString = '/formschema';
+    let paginationApplied = false;
+    if (limit && currentPage) {
+      paginationApplied = true;
+      queryString += `?$limit=${limit}&$skip=${limit * (currentPage - 1)}`;
+    }
+    if (sortOrder && sortField) {
+      queryString += `${paginationApplied ? '' : '?'}&$sort[${sortField}]=${sortOrder}`;
+    }
+    return axios({
+      method: 'get',
+      url: queryString
+    });
+  }
 }
 
 export default FormSchemaService;

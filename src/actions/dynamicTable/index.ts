@@ -15,7 +15,8 @@ export const getTableMetaError = (error: object) => ({
   type: actions.GET_TABLE_META_ERROR
 });
 
-export const getTableData = (limit: number, currentPage: number, sortField: string, sortOrder: string) => ({
+export const getTableData = (limit: number, currentPage: number, sortField: string, sortOrder: string, callback: any) => ({
+  callback,
   currentPage,
   limit,
   sortField,

@@ -62,42 +62,49 @@ class DynamicTableRenderer extends React.Component<RouteComponentProps & IDynami
   }
 
   public render() {
-    const { loading, data, total, schemaLoading, keyField, colHide, isExportable } = this.props;
-    return (
-      <div className="row">
-        {
-          !schemaLoading && this.state.columns.length !== 0 && <Table
-              keyField={keyField}
-              data={data}
-              columns={this.state.columns}
-              loading={loading}
-              length={this.state.length}
-              currentPage={this.state.currentPage}
-              total={total}
-              onColumnHide={colHide ? (columns: Column[]) => {
-                this.setState({
-                  columns
-                });
-              } : undefined}
-              isExportable={isExportable}
-              onUpdate={(nextState: ITableState) => {
-                const { page, sizePerPage, sortField, sortOrder } = nextState;
-                this.setState({
-                  currentPage: page,
-                  length: sizePerPage,
-                  sortField,
-                  sortOrder
-                }, this.fetchDynamicTableList);
-              }}
-          />
-        }
-      </div>
-    );
+    const { loading, data, total, schemaLoading, keyField, colHide, isExportable, globalSearch } = this.props;
+    if (!schemaLoading) {
+      return (
+        <Table
+          keyField={keyField}
+          data={data}
+          columns={this.state.columns}
+          loading={loading}
+          length={this.state.length}
+          currentPage={this.state.currentPage}
+          total={total}
+          onColumnHide={colHide ? (columns: Column[]) => {
+            this.setState({
+              columns
+            });
+          } : undefined}
+          isExportable={isExportable}
+          onFetchAll={this.fetchAllForExport}
+          enableGlobalSearch={globalSearch}
+          onUpdate={(nextState: ITableState) => {
+            const { page, sizePerPage, sortField, sortOrder } = nextState;
+            this.setState({
+              currentPage: page,
+              length: sizePerPage,
+              sortField,
+              sortOrder
+            }, this.fetchDynamicTableList);
+          }}
+        />
+      );
+    }
+    return <div/>;
   }
 
   private fetchDynamicTableList = () => {
     const { currentPage, length, sortField, sortOrder } = this.state;
     this.props.fetchDynamicList(length, currentPage, sortField, sortOrder);
+  }
+
+  private fetchAllForExport = (onExport: any) => {
+    // Callback for exporting filtered data without pagination
+    const { sortField, sortOrder } = this.state;
+    this.props.fetchDynamicList(undefined, undefined, sortField, sortOrder, onExport);
   }
 }
 

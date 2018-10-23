@@ -29,6 +29,7 @@ interface ITableProps {
   onRowClick?: any,  // Provide callback to enable row click action
   noDataIndication?: any, // Customize no data label
   isExportable?: boolean, // Specify if Export option can be given
+  onFetchAll?: any, // Export function to fetch all filtered records without pagination
   rowSelectForExport?: boolean, // Specify if row selection should be enabled for export
   enableGlobalSearch?: boolean, // Specify if global search can be enabled
   searchableColumns?: string[], // List of search keys, Specify which columns are search enabled
@@ -48,7 +49,7 @@ export interface ITableState {
   sizePerPage: number,  // newest sizePerPage
   sortField: string,  // newest sort field
   sortOrder: string,  // newest sort order
-  filters: object // an object which have current filter status per column
+  filters?: object // an object which have current filter status per column
 }
 
 interface IToolkitProps {
@@ -128,7 +129,7 @@ export default class Table extends React.Component<ITableProps, ITableContext> {
                       </MenuItem>
                     ))}
                   </DropdownButton>}
-                  {isExportable && <ExportCSVButton { ...props.csvProps }>Export CSV!!</ExportCSVButton>}
+                  {isExportable && <ExportCSVButton { ...props.csvProps } onFetchAll={this.props.onFetchAll} >Export CSV!!</ExportCSVButton>}
                 </div>
               </div>
               <BootstrapTable
@@ -139,6 +140,10 @@ export default class Table extends React.Component<ITableProps, ITableContext> {
                 headerClasses="table-header"
                 rowClasses="table-rows"
                 noDataIndication={noDataIndication || 'No Data'}
+                defaultSorted={[{
+                  dataField: keyField,
+                  order: 'asc'
+                }]}
                 pagination={ PaginationFactory({
                   firstPageTitle: 'Go to first',
                   hidePageListOnlyOnePage: true,
@@ -186,7 +191,7 @@ export default class Table extends React.Component<ITableProps, ITableContext> {
         inline={true}
         checked={this.props.searchableColumns
           ? this.props.searchableColumns.find(
-            (searchableColumn: string) => this.props.columns[colIndex].searchKey === searchableColumn
+          (searchableColumn: string) => this.props.columns[colIndex].searchKey === searchableColumn
         ) !== undefined
           : false}
         onClick={e => {

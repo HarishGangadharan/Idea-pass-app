@@ -39,9 +39,14 @@ function* fetchTableMeta(action: IActionProps) {
 
 function* fetchTableData(action: any) {
   try {
-    const { limit, currentPage, sortField, sortOrder } = action;
-    const formSchemas = yield call(FormSchemaService.getAllFormSchema, limit, currentPage, sortField, sortOrder === TABLE_SORT.ASC ? 1 : -1);
-    yield put(getTableDataSuccess(formSchemas.data));
+    const { limit, currentPage, sortField, sortOrder, callback } = action;
+    const response = yield call(FormSchemaService.getAllFormSchema,
+      limit, currentPage, sortField, sortOrder === TABLE_SORT.ASC ? 1 : -1);
+    if (callback) {
+      callback(response.data);
+    } else {
+      yield put(getTableDataSuccess(response.data));
+    }
   } catch (error) {
     yield put(getTableDataError(error));
   }

@@ -28,7 +28,7 @@ const metaInitialState: IMetaState = {
   globalSearch: false,
   isExportable: false,
   keyField: 'id',
-  loading: false,
+  loading: true,
   noDataIndicator: 'No Data',
   rowAction: null,
   rowSelectForExport: false
@@ -42,17 +42,19 @@ const dynamicMetaReducer = (state: IMetaState = metaInitialState, action: IActio
         loading: true
       };
     case constants.GET_TABLE_META_SUCCESS:
+      const { colHide, cols, globalSearch, isExportable,
+        keyField, noDataIndicator, rowAction, rowSelectForExport } = action.response;
       return {
         ...state,
-        colHide: action.response.colHide,
-        cols: action.response.cols,
-        globalSearch: action.response.globalSearch,
-        isExportable: action.response.isExportable,
-        keyField: action.response.keyField,
+        colHide: colHide || false,
+        cols,
+        globalSearch: globalSearch || false,
+        isExportable: isExportable || false,
+        keyField,
         loading: false,
-        noDataIndicator: action.response.noDataIndicator,
-        rowAction: action.response.rowAction,
-        rowSelectForExport: action.response.rowSelectForExport
+        noDataIndicator,
+        rowAction,
+        rowSelectForExport: rowSelectForExport || false
       };
     case constants.GET_TABLE_META_ERROR:
       return {
@@ -75,14 +77,15 @@ const dynamicDataReducer = (state: IDataState = dataInitialState, action: IActio
     case constants.GET_TABLE_DATA:
       return {
         ...state,
-        loading: true
+        loading: action.callback === undefined
       };
     case constants.GET_TABLE_DATA_SUCCESS:
+      const { data, total } = action.response;
       return {
         ...state,
-        data: action.response.data,
+        data,
         loading: false,
-        total: action.response.total
+        total
       };
     case constants.GET_TABLE_DATA_ERROR:
       return {
