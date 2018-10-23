@@ -8,7 +8,6 @@ import './Table.css';
 import { Checkbox, DropdownButton, MenuItem } from 'react-bootstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
 import FilterFactory from 'react-bootstrap-table2-filter';
-import OverlayFactory from 'react-bootstrap-table2-overlay';
 import PaginationFactory from 'react-bootstrap-table2-paginator';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import Column, { IBootstrapColumn, IHeaderComponent } from './Column';
@@ -67,7 +66,7 @@ export default class Table extends React.Component<ITableProps, ITableContext> {
   }
 
   public render() {
-    const { keyField, data, columns, loading, length, currentPage, total, onRowClick, noDataIndication,
+    const { keyField, data, columns, loading, length, currentPage, total, onRowClick,
       isExportable, onColumnHide, enableGlobalSearch, rowSelectForExport } = this.props;
     const tableColumns = enableGlobalSearch
       ? columns.map(column => column
@@ -80,7 +79,7 @@ export default class Table extends React.Component<ITableProps, ITableContext> {
         mode: 'checkbox'
       }} : {};
     return (
-      <div className="container customTableContainer">
+      <div className={`container customTableContainer ${loading ? 'loading' : ''} ${!loading && total === 0 ? 'noData' : ''}`}>
         <ToolkitProvider
           keyField={keyField}
           data={data}
@@ -139,7 +138,7 @@ export default class Table extends React.Component<ITableProps, ITableContext> {
                 onTableChange={this.onTableChange}
                 headerClasses="table-header"
                 rowClasses="table-rows"
-                noDataIndication={noDataIndication || 'No Data'}
+                noDataIndication={this.customNoDataIndication}
                 defaultSorted={[{
                   dataField: keyField,
                   order: 'asc'
@@ -165,7 +164,6 @@ export default class Table extends React.Component<ITableProps, ITableContext> {
                   }
                 }}
                 filter={FilterFactory()}
-                overlay={ OverlayFactory({ spinner: true, background: 'rgba(192,192,192,0.3)' }) }
                 {...selectionProps}
               />
             </React.Fragment>
@@ -183,6 +181,12 @@ export default class Table extends React.Component<ITableProps, ITableContext> {
     <span className="react-bootstrap-table-pagination-total">
       &nbsp;Showing rows { from } to&nbsp;{ to } of&nbsp;{ size }
     </span>
+  )
+
+  private customNoDataIndication = () => (
+    <div className="noDataIndication">
+      <div> {!this.props.loading ? this.props.noDataIndication || 'No Data' : ''} </div>
+    </div>
   )
 
   private searchableHeader = (column: IBootstrapColumn, colIndex: number, components: IHeaderComponent) : any => (
