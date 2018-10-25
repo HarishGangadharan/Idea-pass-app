@@ -1,12 +1,12 @@
 import { RouterState } from 'connected-react-router';
 import { localizeReducer } from 'react-localize-redux';
 import { combineReducers } from 'redux';
+import { configReducer, IConfigReducer } from './config';
 import { counterReducer, ICounterReducer } from './counter';
 import dynamicTableReducer, { IDataState, IMetaState } from './dynamicTable';
 import { formFieldDataReducers, IFormFieldDataReducer } from './formfielddata';
 import { formSchemaReducers, IFormSchemaReducer } from './formschema';
 import { globalReducer, IGlobalReducer } from './global';
-import { IModelReducer, modelReducers } from './model';
 import { IOrganizationReducer, organizationReducers } from './organization';
 import { IRoleReducer, roleReducers } from './role';
 import { IRolePermissionReducer, rolePermissionReducer } from './rolepermission';
@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
   formSchema: formSchemaReducers,
   global: globalReducer,
   localize: localizeReducer,
-  model: modelReducers,
+  config: configReducer,
   organization: organizationReducers,
   role: roleReducers,
   rolePermission: rolePermissionReducer,
@@ -39,7 +39,7 @@ export interface IState {
   formSchema: IFormSchemaReducer,
   languageSelection: any;
   router: RouterState;
-  model: IModelReducer,
+  config: IConfigReducer;
   organization: IOrganizationReducer,
   role: IRoleReducer,
   rolePermission: IRolePermissionReducer

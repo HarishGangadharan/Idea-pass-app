@@ -1,14 +1,15 @@
 import { takeLatest } from 'redux-saga/effects';
+import ConfigConstants from '../actions/config/constants';
 import CounterConstants from '../actions/counter/constants';
 import DynamicTableConstants from '../actions/dynamicTable/constants';
 import FormFieldDataConstants from '../actions/formfielddata/constants';
 import FormSchemaConstants from '../actions/formschema/constants';
-import ModelConstants from '../actions/model/constants';
 import OrganizationConstants from '../actions/organization/constants';
 import RoleConstants from '../actions/role/constants';
 import RolePermissionConstants from '../actions/rolepermission/constants';
 import UserConstants from '../actions/user/constants';
 
+import { fetchConfig } from './config';
 import {
   onDecrement,
   onDecrementAsync,
@@ -18,10 +19,9 @@ import {
 import DynamicTableSaga from './dynamicTable';
 import { fetchFormFieldData, fetchFormFieldDataList, saveFormFieldData  } from './formfielddata';
 import { createFormSchema, fetchFormList, fetchFormSchema } from './formschema';
-import { fetchModelList } from './model';
 import { fetchOrganizationList } from './organization';
 import { fetchRoleList } from './role';
-import { fetchRolePermission } from './rolepermission';
+import { createRolePermission, fetchRolePermission } from './rolepermission';
 import { onFetchUsers, onLoginUser, onLogoutUser } from './user';
 
 export default function* rootSaga() {
@@ -43,5 +43,6 @@ export default function* rootSaga() {
   yield takeLatest(OrganizationConstants.FETCH_ORGANIZATION_LIST_REQUEST, fetchOrganizationList);
   yield takeLatest(RoleConstants.FETCH_ROLE_LIST_REQUEST, fetchRoleList);
   yield takeLatest(RolePermissionConstants.FETCH_ROLE_PERMISSION_REQUEST, fetchRolePermission);
-  yield takeLatest(ModelConstants.FETCH_MODEL_LIST_REQUEST, fetchModelList);
+  yield takeLatest(RolePermissionConstants.CREATE_ROLE_PERMISSION_REQUEST, createRolePermission);
+  yield takeLatest(ConfigConstants.FETCH_CONFIG_REQUEST, fetchConfig);
 }

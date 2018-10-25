@@ -38,6 +38,7 @@ export default class extends React.Component<IFormProps, any> {
     this.element = React.createRef();
   }
 
+
   public componentDidMount = () => {
     const { options, src, url, form } = this.props;
 

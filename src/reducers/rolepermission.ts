@@ -2,7 +2,7 @@ import { IActionProps } from '.';
 import Constants from '../actions/rolepermission/constants';
 
 interface IPermission {
-  _id: string,
+  _id?: string,
   name: string,
   permission: {
     create: {
@@ -21,13 +21,17 @@ interface IPermission {
 }
 
 interface IRolePermissionReducer {
+  model: string;
+  tenant: string;
   permissions: IPermission[];
   loading: boolean;
 }
 
 const rolePermissionInitialState: IRolePermissionReducer = {
   loading: false,
-  permissions: []
+  model: '',
+  permissions: [],
+  tenant: ''
 };
 
 const rolePermissionReducer = (state: IRolePermissionReducer = rolePermissionInitialState, action: IActionProps): IRolePermissionReducer => {
