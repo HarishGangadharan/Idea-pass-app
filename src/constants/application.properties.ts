@@ -5,5 +5,6 @@ export const AppProperties = {
     { name: 'English', code: 'en' },
     { name: 'French', code: 'fr' },
     { name: 'Spanish', code: 'es' }
-  ]
+  ],
+  USER_SESSION: 'userSession'
 };

@@ -22,7 +22,7 @@ import { fetchModelList } from './model';
 import { fetchOrganizationList } from './organization';
 import { fetchRoleList } from './role';
 import { fetchRolePermission } from './rolepermission';
-import { onFetchUsers, onLoginUser } from './user';
+import { onFetchUsers, onLoginUser, onLogoutUser } from './user';
 
 export default function* rootSaga() {
   yield takeLatest(CounterConstants.DECREMENT, onDecrement);
@@ -31,6 +31,7 @@ export default function* rootSaga() {
   yield takeLatest(CounterConstants.INCREMENT_ASYNC, onIncrementAsync);
   yield takeLatest(UserConstants.FETCH_USERS, onFetchUsers);
   yield takeLatest(UserConstants.LOGIN_USER, onLoginUser);
+  yield takeLatest(UserConstants.LOGOUT_USER, onLogoutUser);
   yield takeLatest(FormSchemaConstants.FETCH_FORM_SCHEMA_LIST, fetchFormList);
   yield takeLatest(FormFieldDataConstants.SAVE_FORM_FIELD_DATA_REQUEST, saveFormFieldData);
   yield takeLatest(FormFieldDataConstants.FETCH_FORM_FIELD_DATA_LIST, fetchFormFieldDataList);

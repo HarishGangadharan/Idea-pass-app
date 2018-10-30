@@ -20,5 +20,5 @@ export const loginUser = (email: string , password: string) =>
 export const logoutUser = () =>
   axios({
     method: 'post',
-    url: 'api/Users/logout'
+    url: '/logout'
   });

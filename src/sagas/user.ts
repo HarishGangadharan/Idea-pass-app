@@ -7,7 +7,7 @@ import {
   logoutUserFail,
   logoutUserSuccess
 } from '../actions/user';
-import { persistAuthToken, removeAuthToken } from '../global/interceptors';
+import { updateUserSession } from '../global/interceptors';
 import { getUsers, loginUser, logoutUser } from '../services/user';
 
 function* onFetchUsers() {
@@ -23,7 +23,7 @@ function* onLoginUser(action: any) {
   const { email, password } = action;
   try {
     const response = yield call(loginUser, email, password);
-    persistAuthToken(response.data.accessToken);
+    updateUserSession(true);
     yield put(updateLoggedInStatus({ loggedIn: Boolean(response) }));
     yield put(loginUserSuccess(response));
   } catch (error) {
@@ -35,7 +35,7 @@ function* onLogoutUser(action: any) {
   const { user } = action;
   try {
     const data = yield call(logoutUser, user);
-    removeAuthToken();
+    updateUserSession(false);
     yield put(updateLoggedInStatus({ loggedIn: false }));
     yield put(logoutUserSuccess(data));
   } catch (error) {
