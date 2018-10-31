@@ -38,7 +38,7 @@ class Organization extends React.Component<IOrganizationProps, IOrganizationStat
     const { loading } = this.props;
     const { applicationName, emailValid, email, name, submitted } = this.state;
     return (
-      <div className="container organization-container">
+      <div className="organization-container">
         <div className="content">
           <div className="card card-signin">
             <div className="card-body">

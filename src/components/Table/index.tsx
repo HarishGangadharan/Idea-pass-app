@@ -135,7 +135,7 @@ export default class Table extends React.Component<ITableProps, ITableContext> {
       }} : {};
     // @ts-ignore
     return (
-      <div className={`container customTableContainer ${loading ? 'loading' : ''} ${!loading && total === 0 ? 'noData' : ''}`}>
+      <div className={`customTableContainer ${loading ? 'loading' : ''} ${!loading && total === 0 ? 'noData' : ''}`}>
         <ToolkitProvider
           keyField={keyField}
           data={data}

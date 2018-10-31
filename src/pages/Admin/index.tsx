@@ -109,7 +109,7 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
     const { organizations, models, rolePermissions } = this.props;
     const { tenantId, modelName, length, currentPage, columns } = this.state;
     return (
-      <div className="container adminContainer" >
+      <div className="adminContainer" >
         <div className="row">
           <div className="col-md-offset-1 col-md-2">
             <h4>Organization</h4>

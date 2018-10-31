@@ -1,32 +1,60 @@
 /* inject:scss */
-@import 'theme2.scss';
+@import 'theme1.scss';
 /* endinject */
+
+// Global Bootstrap overrides START
+body {
+  background-color: $appBackgroundColor;
+  color: $primaryTextColor;
+}
+
+.btn-primary {
+  border-color: $primaryColor;
+  background-color: $primaryColor;
+  color: $contrastTextColour;
+
+  &:hover {
+    background-color: $primaryColor-120;
+  }
+
+  &.btn-outline-primary {
+    color: $primaryColor;
+    border-color: $primaryColor;
+
+    &:hover {
+      background-color: $primaryColor;
+      color: $contrastTextColour;
+    }
+  }
+}
+
+.navbar-default {
+  border-color: transparent;
+
+  .navbar-nav>.open>a,
+  .navbar-nav>.open>a:focus,
+  .navbar-nav>.open>a:hover {
+    color: $contrastTextColour;
+    background-color: $primaryColor-120;
+  }
+}
+
+.navbar-container .navbar .dropdown-toggle {
+  color: $contrastTextColour;
+}
+
+.dropdown-menu {
+  li {
+    a {
+      color: $primaryTextColor;
+    }
+  }
+}
+
+// Global Bootstrap overrides END
 
 .appContainer {
   font-size: 14px;
-
-  // Global overrides
-  .btn-primary {
-    border-color: $primaryColor;
-    background-color: $primaryColor;
-    color: $primaryTextColor;
-
-    &:hover {
-      color: $primaryColor;
-      background-color: $primaryBackgroundColor;
-    }
-
-    &.btn-outline-primary {
-      color: $primaryColor;
-      border-color: $primaryColor;
-      background-color: $primaryBackgroundColor;
-
-      &:hover {
-        background-color: $primaryColor;
-        color: $primaryTextColor;
-      }
-    }
-  }
 
   .mt-10 {
     margin-top: 10px;
@@ -38,5 +66,9 @@
 
   .cursor-pointer {
     cursor: pointer;
+  }
+
+  .shadow-container {
+    @include shadow-container;
   }
 }

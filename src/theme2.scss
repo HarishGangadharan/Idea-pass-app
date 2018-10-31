@@ -1,5 +1,28 @@
-$primaryBackgroundColor: #ffffff;
-$primaryTextColor: #ffffff;
-$primaryTextColorDisabled: rgba(255,255,255,.5);
-$primaryColor: #0d47a1;
-$secondaryTextColor: #000000;
+$appBackgroundColor: #faf7f8;
+
+
+$contrastTextColour: #fff;
+$primaryColor-120: #0362f6;
+$primaryColor: #007afc;
+
+$primaryTextColor: #777;
+$secondaryTextColor: #000;
+
+$box-shadow: 0 8px 18px rgba(199, 199, 199, 0.2);
+
+$border-color: #ddd;
+$border-color-10: #efefef;
+
+$hower-color: #faf7f8;
+
+//Colors
+$white: #fff;
+
+
+@mixin shadow-container {
+  box-shadow: $box-shadow;
+  border-radius: 5px;
+  border: 1px solid $border-color-10;
+  background-color: $white;
+  padding: 10px;
+}

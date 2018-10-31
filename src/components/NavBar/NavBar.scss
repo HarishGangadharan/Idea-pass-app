@@ -1,5 +1,5 @@
 /* inject:scss */
-@import '../../theme2.scss';
+@import '../../theme1.scss';
 /* endinject */
 
 .navbar-container {
@@ -16,29 +16,25 @@
     }
 
     .navbar-brand {
-      color: $primaryTextColor;
+      color: $contrastTextColour;
     }
 
     .nav-link {
-      color: $primaryTextColorDisabled;
-
       &.active,
       &:hover {
-        color: $primaryTextColor;
+        color: $contrastTextColour;
       }
     }
 
     .glyphicon {
-      color: $primaryTextColor;
+      color: $contrastTextColour;
     }
 
     .dropdown-toggle {
-      color: $primaryTextColorDisabled;
       text-transform: capitalize;
-
       &:active,
       &:hover {
-        color: $primaryTextColor;
+        color: $contrastTextColour;
       }
     }
   }

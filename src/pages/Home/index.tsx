@@ -48,17 +48,15 @@ class Home extends React.PureComponent<IProps, IHomeState> {
   public render() {
     const { activeLanguage }: any = this.props;
     return (
-      <div className="container homeContainer">
-        <div className="row flex-column">
-          <h3>Home</h3>
-          <h3>
-            Active Language is {activeLanguage ? activeLanguage.name : ''}{' '}
-          </h3>
-          <h3>
-            <Translate id="greeting" data={{ name: 'Idea PaaS' }} />
-          </h3>
-        </div>
-      </div>
+      <div className="row flex-column shadow-container">
+        <h3>Home</h3>
+        <h3>
+          Active Language is {activeLanguage ? activeLanguage.name : ''}{' '}
+        </h3>
+        <h3>
+          <Translate id="greeting" data={{ name: 'Idea PaaS' }} />
+        </h3>
+    </div>
     );
   }
 }

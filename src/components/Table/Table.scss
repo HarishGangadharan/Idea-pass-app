@@ -1,5 +1,5 @@
 /* inject:scss */
-@import '../../theme2.scss';
+@import '../../theme1.scss';
 /* endinject */
 
 .customTableContainer {
@@ -43,7 +43,7 @@
 
     > .active {
       a {
-        color: $primaryTextColor;
+        color: $contrastTextColour;
         background-color: $primaryColor;
         border-color: $primaryColor;
       }
@@ -52,12 +52,11 @@
 
   .table-header {
     background-color: $primaryColor;
-    color: $primaryTextColor;
+    color: $contrastTextColour;
     border-color: $primaryColor;
   }
 
   .table-rows {
-    background-color: $primaryBackgroundColor;
     color: $secondaryTextColor;
   }
 

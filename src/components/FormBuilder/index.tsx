@@ -17,7 +17,7 @@ class Builder extends React.Component<IBuilderProps> {
   public render() {
     const { renderSchema, renderComponent, builderOptions, formBuilderSchema } = this.props;
     return (
-      <div className="container">
+      <div>
         <FormBuilder form={formBuilderSchema} options={builderOptions}
           onChange={(schema: any) => renderSchema(schema)}
           onSaveComponent={(component: any) => renderComponent(component, 'save')}

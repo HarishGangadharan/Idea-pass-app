@@ -17,13 +17,11 @@ class Renderer extends React.Component<IRendererProps> {
   public render() {
     const { formRendererSchema, handleSubmit, getFormio, submission } = this.props;
     return (
-      <div className="container">
-        <FormRenderer form={formRendererSchema}
-          submission={submission}
-          onSubmit={handleSubmit}
-          assignRef={getFormio}
-        />
-      </div>
+      <FormRenderer form={formRendererSchema}
+        submission={submission}
+        onSubmit={handleSubmit}
+        assignRef={getFormio}
+      />
     );
   }
 }

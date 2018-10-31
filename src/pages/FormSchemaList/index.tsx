@@ -45,11 +45,9 @@ class FormSchemaList extends React.Component<IFormSchemasProps & RouteComponentP
   public render() {
     const { loading, data, total } = this.props;
     return (
-      <div className="row">
-        <div className="container">
-          <div className="form-group">
-            <button className="btn btn-primary pull-right" onClick={() => this.builderFormSchema()}>Create New Schema</button>
-          </div>
+      <div className="shadow-container">
+        <div className="form-group">
+          <button className="btn btn-primary pull-right" onClick={() => this.builderFormSchema()}>Create New Schema</button>
         </div>
         <Table
           keyField="_id"

@@ -1,22 +1,8 @@
 :export {
   @import "theme1.scss";
-  theme1PrimaryBackgroundColor: $primaryBackgroundColor;
-  theme1PrimaryTextColor: $primaryTextColor;
-  theme1PrimaryTextColorDisabled: $primaryTextColorDisabled;
+  theme1PrimaryTextColor: $contrastTextColour;
   theme1PrimaryColor: $primaryColor;
-  @import "theme2.scss";
-  theme2PrimaryBackgroundColor: $primaryBackgroundColor;
-  theme2PrimaryTextColor: $primaryTextColor;
-  theme2PrimaryTextColorDisabled: $primaryTextColorDisabled;
+  @import "theme1.scss";
+  theme2PrimaryTextColor: $contrastTextColour;
   theme2PrimaryColor: $primaryColor;
-  @import "theme3.scss";
-  theme3PrimaryBackgroundColor: $primaryBackgroundColor;
-  theme3PrimaryTextColor: $primaryTextColor;
-  theme3PrimaryTextColorDisabled: $primaryTextColorDisabled;
-  theme3PrimaryColor: $primaryColor;
-  @import "theme4.scss";
-  theme4PrimaryBackgroundColor: $primaryBackgroundColor;
-  theme4PrimaryTextColor: $primaryTextColor;
-  theme4PrimaryTextColorDisabled: $primaryTextColorDisabled;
-  theme4PrimaryColor: $primaryColor;
 }

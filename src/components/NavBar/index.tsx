@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { Glyphicon, MenuItem, Nav, Navbar, NavDropdown, NavItem } from 'react-bootstrap';
+import { Glyphicon, MenuItem, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { NavLink } from 'react-router-dom';
 import { compose } from 'redux';
 import { changeTheme } from '../../actions/theme';
 import { logoutUser } from '../../actions/user';
@@ -60,7 +59,7 @@ class NavBar extends React.Component<INavProps, INavState> {
     const { availableThemes } = this.state;
     return (
       <div className="navbar-container">
-        <Navbar collapseOnSelect={true}>
+        <Navbar collapseOnSelect={true} fixedTop={true} fluid={true}>
           <Navbar.Header>
             <Navbar.Brand>
               <a href="#">Idea PaaS</a>
@@ -69,24 +68,6 @@ class NavBar extends React.Component<INavProps, INavState> {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav pullRight={true}>
-              <NavItem eventKey={1} componentClass="span">
-                <NavLink
-                  exact={true}
-                  to="/"
-                  activeClassName="active"
-                  className="nav-link">
-                  Home
-                </NavLink>
-              </NavItem>
-              <NavItem eventKey={2} componentClass="span">
-                <NavLink
-                  exact={true}
-                  to="/formschemalist"
-                  activeClassName="active"
-                  className="nav-link">
-                  Schemas
-                </NavLink>
-              </NavItem>
               <NavDropdown eventKey={3} title={activeLanguage ? activeLanguage.name : ''} id="basic-nav-dropdown">
                 {languages.map((lang, index) => (
                   <MenuItem

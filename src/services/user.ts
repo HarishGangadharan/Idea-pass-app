@@ -14,7 +14,7 @@ export const loginUser = (email: string , password: string) =>
       strategy: 'local'
     },
     method: 'post',
-    url: '/authentication'
+    url: '/login'
   });
 
 export const logoutUser = () =>

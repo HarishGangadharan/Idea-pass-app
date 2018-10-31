@@ -55,7 +55,7 @@ class FormRenderer extends React.Component<IRendererDispatchMap & IRendererState
     const { submissionData, isLoading } = this.props;
     const { formData } = this.state;
     return (
-      <div className="container">
+      <div>
         {!isLoading && <Renderer formRendererSchema={formData}
           submission={{data: submissionData}}
           handleSubmit={this.handleSubmit} getFormio={this.getFormio}/>}

@@ -113,10 +113,10 @@ class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchM
       }
     };
     return (
-      <div className="container">
+      <div>
         {!isLoading &&
           <React.Fragment>
-            <div className="container">
+            <div>
               <div className="form-group">
                 <label className="control-label">Form Name</label>
                 <input type="text" defaultValue={name} className="form-control" onChange={this.setFormName} />
