@@ -5,14 +5,20 @@ import { IColDef } from '../components/Table/Column';
 import { IFormSchema } from './formschema';
 
 export interface IMetaState {
+  clientRendering: boolean;
   colHide: boolean;
   cols: IColDef[];
   globalSearch: boolean;
+  isAutoRefresh: boolean;
   isExportable: boolean;
   keyField: string;
+  length: number;
   loading: boolean;
+  loadResource: string;
+  name: string;
   noDataIndicator: string;
   rowAction: any;
+  selectable: boolean;
   rowSelectForExport: boolean;
   enableInfiniteScroll: boolean;
 }
@@ -24,16 +30,22 @@ export interface IDataState {
 }
 
 const metaInitialState: IMetaState = {
+  clientRendering: false,
   colHide: true,
   cols: [],
   enableInfiniteScroll: false,
   globalSearch: false,
+  isAutoRefresh: false,
   isExportable: false,
   keyField: 'id',
+  length: 10,
+  loadResource: '',
   loading: true,
+  name: '',
   noDataIndicator: 'No Data',
   rowAction: null,
-  rowSelectForExport: false
+  rowSelectForExport: false,
+  selectable: false
 };
 
 const dynamicMetaReducer = (state: IMetaState = metaInitialState, action: IActionProps): IMetaState => {
@@ -44,20 +56,25 @@ const dynamicMetaReducer = (state: IMetaState = metaInitialState, action: IActio
         loading: true
       };
     case constants.GET_TABLE_META_SUCCESS:
-      const { colHide, cols, enableInfiniteScroll, globalSearch, isExportable,
-        keyField, noDataIndicator, rowAction, rowSelectForExport } = action.response;
+      const { pageSize: length, headerVisible: colHide, fields, enableInfiniteScroll, globalSearch, isExportable, paging: clientRendering,
+        keyField, noDataContent: noDataIndicator, selectable, isAutoRefresh, name, loadResource } = action.response;
       return {
         ...state,
+        clientRendering,
         colHide: colHide || false,
-        cols,
-        enableInfiniteScroll: enableInfiniteScroll || false,
+        cols: fields,
+        enableInfiniteScroll: (enableInfiniteScroll) || false,
         globalSearch: globalSearch || false,
+        isAutoRefresh: isAutoRefresh || false,
         isExportable: isExportable || false,
         keyField,
+        length,
+        loadResource,
         loading: false,
+        name,
         noDataIndicator,
-        rowAction,
-        rowSelectForExport: rowSelectForExport || false
+        rowSelectForExport: false,
+        selectable
       };
     case constants.GET_TABLE_META_ERROR:
       return {
@@ -80,6 +97,7 @@ const dynamicDataReducer = (state: IDataState = dataInitialState, action: IActio
     case constants.GET_TABLE_DATA:
       return {
         ...state,
+        data: (!action.retainData && action.callback === undefined) ? [] : state.data,
         loading: action.callback === undefined
       };
     case constants.GET_TABLE_DATA_SUCCESS:

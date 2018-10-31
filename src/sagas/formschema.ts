@@ -37,8 +37,8 @@ function* fetchFormSchema(action: any) {
 
 function* fetchFormList(action: any) {
   try {
-    const { limit, currentPage } = action;
-    const formSchemas = yield call(FormSchemaService.getAllFormSchema, limit, currentPage, '_id', 1);
+    const { limit, currentPage, sortField, sortOrder } = action;
+    const formSchemas = yield call(FormSchemaService.getAllFormSchema, limit, currentPage, sortField, sortOrder);
     yield put(fetchFormSchemaListSuccess(formSchemas.data));
   } catch (error) {
     yield put(fetchFormSchemaListFailure(error));

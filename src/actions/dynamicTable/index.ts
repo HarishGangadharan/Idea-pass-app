@@ -15,10 +15,12 @@ export const getTableMetaError = (error: object) => ({
   type: actions.GET_TABLE_META_ERROR
 });
 
-export const getTableData = (limit: number, currentPage: number, sortField: string, sortOrder: string, retainData: boolean = false, callback: any) => ({
+export const getTableData = (resource: string, limit: number, currentPage: number, filters: string, sortField: string, sortOrder: number, retainData: boolean = false, callback?: any) => ({
   callback,
   currentPage,
+  filters,
   limit,
+  resource,
   retainData,
   sortField,
   sortOrder,

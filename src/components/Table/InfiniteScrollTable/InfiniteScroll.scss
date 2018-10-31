@@ -1,20 +1,31 @@
 .scroll-container {
-	thead {
+	// Fixed header and scrollable tbody CSS
+	// TODO : Overcome misalignment in table header and tbody columns
+	thead tr {
 		display: table;
 		table-layout:fixed;
-		width: 100%;
+		width: calc(100% - 1.1em)
 	}
 	tbody {
 		display: block;
-		max-height: calc(50vh);
-		overflow-y: auto;
+		max-height: 150px;
+		overflow-y: scroll;
 	}
 	tbody tr {
 		display: table;
 		table-layout:fixed;
 		width: 100%;
+		position: relative;
 	}
 	th, td {
 		width: auto;
+	}
+
+	.table-rows {
+		&.selectable {
+			td:first-child {
+				width: 30px;
+			}
+		}
 	}
 }

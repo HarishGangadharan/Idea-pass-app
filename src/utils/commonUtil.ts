@@ -7,3 +7,19 @@ export const isEmailValid = (email: string) : boolean => {
 
 export const constructColumns = (cols: IColDef[]): Column[] =>
   cols.map(col => Column.convertObjectToColumn(col));
+
+export const comparatorsForAPI = (comparator: string): string => {
+  if (comparator === '!=') {
+    return '[$ne]=';
+  } else if (comparator === '>') {
+    return '[$gt]=';
+  } else if (comparator === '>=') {
+    return '[$gte]=';
+  } else if (comparator === '<') {
+    return '[$lt]=';
+  } else if (comparator === '<=') {
+    return '[$lte]=';
+  } else {
+    return comparator;
+  }
+};

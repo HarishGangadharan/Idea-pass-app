@@ -3,6 +3,7 @@ import * as React from 'react';
 interface IExportButtonProps {
   onExport?: any,
   onFetchAll: any,
+  remote: boolean,
   children: any
 }
 
@@ -14,9 +15,13 @@ export default class ExportCSVButton extends React.Component<IExportButtonProps,
   }
 
   private handleClick = () => {
-    // To fetch all data corresponding to filter without pagination
-    this.props.onFetchAll((data: any) => {
-      this.props.onExport(data.data);
-    });
+    if (this.props.remote) {
+      // To fetch all data corresponding to filter without pagination
+      this.props.onFetchAll((response: any) => {
+        this.props.onExport(response.data);
+      });
+    } else {
+      this.props.onExport();
+    }
   }
 }

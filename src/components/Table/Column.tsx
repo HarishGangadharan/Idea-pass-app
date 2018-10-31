@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { customFilter, dateFilter, FILTER_TYPES, multiSelectFilter, numberFilter,
-  selectFilter, textFilter } from 'react-bootstrap-table2-filter';
+import { dateFilter, numberFilter, selectFilter, textFilter } from 'react-bootstrap-table2-filter';
 
 export interface IHeaderComponent {
   sortElement: any,
@@ -22,39 +21,56 @@ export interface IBootstrapColumn {
   headerClasses: any,
   headerEvents: any,
   headerAlign: any,
-  csvExport: boolean
+  csvExport: boolean,
+  searchKey: string,
+  type: string
 }
 
 export interface IColDef {
   key: string,
-  label: string,
+  name: string,
+  filterable?: boolean,
   enableSort?: boolean,
-  type?: string
+  type?: string,
+  options?: any,
+  valueField?: string,
+  textField?: string
 }
 
 export default class Column {
-  public static COLUMN_TYPES = Object.assign({}, FILTER_TYPES, {
-    CUSTOM: 'CUSTOM',
-    NONE: 'NONE'
-  });
+  public static COLUMN_TYPES = {
+    DATE: 'DATE',
+    NONE: 'NONE',
+    NUMBER: 'NUMBER',
+    SELECT: 'SELECT',
+    TEXT: 'TEXT'
+  };
 
   /**
    * Transform object to Column
    */
   public static convertObjectToColumn = (col: IColDef): Column => {
-    const columnDef: Column =  new Column().withKey(col.key).withLabel(col.label);
+    const columnDef: Column =  new Column().withKey(col.key).withLabel(col.name);
     if (col.enableSort) {
       columnDef.asSortable();
     }
     if (col.type) {
+      if (col.filterable) {
+        columnDef.enableFilter();
+      }
       columnDef.ofType(col.type);
-      if (col.type === Column.COLUMN_TYPES.SELECT || col.type === Column.COLUMN_TYPES.MULTISELECT) {
+      if (col.type === Column.COLUMN_TYPES.SELECT) {
+        let options = col.options;
+        if (col.textField && col.valueField) {
+          options = col.options.reduce((accumulator: object, option: any) => {
+            return Object.assign({}, accumulator, {
+              // @ts-ignore
+              [option[col.valueField]]: option[col.textField]
+            });
+          }, {});
+        }
         columnDef.withFilterConfig({
-          options: [
-            'A',
-            'B',
-            'C'
-          ]
+          options
         });
       }
     }
@@ -63,6 +79,7 @@ export default class Column {
 
   public isHidden: boolean;
   public searchKey: string;
+  public type: string;
 
   private key: string;
   private label: string;
@@ -75,8 +92,8 @@ export default class Column {
   private align: any;
   private headerFormatter: any;
   private headerClass: any;
-  private type: string;
   private filterConfig: object;
+  private isFilterable: boolean;
 
   constructor() {
     this.key = '';
@@ -102,6 +119,7 @@ export default class Column {
     this.headerClass = '';
     this.type = Column.COLUMN_TYPES.NONE;
     this.filterConfig = {};
+    this.isFilterable = false;
   }
 
   /**
@@ -134,6 +152,14 @@ export default class Column {
    * Get Label of column
    */
   public getLabel = () : string => this.label;
+
+  /**
+   * Enable filter withing column
+   */
+  public enableFilter = (): Column => {
+    this.isFilterable = true;
+    return this;
+  }
 
   /**
    * Add column type to add column filter based on the type
@@ -272,10 +298,8 @@ export default class Column {
       return dateFilter(this.filterConfig);
     } else if (this.type === Column.COLUMN_TYPES.SELECT) {
       return selectFilter(this.filterConfig);
-    } else if (this.type === Column.COLUMN_TYPES.MULTISELECT) {
-      return multiSelectFilter(this.filterConfig);
     }
-    return customFilter;
+    return null;
   }
 
   /**
@@ -300,11 +324,13 @@ export default class Column {
       headerFormatter: this.headerFormatter,
       hidden: this.isHidden,
       isDummyField: this.isActionColumn,
+      searchKey: this.searchKey,
       sort: this.sortable,
-      text: this.label
+      text: this.label,
+      type: this.type
     };
 
-    if (this.type !== Column.COLUMN_TYPES.NONE) {
+    if (this.isFilterable && this.type !== Column.COLUMN_TYPES.NONE) {
       defaultColumn = Object.assign({}, defaultColumn, {
         filter: this.getFilterForType()
       });

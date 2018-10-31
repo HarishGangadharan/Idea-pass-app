@@ -32,9 +32,11 @@ export const fetchFormSchemaFailure = (error: any) => ({
   type: FormSchemaConstants.FETCH_FORM_SCHEMA_FAILURE
 });
 
-export const fetchFormSchemaList = (limit: number, currentPage: number) => ({
+export const fetchFormSchemaList = (limit: number, currentPage: number, sortField: string, sortOrder: number) => ({
   currentPage,
   limit,
+  sortField,
+  sortOrder,
   type: FormSchemaConstants.FETCH_FORM_SCHEMA_LIST
 });
 

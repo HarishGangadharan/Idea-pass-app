@@ -14,7 +14,7 @@ class FormSchemaService {
     url: `/formschema/${schemaId}`
   })
 
-  public static getAllFormSchema = (limit: number, currentPage: number, sortField: string, sortOrder: number) => {
+  public static getAllFormSchema = (limit: number, currentPage: number, sortField: string, sortOrder: number, filters?: string) => {
     let queryString = '/formschema';
     let paginationApplied = false;
     if (limit && currentPage) {
@@ -23,6 +23,9 @@ class FormSchemaService {
     }
     if (sortOrder && sortField) {
       queryString += `${paginationApplied ? '' : '?'}&$sort[${sortField}]=${sortOrder}`;
+    }
+    if (filters) {
+      queryString += `&${filters}`;
     }
     return axios({
       method: 'get',

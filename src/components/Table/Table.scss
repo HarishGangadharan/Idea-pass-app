@@ -67,6 +67,10 @@
     .table-options {
       display: flex;
       justify-content: flex-end;
+
+      .selection-renderer {
+        margin-right: 10px;
+      }
     }
   }
 
