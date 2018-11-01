@@ -16,8 +16,7 @@ export const createFormSchemaFailure = (error: any) => ({
   type: FormSchemaConstants.CREATE_FORM_SCHEMA_FAILURE
 });
 
-export const fetchFormSchemaRequest = (schemaId: string, callback?: (formSchemaId: string, formData: any, name: string) => void) => ({
-  callback,
+export const fetchFormSchemaRequest = (schemaId: string) => ({
   schemaId,
   type: FormSchemaConstants.FETCH_FORM_SCHEMA_REQUEST
 });

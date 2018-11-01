@@ -14,13 +14,13 @@ import { IthemeReducer, themeReducer } from './theme';
 import { IuserReducer, userReducer } from './user';
 
 const rootReducer = combineReducers({
+  config: configReducer,
   counter: counterReducer,
   dynamicTable: dynamicTableReducer,
   formFieldData: formFieldDataReducers,
   formSchema: formSchemaReducers,
   global: globalReducer,
   localize: localizeReducer,
-  config: configReducer,
   organization: organizationReducers,
   role: roleReducers,
   rolePermission: rolePermissionReducer,

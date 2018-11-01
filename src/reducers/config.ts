@@ -10,9 +10,9 @@ interface IConfigReducer {
 
 const configInitialState: IConfigReducer = {
   categories: [],
+  loading: false,
   models: [],
-  permissionList: {},
-  loading: false
+  permissionList: {}
 };
 
 const configReducer = (state: IConfigReducer = configInitialState, action: IActionProps): IConfigReducer => {
@@ -26,9 +26,9 @@ const configReducer = (state: IConfigReducer = configInitialState, action: IActi
       return {
         ...state,
         categories: [...action.payload.permissionCategory],
+        loading: false,
         models: [...action.payload.registeredModels],
-        permissionList: {...action.payload.permissionTable},
-        loading: false
+        permissionList: {...action.payload.permissionTable}
       };
     case Constants.FETCH_CONFIG_FAILURE:
       return configInitialState;
