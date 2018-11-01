@@ -44,7 +44,7 @@ class FormRenderer extends React.Component<IRendererDispatchMap & IRendererState
   public render() {
     const { submissionData, isLoading, formRendererSchema } = this.props;
     return (
-      <div>
+      <div className="shadow-container full-height">
         {!isLoading && <Renderer formRendererSchema={formRendererSchema.formData}
           submission={{data: submissionData}}
           handleSubmit={this.handleSubmit} getFormio={this.getFormio}/>}

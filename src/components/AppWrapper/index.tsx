@@ -26,7 +26,7 @@ interface IAppWrapperState {
 }
 
 function BackdropSvgImage() {
-  return <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+  return <svg className="backdrop" version="1.0" xmlns="http://www.w3.org/2000/svg"
   width="1429.000000pt" height="175.000000pt" viewBox="0 0 1429.000000 175.000000"
   preserveAspectRatio="xMidYMid meet">
     <g transform="translate(0.000000,175.000000) scale(0.100000,-0.100000)"

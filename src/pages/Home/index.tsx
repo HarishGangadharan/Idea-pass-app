@@ -48,7 +48,7 @@ class Home extends React.PureComponent<IProps, IHomeState> {
   public render() {
     const { activeLanguage }: any = this.props;
     return (
-      <div className="row flex-column shadow-container">
+      <div className="shadow-container full-height">
         <h3>Home</h3>
         <h3>
           Active Language is {activeLanguage ? activeLanguage.name : ''}{' '}

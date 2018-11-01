@@ -1,57 +1,7 @@
 /* inject:scss */
-@import 'theme1.scss';
+@import '_theme2.scss';
+@import '_bootstrapOverrides.scss';
 /* endinject */
-
-// Global Bootstrap overrides START
-body {
-  background-color: $appBackgroundColor;
-  color: $primaryTextColor;
-}
-
-.btn-primary {
-  border-color: $primaryColor;
-  background-color: $primaryColor;
-  color: $contrastTextColour;
-
-  &:hover {
-    background-color: $primaryColor-120;
-  }
-
-  &.btn-outline-primary {
-    color: $primaryColor;
-    border-color: $primaryColor;
-
-    &:hover {
-      background-color: $primaryColor;
-      color: $contrastTextColour;
-    }
-  }
-}
-
-.navbar-default {
-  border-color: transparent;
-
-  .navbar-nav>.open>a,
-  .navbar-nav>.open>a:focus,
-  .navbar-nav>.open>a:hover {
-    color: $contrastTextColour;
-    background-color: $primaryColor-120;
-  }
-}
-
-.navbar-container .navbar .dropdown-toggle {
-  color: $contrastTextColour;
-}
-
-.dropdown-menu {
-  li {
-    a {
-      color: $primaryTextColor;
-    }
-  }
-}
-
-// Global Bootstrap overrides END
 
 .appContainer {
   font-size: 14px;
@@ -64,6 +14,10 @@ body {
     margin-top: 20px;
   }
 
+  .mb-20{
+    margin-bottom: 20px;
+  }
+
   .cursor-pointer {
     cursor: pointer;
   }
@@ -71,4 +25,9 @@ body {
   .shadow-container {
     @include shadow-container;
   }
+
+  .full-height{
+    min-height: calc(100vh - 90px);
+  }
+  
 }

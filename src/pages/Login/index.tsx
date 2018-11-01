@@ -3,6 +3,7 @@ import { Translate } from 'react-localize-redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { compose } from 'redux';
+import Image from '../../../src/logo.png';
 import { loginUser } from '../../actions/user';
 import { IState } from '../../reducers';
 import { isEmailValid } from '../../utils/commonUtil';
@@ -35,9 +36,13 @@ class Login extends React.Component<ILoginProps, ILoginState> {
     const { loading } = this.props;
     const { emailValid, email, password, pristine } = this.state;
     return (
-      <div className="container login-container">
+      <div className="container-fluid login-container">
+      <div className="shadow-container">
+      <div className="head">
+        <img src={Image} />
+      </div>
         <div className="content">
-          <div className="card card-signin my-5">
+          <div className="card center-block card-signin">
             <div className="card-body">
               <h5 className="card-title text-center">Sign In</h5>
               <form className="form-signin">
@@ -99,6 +104,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
               </form>
             </div>
           </div>
+        </div>
         </div>
       </div>
     );

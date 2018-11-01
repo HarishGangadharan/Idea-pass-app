@@ -1,8 +1,8 @@
 :export {
-  @import "theme1.scss";
+  @import "_theme2.scss";
   theme1PrimaryTextColor: $contrastTextColour;
   theme1PrimaryColor: $primaryColor;
-  @import "theme1.scss";
+  @import "_theme2.scss";
   theme2PrimaryTextColor: $contrastTextColour;
   theme2PrimaryColor: $primaryColor;
 }
