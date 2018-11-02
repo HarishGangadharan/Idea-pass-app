@@ -13,7 +13,7 @@ interface IFBuilderStateMap {
 
 interface IFBuilderDispatchMap {
   createFormSchema: (data: any, schemaId?: string) => void;
-  fetchFormSchemaRequest: (schemaId: string, callback?: (formSchemaId: string, formData: any, name: string) => void) => void;
+  fetchFormSchemaRequest: (schemaId: string) => void;
 }
 
 interface IFBuilderStateProps {
@@ -37,37 +37,25 @@ class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchM
       path: '/formBuilder/:id'
     });
     if (match) {
-      this.props.fetchFormSchemaRequest(match.params.id, (formSchemaId: string, formData: any, name: string) => {
-        this.setState({
-          formData,
-          formSchemaId,
-          name
-        });
-      });
+      this.props.fetchFormSchemaRequest(match.params.id);
     }
   }
 
   public setFormName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      name: e.target.value
-    });
+    this.props.form.name = e.target.value;
   }
 
-  public gotoFormSchemaList = (): void => {
-    const { formData, formSchemaId, name } = this.state;
-    this.props.createFormSchema({
-      formData,
-      formType: 'data',
-      name,
-      nameSingular: `${name}`
-    }, formSchemaId);
-    // this.props.history.push('/formschemalist');
+  public saveFormSchema = (): void => {
+    const { form } = this.props;
+    if (form._id) {
+      form.formType = 'data';
+      form.nameSingular = form.name;
+    }
+    this.props.createFormSchema(form, form._id);
   }
 
   public renderSchema = (schema: any) => {
-    this.setState({
-      formData: schema
-    });
+    //
   }
 
   public renderComponent = (schema: any, renderMethod: string) => {
@@ -88,8 +76,7 @@ class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchM
   }
 
   public render() {
-    const { isLoading } = this.props;
-    const { name, formData, formSchemaId } = this.state;
+    const { isLoading, form } = this.props;
     const builderOptions = {
       editForm: {
         textfield: [
@@ -119,19 +106,19 @@ class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchM
             <div>
               <div className="form-group">
                 <label className="control-label">Form Name</label>
-                <input type="text" defaultValue={name} className="form-control" onChange={this.setFormName} />
+                <input type="text" defaultValue={form.name} className="form-control" onChange={this.setFormName} />
               </div>
             </div>
             <Builder
-              formBuilderSchema={formData}
+              formBuilderSchema={form.formData}
               builderOptions={builderOptions}
               renderSchema={this.renderSchema}
               renderComponent={this.renderComponent}
             />
           </React.Fragment>}
         <div className="row text-right">
-          <button className="btn btn-primary" onClick={() => this.gotoFormSchemaList()} >
-            {formSchemaId ? 'Update' : 'Create'} Form
+          <button className="btn btn-primary" onClick={() => this.saveFormSchema()} >
+            {form._id ? 'Update' : 'Create'} Form
           </button>
         </div>
       </div>

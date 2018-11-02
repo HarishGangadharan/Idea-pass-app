@@ -1,4 +1,7 @@
+import { unpackRules } from '@casl/ability/extra';
 import { call, put } from 'redux-saga/effects';
+import storage from 'src/utils/storage';
+import ability from '../ability';
 import {
   createRolePermissionFailure,
   createRolePermissionSuccess,
@@ -11,7 +14,9 @@ function* createRolePermission(action: any) {
   try {
     const { payload, tenantId, modelName } = action;
     const response = yield call(RolePermissionService.createRolePermission, payload, tenantId, modelName);
-    yield put(createRolePermissionSuccess(response));
+    // tslint:disable-next-line:no-console
+    console.log('response', response);
+    yield put(createRolePermissionSuccess(payload));
   } catch (error) {
     yield put(createRolePermissionFailure(error));
   }
@@ -21,13 +26,45 @@ function* fetchRolePermission(action: any) {
   try {
     const { tenantId, modelName } = action;
     const response = yield call(RolePermissionService.fetchRolePermission, tenantId, modelName);
+    response.data.permissions.forEach((permission: any) => {
+      if (!permission.permission || !Object.keys(permission.permission).length) {
+        permission.permission = {
+          create: {
+            action: 'cannot'
+          },
+          delete: {
+            action: 'cannot'
+          },
+          read: {
+            action: 'cannot'
+          },
+          update: {
+            action: 'cannot'
+          }
+        };
+      }
+    });
     yield put(fetchRolePermissionSuccess(response.data));
   } catch (error) {
     yield put(fetchRolePermissionFailure(error));
   }
 }
 
+function* fetchRolePermissionRules(action: any) {
+  try {
+    const { userRole } = action;
+    const response = yield call(RolePermissionService.fetchRolePermissionRules, userRole);
+    if (response.data !== '[]') {
+      ability.update(unpackRules(JSON.parse(response.data)));
+    }
+    storage.setItem('rulesUpdated', 'true');
+  } catch (error) {
+    //
+  }
+}
+
 export {
   createRolePermission,
-  fetchRolePermission
+  fetchRolePermission,
+  fetchRolePermissionRules
 };

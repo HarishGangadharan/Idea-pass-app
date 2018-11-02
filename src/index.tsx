@@ -14,6 +14,9 @@ import { setupInterceptors } from './global/interceptors';
 import rootReducer from './reducers';
 import registerServiceWorker from './registerServiceWorker';
 
+import ability from './ability';
+import { AbilityContext } from './ability-context';
+
 import rootSaga from './sagas';
 
 // create the saga middleware
@@ -46,12 +49,15 @@ class Main extends React.Component<any, any> {
     return (
       <Provider store={store}>
         <LocalizeProvider store={this.state.store}>
-          <App history={history} />
+          <AbilityContext.Provider value={ability}>
+            <App history={history} />
+          </AbilityContext.Provider>
         </LocalizeProvider>
       </Provider>
     );
   }
 }
+
 
 ReactDOM.render(<Main />, document.getElementById('root') as HTMLElement);
 

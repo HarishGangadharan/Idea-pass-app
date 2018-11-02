@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { updateLoggedInStatus } from '../actions/global';
+import { updateLoggedInStatus, updateUserRole } from '../actions/global';
 import { AppProperties } from '../constants/application.properties';
 import ERRORS from '../constants/errorConstants';
 import ApiError from '../errors/ApiError';
@@ -18,9 +18,9 @@ export const updateUserSession = (valid: boolean) => {
  * @param store : Redux App Store
  */
 export const setupInterceptors = (store: any) => {
-  const userSession = storage.getItem(AppProperties.USER_SESSION);
-  updateUserSession(userSession);
-  store.dispatch(updateLoggedInStatus(userSession !== 'true' ? { loggedIn: false } : { loggedIn: true }));
+  storage.setItem('rulesUpdated', 'false');
+  // tslint:disable-next-line:no-console
+  console.log('setup');
   axios.defaults.baseURL = AppProperties.BASE_URL;
   axios.defaults.headers.post['Content-Type'] = 'application/json';
   axios.defaults.validateStatus = () => true;
@@ -28,6 +28,13 @@ export const setupInterceptors = (store: any) => {
     config.withCredentials = true;
     return config;
   }, error => Promise.reject(error));
+  const userSession = storage.getItem(AppProperties.USER_SESSION);
+  const userRole = storage.getItem(AppProperties.ROLES);
+  updateUserSession(userSession);
+  store.dispatch(updateLoggedInStatus(userSession !== 'true' ? { loggedIn: false } : { loggedIn: true }));
+  if (userRole) {
+    store.dispatch(updateUserRole(userRole));
+  }
   axios.interceptors.response.use((response: any) => {
     const { status } = response;
     /** Processes response body
@@ -40,6 +47,8 @@ export const setupInterceptors = (store: any) => {
           throw new ApiError(ERRORS.SERVER_ERROR);
         case 403:
           updateUserSession(false);
+          storage.deleteItem(AppProperties.ROLES);
+          storage.deleteItem(AppProperties.USER_ID);
           store.dispatch(updateLoggedInStatus({ loggedIn: false }));
           throw new ApiError(ERRORS.SERVER_ERROR);
       }

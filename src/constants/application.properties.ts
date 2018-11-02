@@ -6,5 +6,7 @@ export const AppProperties = {
     { name: 'French', code: 'fr' },
     { name: 'Spanish', code: 'es' }
   ],
+  ROLES: 'roles',
+  USER_ID: 'userId',
   USER_SESSION: 'userSession'
 };

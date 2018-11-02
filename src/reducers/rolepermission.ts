@@ -42,9 +42,24 @@ const rolePermissionReducer = (state: IRolePermissionReducer = rolePermissionIni
         loading: true
       };
     case Constants.CREATE_ROLE_PERMISSION_SUCCESS:
-      return rolePermissionInitialState;
+      return {
+        ...action.payload,
+        loading: false
+      };
     case Constants.CREATE_ROLE_PERMISSION_FAILURE:
       return rolePermissionInitialState;
+    case Constants.UPDATE_ROLE_PERMISSION_STATE:
+      return {
+        ...state,
+        loading: false,
+        permissions: state.permissions.map(permission => {
+          if (permission._id === action.row._id) {
+            return action.row;
+          } else {
+            return permission;
+          }
+        })
+      };
     case Constants.FETCH_ROLE_PERMISSION_REQUEST:
       return {
         ...state,

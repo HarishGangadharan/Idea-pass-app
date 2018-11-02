@@ -12,12 +12,13 @@ import { fetchRoleListRequest } from '../../actions/role';
 import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
 
-import { createRolePermissionRequest, fetchRolePermissionRequest } from 'src/actions/rolepermission';
+import { createRolePermissionRequest, fetchRolePermissionRequest, updateRolePermissionState } from 'src/actions/rolepermission';
 import Table, { ITableState } from 'src/components/Table';
 import { IOrganization } from 'src/reducers/organization';
 import { IRole } from 'src/reducers/role';
-import { IRolePermissionReducer } from 'src/reducers/rolepermission';
+import { IPermission, IRolePermissionReducer } from 'src/reducers/rolepermission';
 import './admin.css';
+import RoleSelector from './roleSelector';
 
 interface IAdminProps extends LocalizeContextProps, IStateProps, IDispatchProps { }
 
@@ -26,71 +27,27 @@ interface IAdminState {
   columns: Column[];
   currentPage: number;
   length: number;
-  canActions: string[];
-  cannotActions: string[];
-  availablePermissions: any;
 }
 
 class Admin extends React.Component<IAdminProps, IAdminState> {
   public columns: Column[];
   constructor(props: IAdminProps) {
     super(props);
-    const canActions = [
-      'can',
-      'cannot',
-      'createdBy'
-    ];
-    const cannotActions = [
-      'cannot',
-      'createdBy'
-    ];
     this.state = {
-      availablePermissions: {
-        create: canActions,
-        delete: canActions,
-        read: canActions,
-        update: canActions
-      },
-      canActions,
-      cannotActions,
       categoryName: '',
       columns: [
         (new Column()).withKey('name').withLabel('Roles'),
-        (new Column()).withKey('permission.create.action').withLabel('CREATE').withCellFormatter((cell: any, row: any) => (
-          <div>
-            {row.permission.create && <select className="form-control" defaultValue={row.permission.create.action} onChange={(e) => {
-              this.validatePermission('create', row, e.target.value);
-            }}>
-              {row.permission.availablePermissions.create.map((permission: any, i: string | number) => <option key={i} value={permission}>{permission}</option>)}
-            </select>}
-          </div>
+        (new Column()).withKey('permission.create.action').withLabel('CREATE').withCellFormatter((cell: any, row: any, rowIndex: number) => (
+          <RoleSelector mode="create" rowData={row} rowIndex={rowIndex} handleChangeEvent={this.handleChangeEvent} />
         )),
-        (new Column()).withKey('permission.read.action').withLabel('READ').withCellFormatter((cell: any, row: any) => (
-          <div>
-            {row.permission.read && <select className="form-control" defaultValue={row.permission.read.action} onChange={(e) => {
-              this.validatePermission('read', row, e.target.value);
-            }}>
-              {row.permission.availablePermissions.read.map((permission: any, i: string | number) => <option key={i} value={permission}>{permission}</option>)}
-            </select>}
-          </div>
+        (new Column()).withKey('permission.read.action').withLabel('READ').withCellFormatter((cell: any, row: any, rowIndex: number) => (
+          <RoleSelector mode="read" rowData={row} rowIndex={rowIndex} handleChangeEvent={this.handleChangeEvent} />
         )),
-        (new Column()).withKey('permission.update.action').withLabel('UPDATE').withCellFormatter((cell: any, row: any) => (
-          <div>
-            {row.permission.update && <select className="form-control" defaultValue={row.permission.update.action} onChange={(e) => {
-              this.validatePermission('update', row, e.target.value);
-            }}>
-              {row.permission.availablePermissions.update.map((permission: any, i: string | number) => <option key={i} value={permission}>{permission}</option>)}
-            </select>}
-          </div>
+        (new Column()).withKey('permission.update.action').withLabel('UPDATE').withCellFormatter((cell: any, row: any, rowIndex: number) => (
+          <RoleSelector mode="update" rowData={row} rowIndex={rowIndex} handleChangeEvent={this.handleChangeEvent} />
         )),
-        (new Column()).withKey('permission.delete.action').withLabel('DELETE').withCellFormatter((cell: any, row: any) => (
-          <div>
-            {row.permission.delete && <select className="form-control" defaultValue={row.permission.delete.action} onChange={(e) => {
-              this.validatePermission('delete', row, e.target.value);
-            }}>
-              {row.permission.availablePermissions.delete.map((permission: any, i: string | number) => <option key={i} value={permission}>{permission}</option>)}
-            </select>}
-          </div>
+        (new Column()).withKey('permission.delete.action').withLabel('DELETE').withCellFormatter((cell: any, row: any, rowIndex: number) => (
+          <RoleSelector mode="delete" rowData={row} rowIndex={rowIndex} handleChangeEvent={this.handleChangeEvent} />
         ))
       ],
       currentPage: 1,
@@ -102,44 +59,8 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
     this.props.fetchOrganizationList(10, 1);
   }
 
-  public validatePermission = (type: string, row: any, selectedAction: string) => {
-    row.permission[type].action = selectedAction;
-    switch (type) {
-      case 'read':
-        break;
-      case 'create':
-        const permissions = ['update', 'delete'];
-        switch (selectedAction) {
-          case 'can':
-            this.assignActions(row.permission, permissions, this.state.canActions);
-            break;
-          case 'cannot':
-            this.assignActions(row.permission, permissions, this.state.cannotActions);
-            break;
-          case 'createdBy':
-            row.permission.update.action = 'createdBy';
-            this.assignActions(row.permission, permissions, ['createdBy']);
-            break;
-        }
-        break;
-      case 'update':
-        break;
-      case 'delete':
-        break;
-
-      default:
-        break;
-    }
-  }
-
-  public assignActions(rolePermission: any, permissions: string[], actions: string[]) {
-    permissions.forEach((permission: string) => {
-      rolePermission[permission].action = actions[0];
-      rolePermission.availablePermissions[permission] = actions;
-    });
-    this.setState((prevState) => ({
-      categoryName: prevState.categoryName
-    }));
+  public handleChangeEvent = (newPermission: IPermission) => {
+    this.props.updateRolePermissionState(newPermission);
   }
 
   public getConfigList = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -167,29 +88,8 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
   public render() {
     const { organizations, models, categories, rolePermission } = this.props;
     const { categoryName, length, currentPage, columns } = this.state;
-    rolePermission.permissions.forEach((permission: any) => {
-      if (!permission.permission || !Object.keys(permission.permission).length) {
-        permission.permission = {
-          availablePermissions: {
-            ...this.state.availablePermissions
-          },
-          create: {
-            action: 'cannot'
-          },
-          delete: {
-            action: 'cannot'
-          },
-          read: {
-            action: 'cannot'
-          },
-          update: {
-            action: 'cannot'
-          }
-        };
-      }
-    });
     return (
-      <div className="adminContainer" >
+      <div className="shadow-container" >
         <div className="row">
           <div className="col-md-offset-1 col-md-2">
             <h4>Organization</h4>
@@ -258,7 +158,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   fetchConfigList: (configList: string, tenantId: string) => dispatch(fetchConfigRequest(configList, tenantId)),
   fetchOrganizationList: (limit: number, currentPage: number) => dispatch(fetchOrganizationListRequest(limit, currentPage)),
   fetchRoleList: (tenantId: string, limit: number, currentPage: number) => dispatch(fetchRoleListRequest(tenantId, limit, currentPage)),
-  fetchRolePermission: (tenantId: string, modelName: string) => dispatch(fetchRolePermissionRequest(tenantId, modelName))
+  fetchRolePermission: (tenantId: string, modelName: string) => dispatch(fetchRolePermissionRequest(tenantId, modelName)),
+  updateRolePermissionState: (rolePermission: IPermission) => dispatch(updateRolePermissionState(rolePermission))
 });
 
 interface IStateProps {
@@ -279,6 +180,7 @@ interface IDispatchProps {
   fetchOrganizationList: (limit: number, currentPage: number) => any;
   fetchRoleList: (tenantId: string, limit: number, currentPage: number) => any;
   fetchRolePermission: (tenantId: string, modelName: string) => any;
+  updateRolePermissionState: (rolePermission: IPermission) => any;
   createRolePermission: (rolePermission: IRolePermissionReducer, tenantId: string, modelName: string) => any;
 }
 

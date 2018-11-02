@@ -1,6 +1,7 @@
 import { RouterState } from 'connected-react-router';
 import { localizeReducer } from 'react-localize-redux';
 import { combineReducers } from 'redux';
+import { appFormReducer, IAppFormReducer } from './appform';
 import { configReducer, IConfigReducer } from './config';
 import { counterReducer, ICounterReducer } from './counter';
 import dynamicTableReducer, { IDataState, IMetaState } from './dynamicTable';
@@ -14,6 +15,7 @@ import { IthemeReducer, themeReducer } from './theme';
 import { IuserReducer, userReducer } from './user';
 
 const rootReducer = combineReducers({
+  appForm: appFormReducer,
   config: configReducer,
   counter: counterReducer,
   dynamicTable: dynamicTableReducer,
@@ -40,6 +42,7 @@ export interface IState {
   languageSelection: any;
   router: RouterState;
   config: IConfigReducer;
+  appForm: IAppFormReducer;
   organization: IOrganizationReducer,
   role: IRoleReducer,
   rolePermission: IRolePermissionReducer

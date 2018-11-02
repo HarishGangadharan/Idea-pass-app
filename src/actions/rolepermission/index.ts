@@ -1,3 +1,4 @@
+import { IPermission } from 'src/reducers/rolepermission';
 import Constants from './constants';
 
 export const createRolePermissionRequest = (data: any, tenantId: string, modelName: string) => ({
@@ -15,6 +16,11 @@ export const createRolePermissionSuccess = (data: any) => ({
 export const createRolePermissionFailure = (error: any) => ({
   error,
   type: Constants.CREATE_ROLE_PERMISSION_FAILURE
+});
+
+export const updateRolePermissionState = (row: IPermission) => ({
+  row,
+  type: Constants.UPDATE_ROLE_PERMISSION_STATE
 });
 
 export const fetchRolePermissionRequest = (tenantId: string, modelName: string) => ({

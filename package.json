@@ -21,7 +21,9 @@
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
     "react-scripts-ts": "^2.17.0",
-    "redux-saga": "^0.16.0"
+    "redux-saga": "^0.16.0",
+    "formiojs": "3.5.3",
+    "redux": "3.7.2"
   },
   "scripts": {
     "apply-theme": "THEME=theme1 gulp sass--theme-import",

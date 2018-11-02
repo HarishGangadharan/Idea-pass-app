@@ -8,6 +8,7 @@ import {
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { compose } from 'redux';
+import { Can } from '../../ability-context';
 import { fetchUsers } from '../../actions/user';
 import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
@@ -48,15 +49,20 @@ class Home extends React.PureComponent<IProps, IHomeState> {
   public render() {
     const { activeLanguage }: any = this.props;
     return (
-      <div className="shadow-container full-height">
-        <h3>Home</h3>
-        <h3>
-          Active Language is {activeLanguage ? activeLanguage.name : ''}{' '}
-        </h3>
-        <h3>
-          <Translate id="greeting" data={{ name: 'Idea PaaS' }} />
-        </h3>
-    </div>
+      <div className="container shadow-container">
+        <div className="row flex-column">
+          <h3>Home</h3>
+          <Can I="read" a="roles">
+            <span>Yes you can</span>
+          </Can>
+          <h3>
+            Active Language is {activeLanguage ? activeLanguage.name : ''}{' '}
+          </h3>
+          <h3>
+            <Translate id="greeting" data={{ name: 'Idea PaaS' }} />
+          </h3>
+        </div>
+      </div>
     );
   }
 }

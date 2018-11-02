@@ -5,6 +5,7 @@ import FormRenderer from './FormRendererWrapper';
 interface IRendererProps {
   formRendererSchema: any;
   submission?: object;
+  onChange?: (object?: any) => any;
   handleSubmit(data: any): void;
   getFormio?(data: any): void;
 }
@@ -15,13 +16,16 @@ class Renderer extends React.Component<IRendererProps> {
   }
 
   public render() {
-    const { formRendererSchema, handleSubmit, getFormio, submission } = this.props;
+    const { formRendererSchema, handleSubmit, onChange, getFormio, submission } = this.props;
     return (
-      <FormRenderer form={formRendererSchema}
-        submission={submission}
-        onSubmit={handleSubmit}
-        assignRef={getFormio}
-      />
+      <div>
+        <FormRenderer form={formRendererSchema}
+          submission={submission}
+          onSubmit={handleSubmit}
+          onChange={onChange}
+          assignRef={getFormio}
+        />
+      </div>
     );
   }
 }

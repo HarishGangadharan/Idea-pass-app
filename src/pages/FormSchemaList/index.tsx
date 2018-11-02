@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
+import { Can } from 'src/ability-context';
 import { fetchFormSchemaList } from '../../actions/formschema';
 import Table, { ITableUpdateProps } from '../../components/Table';
 import Column from '../../components/Table/Column';
@@ -46,9 +47,11 @@ class FormSchemaList extends React.Component<IFormSchemasProps & RouteComponentP
     const { loading, data, total } = this.props;
     return (
       <div className="shadow-container">
-        <div className="form-group">
-          <button className="btn btn-primary pull-right" onClick={() => this.builderFormSchema()}>Create New Schema</button>
-        </div>
+        <Can I="read" a="admin">
+          <div className="form-group">
+            <button className="btn btn-primary pull-right" onClick={() => this.builderFormSchema()}>Create New Schema</button>
+          </div>
+        </Can>
         <Table
           keyField="_id"
           data={data}
