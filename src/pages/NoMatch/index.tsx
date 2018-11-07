@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-const NoMatch = () => (
+const NoMatch = (object: any) => (
   <div>
-    No Match
+    No Match {object.subject}
   </div>
 );
 

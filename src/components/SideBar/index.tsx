@@ -32,7 +32,7 @@ class SideBar extends React.Component {
             Admin
         </NavLink>
         </Can>
-        <Can I="read" a="organization">
+        <Can I="read" a="appforms">
           <NavLink
             exact={true}
             to="/appforms/organization"

@@ -24,7 +24,9 @@ class FormSchemaList extends React.Component<IFormSchemasProps & RouteComponentP
       (new Column()).withKey('name').withLabel('Name'),
       (new Column()).withKey('action').withLabel('Actions').withCellFormatter((cell: any, row: any) => (
         <div>
-          <i className="glyphicon glyphicon-eye-open cursor-pointer" onClick={() => this.renderFormSchema(row._id)} />&nbsp;
+          <Can I="read" a="roles">
+            <i className="glyphicon glyphicon-eye-open cursor-pointer" onClick={() => this.renderFormSchema(row._id)} />&nbsp;
+          </Can>
           <i className="glyphicon glyphicon-edit cursor-pointer" onClick={() => this.builderFormSchema(row._id)} />
         </div>
       ))

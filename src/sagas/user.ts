@@ -45,7 +45,7 @@ function* onLogoutUser(action: any) {
     updateUserSession(false);
     storage.deleteItem(AppProperties.ROLES);
     storage.deleteItem(AppProperties.USER_ID);
-    storage.deleteItem('rulesUpdated');
+    storage.deleteItem(AppProperties.RULES_UPDATED);
     yield put(updateLoggedInStatus({ loggedIn: false }));
     yield put(logoutUserSuccess(data));
   } catch (error) {

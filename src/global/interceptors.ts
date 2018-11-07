@@ -18,9 +18,7 @@ export const updateUserSession = (valid: boolean) => {
  * @param store : Redux App Store
  */
 export const setupInterceptors = (store: any) => {
-  storage.setItem('rulesUpdated', 'false');
-  // tslint:disable-next-line:no-console
-  console.log('setup');
+  storage.setItem(AppProperties.RULES_UPDATED, 'false');
   axios.defaults.baseURL = AppProperties.BASE_URL;
   axios.defaults.headers.post['Content-Type'] = 'application/json';
   axios.defaults.validateStatus = () => true;

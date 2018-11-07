@@ -7,6 +7,7 @@ export const AppProperties = {
     { name: 'Spanish', code: 'es' }
   ],
   ROLES: 'roles',
+  RULES_UPDATED: 'rulesUpdated',
   USER_ID: 'userId',
   USER_SESSION: 'userSession'
 };

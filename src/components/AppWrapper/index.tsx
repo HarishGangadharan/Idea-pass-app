@@ -10,7 +10,7 @@ import NavBar from '../../components/NavBar';
 import SideBar from '../../components/SideBar';
 import { languages } from '../../global/languages';
 import { IState } from '../../reducers';
-import { loggedInRoutes as LoggedInRoutes,
+import { LoggedInRoutes,
   persistantRoutes as PersistantRoutes } from '../../routes';
 import defaultLanguage from '../../translations/en.welcome.json';
 

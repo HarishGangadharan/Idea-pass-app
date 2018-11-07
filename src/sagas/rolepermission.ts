@@ -1,5 +1,6 @@
 import { unpackRules } from '@casl/ability/extra';
 import { call, put } from 'redux-saga/effects';
+import { AppProperties } from 'src/constants/application.properties';
 import storage from 'src/utils/storage';
 import ability from '../ability';
 import {
@@ -13,9 +14,7 @@ import RolePermissionService from '../services/rolepermission';
 function* createRolePermission(action: any) {
   try {
     const { payload, tenantId, modelName } = action;
-    const response = yield call(RolePermissionService.createRolePermission, payload, tenantId, modelName);
-    // tslint:disable-next-line:no-console
-    console.log('response', response);
+    yield call(RolePermissionService.createRolePermission, payload, tenantId, modelName);
     yield put(createRolePermissionSuccess(payload));
   } catch (error) {
     yield put(createRolePermissionFailure(error));
@@ -56,8 +55,16 @@ function* fetchRolePermissionRules(action: any) {
     const response = yield call(RolePermissionService.fetchRolePermissionRules, userRole);
     if (response.data !== '[]') {
       ability.update(unpackRules(JSON.parse(response.data)));
+    } else {
+      const adminRules = [
+        {
+          'actions': ['read'],
+          'subject': ['admin', 'appforms', 'config' ]
+        }
+      ];
+      ability.update(adminRules);
     }
-    storage.setItem('rulesUpdated', 'true');
+    storage.setItem(AppProperties.RULES_UPDATED, 'true');
   } catch (error) {
     //
   }
