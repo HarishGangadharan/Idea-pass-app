@@ -10,6 +10,7 @@ import { withRouter } from 'react-router';
 import { compose } from 'redux';
 import { Can } from '../../ability-context';
 import { fetchUsers } from '../../actions/user';
+import ResponsiveLineChart from '../../components/HomeComponents/ResponsiveLine';
 import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
 
@@ -24,7 +25,7 @@ interface IProps extends LocalizeContextProps {
 }
 
 interface IHomeState {
-  columns: Column[]
+  columns: Column[];
 }
 
 class Home extends React.PureComponent<IProps, IHomeState> {
@@ -34,10 +35,10 @@ class Home extends React.PureComponent<IProps, IHomeState> {
     super(props);
     this.state = {
       columns: [
-        (new Column()).withKey('id').withLabel('ID'),
-        (new Column()).withKey('name').withLabel('Name'),
-        (new Column()).withKey('phone').withLabel('Phone Number'),
-        (new Column()).withKey('company.name').withLabel('Company')
+        new Column().withKey('id').withLabel('ID'),
+        new Column().withKey('name').withLabel('Name'),
+        new Column().withKey('phone').withLabel('Phone Number'),
+        new Column().withKey('company.name').withLabel('Company')
       ]
     };
   }
@@ -49,18 +50,25 @@ class Home extends React.PureComponent<IProps, IHomeState> {
   public render() {
     const { activeLanguage }: any = this.props;
     return (
-      <div className="container shadow-container">
-        <div className="row flex-column">
-          <h3>Home</h3>
-          <Can I="read" a="roles">
-            <span>Yes you can</span>
-          </Can>
-          <h3>
-            Active Language is {activeLanguage ? activeLanguage.name : ''}{' '}
-          </h3>
-          <h3>
-            <Translate id="greeting" data={{ name: 'Idea PaaS' }} />
-          </h3>
+      <div className="row flex-column">
+        <div className="col-md-8">
+          <div className="shadow-container">
+            <h3>Home</h3>
+            <Can I="read" a="roles">
+              <span>Yes you can</span>
+            </Can>
+            <h3>
+              Active Language is {activeLanguage ? activeLanguage.name : ''}{' '}
+            </h3>
+            <h3>
+              <Translate id="greeting" data={{ name: 'Idea PaaS' }} />
+            </h3>
+          </div>
+        </div>
+        <div className="col-md-4">
+          <div className="shadow-container">
+            <ResponsiveLineChart />
+          </div>
         </div>
       </div>
     );
