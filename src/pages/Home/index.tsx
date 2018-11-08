@@ -11,6 +11,7 @@ import { compose } from 'redux';
 import { Can } from '../../ability-context';
 import { fetchUsers } from '../../actions/user';
 import { Component1, ResponsiveLineChart } from '../../components';
+import Ticket from '../../components/HomeComponents/TicketComponent';
 import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
 
@@ -30,6 +31,7 @@ interface IHomeState {
 
 class Home extends React.PureComponent<IProps, IHomeState> {
   public columns: Column[];
+
 
   constructor(props: IProps) {
     super(props);
@@ -70,6 +72,7 @@ class Home extends React.PureComponent<IProps, IHomeState> {
           <div className="shadow-container">
             <ResponsiveLineChart />
           </div>
+          <Ticket/>
         </div>
       </div>
     );

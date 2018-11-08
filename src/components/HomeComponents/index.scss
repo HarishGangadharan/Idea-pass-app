@@ -5,7 +5,8 @@
 }
 
 .lineChart {
-  height: 400px;
+  height: 250px;
+  width: 100%;
 }
 
 .footer {
@@ -15,6 +16,7 @@
   .icon-list {
     .icon {
       padding: 0 10px;
+
       span {
         display: inline-block;
         font-size: 16px;
@@ -23,6 +25,66 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
+      }
+    }
+  }
+}
+
+.ticket-wrapper {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 15px;
+  background: ghostwhite;
+  border-radius: 4px;
+
+  .ticket-wrapper-header {
+    h4 {
+      margin-bottom: 2px;
+    }
+    color: $primaryTextColor;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .ticket-content {
+    ul {
+      list-style-type: none;
+      list-style: none;
+      padding: 20px 0 0 0 !important;
+      overflow-y: auto;
+      max-height: 200px;
+
+      li {
+        img {
+          width: 65px;
+          height: 65px;
+          border: 1px solid $border-color;
+          border-radius: 50%;
+        }
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid $border-color;
+
+        .ticket-header {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 5px;
+
+          .user-name {
+            font-size: 14px;
+            font-weight: 600;
+          }
+
+          .time {
+            font-size: 12px;
+            font-weight: 500;
+            font-style: italic;
+          }
+        }
       }
     }
   }
