@@ -2,7 +2,28 @@
 @import '../../_theme2.scss';
 /* endinject */
 
+$table-background: #f8f7f7;
+$table-border-color: #dddddd;
+
 .customTableContainer {
+  td,
+  th {
+    border: none !important;
+  }
+
+  thead {
+    border-bottom: 1px solid $table-border-color;
+  }
+
+  tbody {
+    tr {
+      &:nth-child(even) {
+        background-color: $table-background;
+        color: $secondaryTextColor;
+        border-color: $table-background;
+      }
+    }
+  }
 
   &.noData {
     table {
@@ -12,10 +33,12 @@
 
   &.loading {
     thead {
+      background: $table-background;
       display: table;
-      table-layout:fixed;
+      table-layout: fixed;
       width: 100%;
     }
+
     tbody {
       display: block;
       background-color: rgba(0, 0, 0, 0.1);
@@ -24,24 +47,27 @@
       background-repeat: no-repeat;
       background-size: 50px 50px;
     }
+
     tbody tr {
       display: table;
-      table-layout:fixed;
+      table-layout: fixed;
       width: 100%;
     }
-    th, td {
+
+    th,
+    td {
       width: auto;
     }
   }
 
   .pagination {
-    > li {
-      > a {
+    >li {
+      >a {
         color: $primaryColor;
       }
     }
 
-    > .active {
+    >.active {
       a {
         color: $contrastTextColour;
         background-color: $primaryColor;
@@ -51,9 +77,9 @@
   }
 
   .table-header {
-    background-color: $primaryColor;
-    color: $contrastTextColour;
-    border-color: $primaryColor;
+    background-color: $table-background;
+    color: $secondaryTextColor;
+    border-color: $table-background;
   }
 
   .table-rows {

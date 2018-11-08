@@ -32,6 +32,11 @@ interface ITableProps {
 
   // Optional props
   assignRef?: any,
+  expandable?: boolean,
+  expandRow?: {
+    renderer?: (row: any) => {},
+    showExpandColumn?: boolean
+  },
   onRowClick?: any,  // Provide callback to enable row click action
   noDataIndication?: any, // Customize no data label
   isExportable?: boolean, // Specify if Export option can be given
@@ -123,7 +128,8 @@ export default class Table extends React.Component<ITableProps, ITableContext> {
 
   public render() {
     const { keyField, data, loading, total, onRowClick, remote, isExportable, enableColumnHide,
-      enableGlobalSearch, selectable, rowSelectForExport, enableInfiniteScroll } = this.props;
+      enableGlobalSearch, selectable, rowSelectForExport, enableInfiniteScroll,
+      expandRow } = this.props;
     const { length, currentPage, columns, searchableColumns } = this.state;
     const { SearchBar } = Search;
     const selectionProps = selectable ? { selectRow: {
@@ -229,6 +235,7 @@ export default class Table extends React.Component<ITableProps, ITableContext> {
                 }}
                 content={<BootstrapTable
                   {...props.baseProps}
+                  expandRow={expandRow}
                   remote={remote || false}
                   loading={loading}
                   onTableChange={this.onTableChange}

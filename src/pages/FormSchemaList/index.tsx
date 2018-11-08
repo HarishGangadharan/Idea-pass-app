@@ -1,4 +1,6 @@
 import * as React from 'react';
+// => List of icons https://feathericons.com/
+import { Edit, Eye } from 'react-feather';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Can } from 'src/ability-context';
@@ -8,29 +10,57 @@ import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
 
 interface IFormSchemasProps {
-  data: object[],
-  total: number,
-  loading: boolean,
-  fetchFormSchemaList: any
+  data: object[];
+  total: number;
+  loading: boolean;
+  fetchFormSchemaList: any;
 }
 
-class FormSchemaList extends React.Component<IFormSchemasProps & RouteComponentProps, object>{
+class FormSchemaList extends React.Component<
+  IFormSchemasProps & RouteComponentProps,
+  object
+> {
+  public expandRow = {
+    renderer: (row: any) => {
+      return (
+        <div>
+          <p>{`This Expand row is belong to rowKey ${row._id}`}</p>
+          <p>
+            You can render anything here, also you can add additional data on
+            every row object
+          </p>
+        </div>
+      );
+    },
+    showExpandColumn: true
+  };
   private columns: Column[];
 
   constructor(props: IFormSchemasProps & RouteComponentProps) {
     super(props);
     this.columns = [
-      (new Column()).withKey('_id').withLabel('ID'),
-      (new Column()).withKey('name').withLabel('Name'),
-      (new Column()).withKey('action').withLabel('Actions').withCellFormatter((cell: any, row: any) => (
-        <div>
-          <Can I="read" a="roles">
-            <i className="glyphicon glyphicon-eye-open cursor-pointer" onClick={() => this.renderFormSchema(row._id)} />&nbsp;
-          </Can>
-          <i className="glyphicon glyphicon-edit cursor-pointer" onClick={() => this.builderFormSchema(row._id)} />&nbsp;
-          <i className="glyphicon glyphicon-list cursor-pointer" onClick={() => this.viewFormData(row.name, row._id)} />
-        </div>
-      ))
+      new Column().withKey('_id').withLabel('ID'),
+      new Column().withKey('name').withLabel('Name'),
+      new Column()
+        .withKey('action')
+        .withLabel('Actions')
+        .withCellFormatter((cell: any, row: any) => (
+          <div>
+            <Can I="read" a="roles">
+              <Eye
+                size="15"
+                className="cursor-pointer"
+                onClick={() => this.renderFormSchema(row._id)}
+              />
+              &nbsp;
+            </Can>
+            <Edit
+              size="15"
+              className="cursor-pointer"
+              onClick={() => this.builderFormSchema(row._id)}
+            />
+          </div>
+        ))
     ];
   }
 
@@ -49,19 +79,24 @@ class FormSchemaList extends React.Component<IFormSchemasProps & RouteComponentP
   public componentDidMount() {
     this.fetchFormSchemas(1, 10, '_id', 1);
   }
-
   public render() {
     const { loading, data, total } = this.props;
     return (
       <div className="shadow-container">
         <Can I="read" a="admin">
           <div className="form-group">
-            <button className="btn btn-primary pull-right" onClick={() => this.builderFormSchema()}>Create New Schema</button>
+            <button
+              className="btn btn-primary pull-right"
+              onClick={() => this.builderFormSchema()}
+            >
+              Create New Schema
+            </button>
           </div>
         </Can>
         <Table
           keyField="_id"
           data={data}
+          expandRow={this.expandRow}
           columns={this.columns}
           loading={loading}
           length={10}
@@ -75,7 +110,12 @@ class FormSchemaList extends React.Component<IFormSchemasProps & RouteComponentP
     );
   }
 
-  private fetchFormSchemas = (currentPage: number, length: number, sortField: string, sortOrder: number) => {
+  private fetchFormSchemas = (
+    currentPage: number,
+    length: number,
+    sortField: string,
+    sortOrder: number
+  ) => {
     this.props.fetchFormSchemaList(length, currentPage, sortField, sortOrder);
   }
 }
@@ -86,8 +126,11 @@ const mapStateToProps = (state: IState) => ({
   total: state.formSchema.list.total
 });
 
-const mapDispatchToProps = ({
+const mapDispatchToProps = {
   fetchFormSchemaList
-});
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(FormSchemaList);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FormSchemaList);

@@ -1,5 +1,10 @@
 @import '../../_theme2.scss';
 
+.nav-link {
+  display: flex !important;
+  align-items: center;
+}
+
 .sidebar {
   height: 100%;
   width: 160px;

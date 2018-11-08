@@ -64,7 +64,7 @@ class DynamicTableRenderer extends React.Component<RouteComponentProps & IDynami
       isExportable, enableInfiniteScroll, globalSearch, rowSelectForExport, noDataIndicator } = this.props;
     if (!schemaLoading) {
       return (
-        <div className="container">
+        <div className="shadow-container">
           <div className="row">
             <div className="col-md-6 dynamic-table-header">
               <h3> {name} </h3>

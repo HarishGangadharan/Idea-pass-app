@@ -37,6 +37,25 @@ export interface IColDef {
   textField?: string
 }
 
+export interface IColumnProps {
+  isHidden?: boolean,
+  searchKey?: string,
+  type?: string,
+  key?: string,
+  label?: string,
+  isActionColumn?: boolean,
+  cellFormatter?: any,
+  unit?: any,
+  sortable?: boolean,
+  rowClass?: any,
+  onClick?: any,
+  align?: any,
+  headerFormatter?: any,
+  headerClass?: any,
+  filterConfig?: object,
+  isFilterable?: boolean,
+}
+
 export default class Column {
   public static COLUMN_TYPES = {
     DATE: 'DATE',
@@ -45,7 +64,6 @@ export default class Column {
     SELECT: 'SELECT',
     TEXT: 'TEXT'
   };
-
   /**
    * Transform object to Column
    */
@@ -80,7 +98,6 @@ export default class Column {
   public isHidden: boolean;
   public searchKey: string;
   public type: string;
-
   private key: string;
   private label: string;
   private isActionColumn: boolean;
@@ -95,31 +112,48 @@ export default class Column {
   private filterConfig: object;
   private isFilterable: boolean;
 
-  constructor() {
-    this.key = '';
-    this.label = '';
-    this.isActionColumn = false;
-    this.isHidden = false;
-    this.searchKey = '';
-    this.cellFormatter = (cell: any, row: object, rowIndex: number, formatExtraData: any) : any => cell;
-    this.unit = '';
-    this.sortable = false;
-    this.rowClass = '';
-    this.onClick = (e: any) => {
+  constructor({
+    key,
+    label,
+    isActionColumn,
+    isHidden,
+    searchKey,
+    cellFormatter,
+    unit,
+    sortable,
+    rowClass,
+    onClick,
+    align,
+    headerFormatter,
+    headerClass,
+    type,
+    filterConfig,
+    isFilterable
+  } : IColumnProps = {} as IColumnProps) {
+    this.key = key ||  '';
+    this.label = label ||  '';
+    this.isActionColumn = isActionColumn ||  false;
+    this.isHidden = isHidden ||  false;
+    this.searchKey = searchKey ||  '';
+    this.cellFormatter = cellFormatter ? cellFormatter : (cell: any, row: object, rowIndex: number, formatExtraData: any) : any => cell;
+    this.unit = unit ||  '';
+    this.sortable = sortable ||  false;
+    this.rowClass = rowClass ||  '';
+    this.onClick = onClick ? onClick : (e: any ) => {
       e.preventDefault();
     };
-    this.align = 'left';
-    this.headerFormatter = (column: IBootstrapColumn, colIndex: number, components: IHeaderComponent) : any => (
+    this.align = align ||  'left';
+    this.headerFormatter = headerFormatter ? headerFormatter : (column : IBootstrapColumn, colIndex : number, components : IHeaderComponent ) : any => (
       <div>
         {column.text}
         {components.sortElement}
         {components.filterElement}
       </div>
     );
-    this.headerClass = '';
-    this.type = Column.COLUMN_TYPES.NONE;
-    this.filterConfig = {};
-    this.isFilterable = false;
+    this.headerClass = headerClass ||  '';
+    this.type = type ||  Column.COLUMN_TYPES.NONE;
+    this.filterConfig = filterConfig ||  {};
+    this.isFilterable = isFilterable ||  false;
   }
 
   /**
