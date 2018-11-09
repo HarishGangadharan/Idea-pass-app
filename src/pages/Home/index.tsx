@@ -10,7 +10,7 @@ import { withRouter } from 'react-router';
 import { compose } from 'redux';
 import { Can } from '../../ability-context';
 import { fetchUsers } from '../../actions/user';
-import ResponsiveLineChart from '../../components/HomeComponents/ResponsiveLine';
+import { Component1, ResponsiveLineChart } from '../../components';
 import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
 
@@ -52,6 +52,7 @@ class Home extends React.PureComponent<IProps, IHomeState> {
     return (
       <div className="row flex-column">
         <div className="col-md-8">
+          <Component1 />
           <div className="shadow-container">
             <h3>Home</h3>
             <Can I="read" a="roles">

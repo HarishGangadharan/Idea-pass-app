@@ -1,7 +1,29 @@
+@import '../../_theme2.scss';
+
 .chartHead {
   margin: 0;
 }
 
 .lineChart {
   height: 400px;
+}
+
+.footer {
+  border-top: 1px solid $border-color;
+  padding: 10px 0 0 0;
+
+  .icon-list {
+    .icon {
+      padding: 0 10px;
+      span {
+        display: inline-block;
+        font-size: 16px;
+        line-height: 1;
+        margin-left: 5px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+  }
 }
