@@ -9,30 +9,16 @@ import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
 
 interface IFormSchemasProps {
-  data: object[];
-  total: number;
-  loading: boolean;
-  fetchFormSchemaList: any;
+  data?: object[];
+  total?: number;
+  loading?: boolean;
+  fetchFormSchemaList?: any;
 }
 
 class FormSchemaList extends React.Component<
   IFormSchemasProps & RouteComponentProps,
   object
-> {
-  public expandRow = {
-    renderer: (row: any) => {
-      return (
-        <div>
-          <p>{`This Expand row is belong to rowKey ${row._id}`}</p>
-          <p>
-            You can render anything here, also you can add additional data on
-            every row object
-          </p>
-        </div>
-      );
-    },
-    showExpandColumn: true
-  };
+  > {
   private columns: Column[];
 
   constructor(props: IFormSchemasProps & RouteComponentProps) {
@@ -57,6 +43,12 @@ class FormSchemaList extends React.Component<
               display="inline"
               name="Edit"
               onClick={() => this.builderFormSchema(row._id)}
+            />
+            &nbsp;
+            <BaseIcon
+              display="inline"
+              name="List"
+              onClick={() => this.viewFormData(row.name, row._id)}
             />
           </div>
         ))
@@ -94,12 +86,12 @@ class FormSchemaList extends React.Component<
         </Can>
         <Table
           keyField="_id"
-          data={data}
-          expandRow={this.expandRow}
+          data={data || []}
           columns={this.columns}
-          loading={loading}
-          length={10}
-          total={total}
+          loading={loading || false}
+          length={length || 10}
+          total={total || 0}
+          remote={true}
           onUpdate={(nextState: ITableUpdateProps) => {
             const { currentPage, length, sortField, sortOrder } = nextState;
             this.fetchFormSchemas(currentPage, length, sortField, sortOrder);

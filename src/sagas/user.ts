@@ -30,6 +30,9 @@ function* onLoginUser(action: any) {
     const assignedRoles = response.data.roles.join(',');
     storage.setItem(AppProperties.USER_ID, response.data._id);
     storage.setItem(AppProperties.ROLES, assignedRoles);
+    if (response.data.tenant) {
+      storage.setItem(AppProperties.TENANT, response.data.tenant);
+    }
     yield call(fetchRolePermissionRules, { userRole: assignedRoles });
     yield put(updateLoggedInStatus({ loggedIn: Boolean(response) }));
     yield put(loginUserSuccess(response));
@@ -46,6 +49,7 @@ function* onLogoutUser(action: any) {
     storage.deleteItem(AppProperties.ROLES);
     storage.deleteItem(AppProperties.USER_ID);
     storage.deleteItem(AppProperties.RULES_UPDATED);
+    storage.deleteItem(AppProperties.TENANT);
     yield put(updateLoggedInStatus({ loggedIn: false }));
     yield put(logoutUserSuccess(data));
   } catch (error) {

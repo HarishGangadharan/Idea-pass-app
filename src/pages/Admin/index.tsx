@@ -7,16 +7,18 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { compose } from 'redux';
 import { fetchConfigRequest } from '../../actions/config';
-import { fetchOrganizationListRequest } from '../../actions/organization';
+import { fetchOrganizationListRequest, fetchOrganizationRequest } from '../../actions/organization';
 import { fetchRoleListRequest } from '../../actions/role';
 import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
 
 import { createRolePermissionRequest, fetchRolePermissionRequest, updateRolePermissionState } from 'src/actions/rolepermission';
 import Table, { ITableState } from 'src/components/Table';
+import { AppProperties } from 'src/constants/application.properties';
 import { IOrganization } from 'src/reducers/organization';
 import { IRole } from 'src/reducers/role';
 import { IPermission, IRolePermissionReducer } from 'src/reducers/rolepermission';
+import storage from 'src/utils/storage';
 import './admin.css';
 import RoleSelector from './roleSelector';
 
@@ -27,6 +29,7 @@ interface IAdminState {
   columns: Column[];
   currentPage: number;
   length: number;
+  tenantAdmin: boolean;
 }
 
 class Admin extends React.Component<IAdminProps, IAdminState> {
@@ -51,12 +54,22 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
         ))
       ],
       currentPage: 1,
-      length: 10
+      length: 10,
+      tenantAdmin: false
     };
   }
 
   public componentDidMount() {
-    this.props.fetchOrganizationList(10, 1);
+    const tenant = storage.getItem(AppProperties.TENANT);
+    if (tenant) {
+      this.props.rolePermission.tenant = tenant;
+      this.props.fetchOrganizationRequest(tenant);
+      this.props.fetchConfigList('registeredModels,permissionCategory,permissionTable', tenant);
+      this.setState({tenantAdmin: true});
+    } else {
+      this.props.rolePermission.tenant = '';
+      this.props.fetchOrganizationList(10, 1);
+    }
   }
 
   public handleChangeEvent = (newPermission: IPermission) => {
@@ -86,19 +99,21 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
   }
 
   public render() {
-    const { organizations, models, categories, rolePermission } = this.props;
-    const { categoryName, length, currentPage, columns } = this.state;
+    const { organization, organizations, models, categories, rolePermission } = this.props;
+    const { categoryName, length, currentPage, columns, tenantAdmin } = this.state;
     return (
-      <div className="shadow-container" >
+      <div className="shadow-container">
         <div className="row">
           <div className="col-md-offset-1 col-md-2">
             <h4>Organization</h4>
           </div>
           <div className="col-md-6">
-            <select className="form-control" defaultValue={rolePermission.tenant} onChange={(e) => this.getConfigList(e)}>
+            {tenantAdmin ? <select className="form-control" defaultValue={rolePermission.tenant} disabled={true}>
+                <option value={organization._id}>{organization.name}</option>
+              </select> : <select className="form-control" defaultValue={rolePermission.tenant} onChange={(e) => this.getConfigList(e)}>
               <option value="">SELECT ORGANIZATION</option>
               {organizations.map((org, i) => <option key={i} value={org._id}>{org.name}</option>)}
-            </select>
+            </select>}
           </div>
         </div>
         <div className="row">
@@ -144,8 +159,10 @@ const mapStateToProps = (state: IState) => ({
   categories: state.config.categories,
   configLoading: state.config.loading,
   models: state.config.models,
-  organizationLoading: state.organization.list.loading,
+  organization: state.organization.currentOrganization,
+  organizationLoading: state.organization.currentOrganization.loading,
   organizations: state.organization.list.data,
+  organizationsLoading: state.organization.list.loading,
   permissionList: state.config.permissionList,
   roleLoading: state.role.list.loading,
   rolePermission: state.rolePermission,
@@ -157,6 +174,7 @@ const mapDispatchToProps = (dispatch: any) => ({
   createRolePermission: (rolePermission: IRolePermissionReducer, tenantId: string, modelName: string) => dispatch(createRolePermissionRequest(rolePermission, tenantId, modelName)),
   fetchConfigList: (configList: string, tenantId: string) => dispatch(fetchConfigRequest(configList, tenantId)),
   fetchOrganizationList: (limit: number, currentPage: number) => dispatch(fetchOrganizationListRequest(limit, currentPage)),
+  fetchOrganizationRequest: (tenantId: string) => dispatch(fetchOrganizationRequest(tenantId)),
   fetchRoleList: (tenantId: string, limit: number, currentPage: number) => dispatch(fetchRoleListRequest(tenantId, limit, currentPage)),
   fetchRolePermission: (tenantId: string, modelName: string) => dispatch(fetchRolePermissionRequest(tenantId, modelName)),
   updateRolePermissionState: (rolePermission: IPermission) => dispatch(updateRolePermissionState(rolePermission))
@@ -164,12 +182,14 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 interface IStateProps {
   organizations: IOrganization[];
+  organization: IOrganization;
   roles: IRole[];
   models: string[];
   categories: string[];
   permissionList: any;
   configLoading: boolean;
   organizationLoading: boolean;
+  organizationsLoading: boolean;
   roleLoading: boolean;
   rolePermission: IRolePermissionReducer;
   rolePermissionLoading: boolean;
@@ -178,6 +198,7 @@ interface IStateProps {
 interface IDispatchProps {
   fetchConfigList: (configList: string, tenantId: string) => any;
   fetchOrganizationList: (limit: number, currentPage: number) => any;
+  fetchOrganizationRequest: (tenantId: string) => any;
   fetchRoleList: (tenantId: string, limit: number, currentPage: number) => any;
   fetchRolePermission: (tenantId: string, modelName: string) => any;
   updateRolePermissionState: (rolePermission: IPermission) => any;

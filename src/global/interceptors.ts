@@ -47,6 +47,8 @@ export const setupInterceptors = (store: any) => {
           updateUserSession(false);
           storage.deleteItem(AppProperties.ROLES);
           storage.deleteItem(AppProperties.USER_ID);
+          storage.deleteItem(AppProperties.RULES_UPDATED);
+          storage.deleteItem(AppProperties.TENANT);
           store.dispatch(updateLoggedInStatus({ loggedIn: false }));
           throw new ApiError(ERRORS.SERVER_ERROR);
       }

@@ -26,10 +26,10 @@ class SideBar extends React.Component {
         <Can I="read" a="admin">
           <NavLink
             exact={true}
-            to="/admin"
+            to="/rolespermissions"
             activeClassName="active"
             className="nav-link">
-            <BaseIcon name="User" label="Admin" />
+            <BaseIcon name="User" label="Roles" />
         </NavLink>
         </Can>
         <Can I="read" a="appforms">

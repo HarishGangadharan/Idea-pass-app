@@ -9,6 +9,7 @@ export const AppProperties = {
   ],
   ROLES: 'roles',
   RULES_UPDATED: 'rulesUpdated',
+  TENANT: 'tenant',
   USER_ID: 'userId',
   USER_SESSION: 'userSession'
 };

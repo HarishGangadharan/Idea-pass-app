@@ -27,7 +27,7 @@ export class LoggedInRoutes extends React.Component {
       },
       {
         component: Admin,
-        path: '/admin',
+        path: '/rolespermissions',
         subject: 'admin'
       },
       {
@@ -43,6 +43,11 @@ export class LoggedInRoutes extends React.Component {
         component: FormRenderer,
         exact: true,
         path: '/formRenderer/:id'
+      },
+      {
+        component: FormRenderer,
+        exact: true,
+        path: '/formRenderer/:id/:submissionId'
       },
       {
         component: FormDataList,

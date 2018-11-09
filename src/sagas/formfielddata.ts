@@ -11,9 +11,9 @@ import FormFieldDataService from '../services/formfielddata';
 
 function* fetchFormFieldData(action: any) {
   try {
-    const { formName, submissionId } = action;
-    const data = yield call(FormFieldDataService.fetchFormFieldData, formName, submissionId);
-    yield put(fetchFormFieldDataSuccess(data));
+    const { formName, formDataId } = action;
+    const response = yield call(FormFieldDataService.fetchFormFieldData, formName, formDataId);
+    yield put(fetchFormFieldDataSuccess(response.data));
   } catch (error) {
     yield put(fetchFormFieldDataFailure(error));
   }

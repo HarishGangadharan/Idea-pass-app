@@ -22,7 +22,7 @@ import {
 import DynamicTableSaga from './dynamicTable';
 import { fetchFormFieldData, fetchFormFieldDataList, saveFormFieldData  } from './formfielddata';
 import { createFormSchema, fetchFormList, fetchFormSchema } from './formschema';
-import { fetchOrganizationList } from './organization';
+import { fetchOrganization, fetchOrganizationList } from './organization';
 import { fetchRoleList } from './role';
 import { createRolePermission, fetchRolePermission, fetchRolePermissionRules } from './rolepermission';
 import { onFetchUsers, onLoginUser, onLogoutUser } from './user';
@@ -44,6 +44,7 @@ export default function* rootSaga() {
   yield takeLatest(DynamicTableConstants.GET_TABLE_DATA, DynamicTableSaga.fetchTableData);
   yield takeLatest(DynamicTableConstants.GET_TABLE_META, DynamicTableSaga.fetchTableMeta);
   yield takeLatest(OrganizationConstants.FETCH_ORGANIZATION_LIST_REQUEST, fetchOrganizationList);
+  yield takeLatest(OrganizationConstants.FETCH_ORGANIZATION_REQUEST, fetchOrganization);
   yield takeLatest(RoleConstants.FETCH_ROLE_LIST_REQUEST, fetchRoleList);
   yield takeLatest(RolePermissionConstants.FETCH_ROLE_PERMISSION_REQUEST, fetchRolePermission);
   yield takeLatest(RolePermissionConstants.CREATE_ROLE_PERMISSION_REQUEST, createRolePermission);

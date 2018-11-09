@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { fetchFormFieldDataListRequest } from '../../actions/formfielddata';
-import Table, { ITableState } from '../../components/Table';
+import Table, { ITableUpdateProps } from '../../components/Table';
 import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
 
@@ -54,26 +54,23 @@ class FormDataList extends React.Component<IFormSchemasProps & RouteComponentPro
 
   public render() {
     const { loading, data, total } = this.props;
+    const { currentPage, length } = this.state;
     return (
-      <div className="row">
-        <div className="container">
-          <div className="form-group">
-            <button className="btn btn-primary pull-right" onClick={() => this.renderFormSchema()}>Add Data</button>
-          </div>
-        </div>
+      <div className="shadow-container">
+        <button className="btn btn-primary pull-right" onClick={() => this.renderFormSchema()}>Add Data</button>
         <Table
           keyField="formfielddata"
           data={data}
           columns={this.state.columns}
           loading={loading}
-          length={10}
-          currentPage={1}
+          length={length}
+          currentPage={currentPage}
           total={total}
-          onUpdate={(nextState: ITableState) => {
-            const { page, sizePerPage } = nextState;
+          remote={true}
+          onUpdate={(nextState: ITableUpdateProps) => {
             this.setState({
-              currentPage: page,
-              length: sizePerPage
+              currentPage: nextState.currentPage,
+              length: nextState.length
             }, this.fetchFormDatas);
           }}
         />

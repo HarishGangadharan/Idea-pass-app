@@ -23,8 +23,12 @@ function* createFormSchema(action: any) {
 
 function* fetchFormSchema(action: any) {
   try {
-    const { schemaId } = action;
+    const { schemaId, callback } = action;
     const formSchemas = yield call(FormSchemaService.fetchFormSchema, schemaId);
+    const { name } = formSchemas.data;
+    if (callback) {
+      callback(name);
+    }
     yield put(fetchFormSchemaSuccess(formSchemas.data));
   } catch (error) {
     yield put(fetchFormSchemaFailure(error));

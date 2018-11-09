@@ -6,15 +6,15 @@ import {
   withLocalize
 } from 'react-localize-redux';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { compose } from 'redux';
-import { Can } from '../../ability-context';
 import { fetchUsers } from '../../actions/user';
 import { Component1, ResponsiveLineChart } from '../../components';
 import Ticket from '../../components/HomeComponents/TicketComponent';
 import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
 
+import FormSchemaList from '../FormSchemaList';
 import './home.css';
 
 interface IProps extends LocalizeContextProps {
@@ -29,11 +29,11 @@ interface IHomeState {
   columns: Column[];
 }
 
-class Home extends React.PureComponent<IProps, IHomeState> {
+class Home extends React.PureComponent<IProps & RouteComponentProps, IHomeState> {
   public columns: Column[];
 
 
-  constructor(props: IProps) {
+  constructor(props: IProps & RouteComponentProps) {
     super(props);
     this.state = {
       columns: [
@@ -55,11 +55,9 @@ class Home extends React.PureComponent<IProps, IHomeState> {
       <div className="row flex-column">
         <div className="col-md-8">
           <Component1 />
+          <FormSchemaList {...this.props}/>
           <div className="shadow-container">
             <h3>Home</h3>
-            <Can I="read" a="roles">
-              <span>Yes you can</span>
-            </Can>
             <h3>
               Active Language is {activeLanguage ? activeLanguage.name : ''}{' '}
             </h3>

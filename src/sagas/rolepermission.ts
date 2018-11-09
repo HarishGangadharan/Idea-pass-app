@@ -54,18 +54,15 @@ function* fetchRolePermissionRules(action: any) {
     const { userRole } = action;
     const response = yield call(RolePermissionService.fetchRolePermissionRules, userRole);
     if (response.data !== '[]') {
-      ability.update([...unpackRules(JSON.parse(response.data)), {
-        'actions': ['read'],
-        'subject': ['default']
-      }]);
+      ability.update([...unpackRules(JSON.parse(response.data))]);
     } else {
-      const adminRules = [
+      const defaultRules = [
         {
           'actions': ['read'],
-          'subject': ['admin', 'appforms', 'config', 'default' ]
+          'subject': ['default']
         }
       ];
-      ability.update(adminRules);
+      ability.update(defaultRules);
     }
     storage.setItem(AppProperties.RULES_UPDATED, 'true');
   } catch (error) {

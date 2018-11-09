@@ -3,7 +3,7 @@ import { IActionProps } from '.';
 import FormFieldDataConstants from '../actions/formfielddata/constants';
 
 interface IFormFieldData {
-  submissionData: any;
+  data: any;
   isLoading: boolean;
 }
 
@@ -15,13 +15,13 @@ interface IFormFieldDatas {
 }
 
 interface IFormFieldDataReducer {
-  submissionData: IFormFieldData,
+  submission: IFormFieldData,
   list: IFormFieldDatas;
 }
 
 const currentFormInitialState = {
-  isLoading: false,
-  submissionData: {}
+  data: {},
+  isLoading: false
 };
 
 const listInitialState = {
@@ -57,7 +57,7 @@ const formFieldDataReducer = (state: IFormFieldData = currentFormInitialState, a
     case FormFieldDataConstants.FETCH_FORM_FIELD_DATA_SUCCESS:
       return {
         ...state,
-        formSchema: action.payload,
+        data: {...action.data},
         isLoading: false
       };
     case FormFieldDataConstants.FETCH_FORM_FIELD_DATA_FAILURE:
@@ -111,7 +111,7 @@ const formFieldDataListReducer = (state: IFormFieldDatas = listInitialState, act
 
 const formFieldDataReducers = combineReducers({
   list: formFieldDataListReducer,
-  submissionData: formFieldDataReducer
+  submission: formFieldDataReducer
 });
 
 export { formFieldDataReducers, IFormFieldDataReducer, IFormFieldData, IFormFieldDatas };
