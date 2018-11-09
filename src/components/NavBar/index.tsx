@@ -22,13 +22,12 @@ interface INavProps extends LocalizeContextProps, IStateProps, IDispatchProps {
 
 class NavBar extends React.Component<INavProps, INavState> {
   private static loadStyleSheet(theme: string) {
-    const links = document.querySelectorAll('link[rel=stylesheet]');
-    links.forEach(link => {
-      if (link.parentNode) {
-        link.parentNode.removeChild(link);
+    const styleSheets = document.querySelectorAll('link[rel=stylesheet]');
+    styleSheets.forEach((styleSheet: any) => {
+      if (styleSheet.parentNode && !styleSheet.sheet.href.includes('chunk')) {
+        styleSheet.parentNode.removeChild(styleSheet);
       }
     });
-
     const sheet = document.createElement('link');
     sheet.rel = 'stylesheet';
     sheet.href = `./static/css/${theme}.css`;

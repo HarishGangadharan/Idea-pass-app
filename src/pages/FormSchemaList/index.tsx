@@ -1,10 +1,9 @@
 import * as React from 'react';
-// => List of icons https://feathericons.com/
-import { Edit, Eye } from 'react-feather';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Can } from 'src/ability-context';
 import { fetchFormSchemaList } from '../../actions/formschema';
+import { BaseIcon } from '../../components/index';
 import Table, { ITableUpdateProps } from '../../components/Table';
 import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
@@ -47,16 +46,16 @@ class FormSchemaList extends React.Component<
         .withCellFormatter((cell: any, row: any) => (
           <div>
             <Can I="read" a="roles">
-              <Eye
-                size="15"
-                className="cursor-pointer"
+              <BaseIcon
+                display="inline"
+                name="Eye"
                 onClick={() => this.renderFormSchema(row._id)}
               />
               &nbsp;
             </Can>
-            <Edit
-              size="15"
-              className="cursor-pointer"
+            <BaseIcon
+              display="inline"
+              name="Edit"
               onClick={() => this.builderFormSchema(row._id)}
             />
           </div>

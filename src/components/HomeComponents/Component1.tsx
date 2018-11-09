@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Clock, MoreHorizontal, Pocket, Share2 } from 'react-feather';
+import { BaseIcon } from '../index';
 import img from './layer1.png';
 
 class Component1 extends React.Component<{}, any> {
@@ -31,21 +31,17 @@ class Component1 extends React.Component<{}, any> {
         <div className="footer">
           <div className="row icon-list">
             <div className="col-md-6 icon">
-              <Clock size="20" className="cursor-pointer"/>
-              <span>23 October 2018, 10:00AM</span>
+              <BaseIcon name="Clock" label="23 October 2018, 10:00AM"/>
             </div>
             <div className="col-md-6 text-right">
               <span className="icon">
-                <Share2 size="20" className="cursor-pointer"/>
-                <span>Share</span>
+                <BaseIcon name="Share2" display="inline" label="Share"/>
               </span>
               <span className="icon">
-                <Pocket size="20" className="cursor-pointer"/>
-                <span>Saved</span>
+                <BaseIcon name="Pocket" display="inline" label="Saved"/>
               </span>
               <span className="icon">
-                <MoreHorizontal size="20" className="cursor-pointer"/>
-                <span>More</span>
+                <BaseIcon name="MoreHorizontal" display="inline" label="More"/>
               </span>
             </div>
           </div>

@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { Globe, Home, Layers, User } from 'react-feather';
 import { NavLink } from 'react-router-dom';
-
 import { Can } from 'src/ability-context';
+import { BaseIcon } from '../index';
 import './SideBar.css';
 
 class SideBar extends React.Component {
@@ -15,16 +14,14 @@ class SideBar extends React.Component {
           to="/"
           activeClassName="active"
           className="nav-link">
-          <Home size="15" className="cursor-pointer" />&nbsp;
-          Home
+          <BaseIcon name="Home" label="Home" />
         </NavLink>
         <NavLink
           exact={true}
           to="/formschemalist"
           activeClassName="active"
           className="nav-link">
-          <Layers size="15" className="cursor-pointer" />&nbsp;
-          Schemas
+          <BaseIcon name="Layers" label="Schemas" />
         </NavLink>
         <Can I="read" a="admin">
           <NavLink
@@ -32,8 +29,7 @@ class SideBar extends React.Component {
             to="/admin"
             activeClassName="active"
             className="nav-link">
-            <User size="15" className="cursor-pointer"/>&nbsp;
-            Admin
+            <BaseIcon name="User" label="Admin" />
         </NavLink>
         </Can>
         <Can I="read" a="appforms">
@@ -42,8 +38,7 @@ class SideBar extends React.Component {
             to="/appforms/organization"
             activeClassName="active"
             className="nav-link">
-            <Globe size="15" className="cursor-pointer"/>&nbsp;
-            Organization
+            <BaseIcon name="Globe" label="Organization" />
         </NavLink>
         </Can>
       </div>

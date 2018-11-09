@@ -1,3 +1,4 @@
+import BaseIcon from './BaseComponents/BaseIcon';
 import HelloChild from './HelloChild';
 import Component1 from './HomeComponents/Component1';
 import ResponsiveLineChart from './HomeComponents/ResponsiveLine';
@@ -9,5 +10,6 @@ export {
   HelloChild,
   NavBar,
   ResponsiveLineChart,
-  SideBar
+  SideBar,
+  BaseIcon
 };

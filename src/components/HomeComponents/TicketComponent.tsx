@@ -58,12 +58,12 @@ class Ticket extends React.Component<{}, any> {
         </div>
         <div className="row ticket-content">
           <ul className="tickets">
-            {this.state.tickets.map((ticket: any) => (
-              <li className="ticket row">
-                <div className="col-md-3">
+            {this.state.tickets.map((ticket: any, index: number) => (
+              <li className="ticket row" key={index}>
+                <div className="col-lg-3 col-sm-3 col-md-3">
                   <img src={ticket.user.gender === 'male' ? boy : girl} />
                 </div>
-                <div className="col-md-9">
+                <div className="col-lg-9 col-sm-9 col-md-9">
                   <div className="ticket-header">
                     <span className="user-name">{ticket.user.name}</span>
                     <span className="time"> {ticket.time}</span>
