@@ -4,6 +4,7 @@ import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { compose } from 'redux';
+import logo from '../../../src/logo.svg';
 import { changeTheme } from '../../actions/theme';
 import { logoutUser } from '../../actions/user';
 import { IState } from '../../reducers';
@@ -61,7 +62,9 @@ class NavBar extends React.Component<INavProps, INavState> {
         <Navbar collapseOnSelect={true} fixedTop={true} fluid={true}>
           <Navbar.Header>
             <Navbar.Brand>
-              <a href="#">Idea PaaS</a>
+              <a href="/">
+              <img className="logo" src={logo} />
+              </a>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>

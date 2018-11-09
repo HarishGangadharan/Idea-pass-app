@@ -18,12 +18,3 @@ $hower-color: #faf7f8;
 
 //Colors
 $white: #fff;
-
-
-@mixin shadow-container {
-  box-shadow: $box-shadow;
-  border-radius: 5px;
-  border: 1px solid $border-color-10;
-  background-color: $white;
-  padding: 10px;
-}

@@ -5,6 +5,10 @@
 .navbar-container {
   margin-bottom: 10px;
 
+  .logo{
+    height: 30px;
+  }
+
   .navbar {
     border-radius: 0;
     background-color: $primaryColor;

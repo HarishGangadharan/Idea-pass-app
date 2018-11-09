@@ -8,5 +8,9 @@ export const themes = {
   theme2: {
     primaryColor: styles.theme2PrimaryColor,
     primaryTextColor: styles.theme1PrimaryTextColor
+  },
+  theme3: {
+    primaryColor: styles.theme3PrimaryColor,
+    primaryTextColor: styles.theme3PrimaryTextColor
   }
 };

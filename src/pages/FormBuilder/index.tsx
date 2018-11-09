@@ -96,7 +96,7 @@ class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchM
       }
     };
     return (
-      <div>
+      <div className="shadow-container">
         {!isLoading &&
           <React.Fragment>
             <div>

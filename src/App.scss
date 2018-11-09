@@ -1,7 +1,8 @@
 /* inject:scss */
 @import '_theme2.scss';
-@import '_bootstrapOverrides.scss';
 /* endinject */
+@import '_bootstrapOverrides.scss';
+@import '_mixins.scss';
 
 .appContainer {
   font-size: 14px;

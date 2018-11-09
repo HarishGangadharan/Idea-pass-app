@@ -1,4 +1,6 @@
+/* inject:scss */
 @import '../../_theme2.scss';
+/* endinject */
 
 .nav-link {
   display: flex !important;
@@ -10,28 +12,24 @@
   width: 160px;
   position: fixed;
   z-index: 1;
-  top: 80px;
+  top: 45px;
   left: 0;
   background-color: transparent;
   overflow-x: hidden;
   padding-top: 16px;
-}
-
-.sidebar a {
-  padding: 6px 8px 6px 16px;
-  text-decoration: none;
-  display: block;
-  border-left: 4px solid transparent;
-  color: $primaryTextColor;
-}
-
-.sidebar {
-  a:hover {
-    color: $primaryColor;
-  }
-
-  a.active {
-    color: $primaryColor;
-    border-left: 4px solid $primaryColor;
+  a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    display: block;
+    border-left: 4px solid transparent;
+    color: $primaryTextColor;
+    &:hover {
+      color: $primaryColor;
+    }
+  
+    &.active {
+      color: $primaryColor;
+      border-left: 4px solid $primaryColor;
+    }
   }
 }

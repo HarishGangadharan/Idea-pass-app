@@ -25,18 +25,18 @@ interface IAppWrapperState {
   status: string;
 }
 
-function BackdropSvgImage() {
-  return <svg className="backdrop" version="1.0" xmlns="http://www.w3.org/2000/svg"
-  width="1429.000000pt" height="175.000000pt" viewBox="0 0 1429.000000 175.000000"
-  preserveAspectRatio="xMidYMid meet">
-    <g transform="translate(0.000000,175.000000) scale(0.100000,-0.100000)"
-    fill="#000000" stroke="none">
-    <path d="M2 1268 l3 -482 315 -38 c705 -84 2408 -261 3050 -318 3317 -291
-    6010 -430 8355 -430 808 0 2099 39 2498 76 l67 6 0 834 0 834 -7145 0 -7145 0
-    2 -482z"/>
-    </g>
-  </svg>;
-}
+// function BackdropSvgImage() {
+//   return <svg className="backdrop" version="1.0" xmlns="http://www.w3.org/2000/svg"
+//   width="1429.000000pt" height="175.000000pt" viewBox="0 0 1429.000000 175.000000"
+//   preserveAspectRatio="xMidYMid meet">
+//     <g transform="translate(0.000000,175.000000) scale(0.100000,-0.100000)"
+//     fill="#000000" stroke="none">
+//     <path d="M2 1268 l3 -482 315 -38 c705 -84 2408 -261 3050 -318 3317 -291
+//     6010 -430 8355 -430 808 0 2099 39 2498 76 l67 6 0 834 0 834 -7145 0 -7145 0
+//     2 -482z"/>
+//     </g>
+//   </svg>;
+// }
 
 class AppWrapper extends React.Component<IAppWrapperProps, IAppWrapperState> {
   constructor(props: IAppWrapperProps) {
@@ -59,7 +59,7 @@ class AppWrapper extends React.Component<IAppWrapperProps, IAppWrapperState> {
           isUserLoggedIn && (
             <Fragment>
               <NavBar key="nav"/>
-              <BackdropSvgImage />
+              {/* <BackdropSvgImage /> */}
               <div className="container-fluid">
                 <SideBar/>
                 <div key="mainContainer" className="main">

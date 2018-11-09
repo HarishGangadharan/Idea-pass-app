@@ -11,7 +11,7 @@ class Component1 extends React.Component<{}, any> {
   public render() {
     // You can render any custom fallback UI
     return (
-      <div className="shadow-container mb-20">
+      <div className="shadow-container">
         <div className="row pt-10">
           <div className="col-md-4 text-center">
             <img src={img} />
