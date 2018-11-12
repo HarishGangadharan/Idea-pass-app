@@ -10,8 +10,6 @@ import AppFormService from '../services/appform';
 function* saveAppForm(action: any) {
   try {
     const { api, data } = action;
-    // tslint:disable-next-line:no-console
-    console.log('api', api);
     const response = yield call(AppFormService.saveAppForm, api, data);
     yield put(saveAppFormSuccess(response.data));
   } catch (error) {

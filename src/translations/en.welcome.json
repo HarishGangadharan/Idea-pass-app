@@ -1,5 +1,24 @@
 {
   "greeting": "Hello ${name}!",
   "title": "My Article title EN",
-  "login": "Login"
+  "login": "Login",
+  "logout": "Logout",
+
+  "navbar": {
+    "home":"Home",
+    "schemas":"Schemas",
+    "admin":"Admin",
+    "organization":"Organization"
+  },
+
+  "label": {
+    "emailAddress": "Email Address",
+    "password":"Password"
+  },
+
+  "validations" : {
+    "email": "Enter valid email",
+    "password": "Enter password"
+  }
+
 }

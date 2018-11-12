@@ -40,8 +40,6 @@ class RoleSelector extends React.Component<IRoleSelectorProps, IRoleSelectorStat
           ]
         });
         case 'createdBy':
-      // tslint:disable-next-line:no-console
-      console.log('SELECTOR :: ', nextProps);
         return ({
           availablePermissions: [
             'createdBy'

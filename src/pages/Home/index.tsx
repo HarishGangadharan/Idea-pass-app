@@ -20,7 +20,7 @@ import './home.css';
 interface IProps extends LocalizeContextProps {
   value: string;
   activeLanguage: Language;
-  fetchUsers: () => any;
+  fetchUsers: () => void;
   users: object[];
   loading: boolean;
 }

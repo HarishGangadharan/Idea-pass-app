@@ -16,6 +16,13 @@ class StorageService implements IStorageService {
   public setItem(key: string, value: any): void {
     localStorage.setItem(key, value);
   }
+  public setObject(key: string, value: object): void {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
+  public getObject(key: string): object {
+    return JSON.parse(this.getItem(key));
+  }
+
   public setItems(storageObjects: IStorageObject[]) : void {
     storageObjects.forEach((storageObject: IStorageObject) => {
       this.setItem(storageObject.key, storageObject.value);

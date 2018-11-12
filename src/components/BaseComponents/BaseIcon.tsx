@@ -1,6 +1,7 @@
 import * as React from 'react';
 // => List of icons https://feathericons.com/
 import * as Icons from 'react-feather';
+import { Translate } from 'react-localize-redux';
 import './style.css';
 
 interface IconProps {
@@ -19,9 +20,14 @@ class BaseIcon extends React.PureComponent<IconProps> {
     return (
       <span className={`base-icon ${classname || ''}`} style={{'display' : display || 'flex'}}>
        <Icon size={size || '15'} onClick={onClick} className="cursor-pointer"/>&nbsp;
-       {label}
+        <Translate id={label} options={{renderToStaticMarkup: false, onMissingTranslation: this.onMissingTranslation}}/>
       </span>
     );
+  }
+
+  // fallback translation message
+  private onMissingTranslation = (options: any) => {
+    return options.translationId;
   }
 }
 

@@ -2,6 +2,10 @@
 export const AppProperties = {
   ACCESS_TOKEN_KEY: 'accessToken',
   BASE_URL: 'http://192.168.1.92:3030',
+  DEFAULT_LANGUAGE: {
+    code : 'en',
+    name: 'English'
+  },
   LANGUAGES: [
     { name: 'English', code: 'en' },
     { name: 'French', code: 'fr' },
@@ -9,6 +13,7 @@ export const AppProperties = {
   ],
   ROLES: 'roles',
   RULES_UPDATED: 'rulesUpdated',
+  SELECTED_LANGUAGE_KEY: 'language',
   TENANT: 'tenant',
   USER_ID: 'userId',
   USER_SESSION: 'userSession'

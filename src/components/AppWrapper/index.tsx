@@ -8,12 +8,12 @@ import { compose } from 'redux';
 import { updateLoggedInStatus } from '../../actions/global';
 import NavBar from '../../components/NavBar';
 import SideBar from '../../components/SideBar';
+import { AppProperties } from '../../constants/application.properties';
 import { languages } from '../../global/languages';
 import { IState } from '../../reducers';
 import { LoggedInRoutes,
   persistantRoutes as PersistantRoutes } from '../../routes';
-import defaultLanguage from '../../translations/en.welcome.json';
-
+import storage from '.././../utils/storage';
 import './style.css';
 
 interface IAppWrapperProps extends LocalizeContextProps {
@@ -39,16 +39,21 @@ interface IAppWrapperState {
 // }
 
 class AppWrapper extends React.Component<IAppWrapperProps, IAppWrapperState> {
+  public currentLanguage : any = storage.getObject(AppProperties.SELECTED_LANGUAGE_KEY);
   constructor(props: IAppWrapperProps) {
     super(props);
     this.state = {
       status: ''
     };
+    const activeLanguage = this.currentLanguage ? this.currentLanguage : AppProperties.DEFAULT_LANGUAGE;
+    // Enabling default language by getting it from localstorage
     this.props.initialize({
       languages,
       options: { renderToStaticMarkup },
-      translation: defaultLanguage
+      translation: require(`../../translations/${activeLanguage.code}.welcome.json`)
     });
+    this.props.setActiveLanguage(activeLanguage.code);
+    this.addTranslationsForActiveLanguage(activeLanguage);
   }
 
   public render() {

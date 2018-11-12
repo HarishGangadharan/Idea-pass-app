@@ -1,14 +1,17 @@
 import * as React from 'react';
 import { Glyphicon, MenuItem, Nav, Navbar, NavDropdown } from 'react-bootstrap';
-import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
+import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { compose } from 'redux';
 import logo from '../../../src/logo.svg';
 import { changeTheme } from '../../actions/theme';
 import { logoutUser } from '../../actions/user';
+import { AppProperties } from '../../constants/application.properties';
 import { IState } from '../../reducers';
 import { themes } from '../../themes';
+import storage from '../../utils/storage';
+
 
 import './NavBar.css';
 
@@ -48,7 +51,7 @@ class NavBar extends React.Component<INavProps, INavState> {
     };
     this.userMenu = [
       {
-        name: 'Logout',
+        name: 'logout',
         onClick: () => this.props.logoutUser()
       }
     ];
@@ -75,7 +78,7 @@ class NavBar extends React.Component<INavProps, INavState> {
                   <MenuItem
                     key={index}
                     eventKey={4.1}
-                    onClick={() => this.handleLangSelection(lang.code)}
+                    onClick={() => this.handleLangSelection(lang)}
                   >{lang.name}</MenuItem>
                 ))}
               </NavDropdown>
@@ -92,7 +95,7 @@ class NavBar extends React.Component<INavProps, INavState> {
                     {this.userMenu.map((menu: any, index) => (
                       <MenuItem key={index} eventKey={5.1} className="themeName"
                       onClick={() => menu.onClick()}>
-                         {menu.name}
+                         <Translate id={menu.name} />
                       </MenuItem>
                     ))}
               </NavDropdown>
@@ -103,8 +106,10 @@ class NavBar extends React.Component<INavProps, INavState> {
     );
   }
 
-  private handleLangSelection = (code: string) => {
-    this.props.setActiveLanguage(code);
+  private handleLangSelection = (lang: any) => {
+    delete lang.active;
+    storage.setObject(AppProperties.SELECTED_LANGUAGE_KEY, lang);
+    this.props.setActiveLanguage(lang.code);
   }
 
   private handleThemeSelection = (theme: string) => {

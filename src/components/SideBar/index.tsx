@@ -14,14 +14,14 @@ class SideBar extends React.Component {
           to="/"
           activeClassName="active"
           className="nav-link">
-          <BaseIcon name="Home" label="Home" />
+          <BaseIcon name="Home" label="navbar.home" />
         </NavLink>
         <NavLink
           exact={true}
           to="/formschemalist"
           activeClassName="active"
           className="nav-link">
-          <BaseIcon name="Layers" label="Schemas" />
+          <BaseIcon name="Layers" label="navbar.schemas" />
         </NavLink>
         <Can I="read" a="admin">
           <NavLink
@@ -29,7 +29,7 @@ class SideBar extends React.Component {
             to="/rolespermissions"
             activeClassName="active"
             className="nav-link">
-            <BaseIcon name="User" label="Roles" />
+            <BaseIcon name="User" label="navbar.admin" />
         </NavLink>
         </Can>
         <Can I="read" a="appforms">
@@ -38,7 +38,7 @@ class SideBar extends React.Component {
             to="/appforms/organization"
             activeClassName="active"
             className="nav-link">
-            <BaseIcon name="Globe" label="Organization" />
+            <BaseIcon name="Globe" label="navbar.organization" />
         </NavLink>
         </Can>
       </div>

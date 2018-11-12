@@ -46,7 +46,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
             <div className="card-body">
               <h5 className="card-title text-center">Sign In</h5>
               <form className="form-signin">
-                <label htmlFor="inputEmail">Email address</label>
+                <label htmlFor="inputEmail"><Translate id="label.emailAddress" /></label>
                 <div className="form-label-group">
                   <input
                     id="email"
@@ -67,10 +67,10 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                   />
                   {
                     !pristine && !emailValid  &&
-                    <span className="error-text">Enter valid email</span>
+                    <span className="error-text"><Translate id="validations.email" /></span>
                   }
                 </div>
-                <label className="mt-10" htmlFor="inputPassword">Password</label>
+                <label className="mt-10" htmlFor="inputPassword"><Translate id="label.password" /></label>
                 <div className="form-label-group">
                   <input
                     value={password}
@@ -90,7 +90,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                   />
                    {
                      !pristine && !password  &&
-                    <span className="error-text">Enter password</span>
+                    <span className="error-text"><Translate id="validations.password" /></span>
                    }
                 </div>
                 <button
