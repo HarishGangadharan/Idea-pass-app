@@ -6,7 +6,7 @@
   "navbar": {
     "home":"Home",
     "schemas":"Schemas",
-    "admin":"Admin",
+    "roles":"Roles",
     "organization":"Organization"
   },
 

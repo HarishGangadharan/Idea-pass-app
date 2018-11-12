@@ -29,7 +29,7 @@ class SideBar extends React.Component {
             to="/rolespermissions"
             activeClassName="active"
             className="nav-link">
-            <BaseIcon name="User" label="navbar.admin" />
+            <BaseIcon name="User" label="navbar.roles" />
         </NavLink>
         </Can>
         <Can I="read" a="appforms">

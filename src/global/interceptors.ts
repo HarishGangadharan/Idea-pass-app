@@ -51,6 +51,8 @@ export const setupInterceptors = (store: any) => {
           storage.deleteItem(AppProperties.TENANT);
           store.dispatch(updateLoggedInStatus({ loggedIn: false }));
           throw new ApiError(ERRORS.SERVER_ERROR);
+        case 409:
+          throw new ApiError(ERRORS.SERVER_CONFLICT);
       }
     } else {
       return response;

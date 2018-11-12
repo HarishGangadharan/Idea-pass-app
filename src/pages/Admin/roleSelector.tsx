@@ -111,15 +111,19 @@ class RoleSelector extends React.Component<IRoleSelectorProps, IRoleSelectorStat
     const newPermissions = {
       _id: data._id,
       name: data.name,
-      permission: Object.assign({}, data.permission, {
+      permission: Object.assign({},
+        data.permission, {
         [this.props.mode]: {
+          ...data.permission[this.props.mode],
           action: e.target.value
         }
       }, this.props.mode === 'create' ? {
         delete: {
+          ...data.permission.delete,
           action: e.target.value
         },
         update: {
+          ...data.permission.update,
           action: e.target.value
         }
       } : {})

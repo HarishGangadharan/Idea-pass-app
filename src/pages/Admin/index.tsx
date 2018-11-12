@@ -196,13 +196,13 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  fetchConfigList: (configList: string, tenantId: string) => any;
-  fetchOrganizationList: (limit: number, currentPage: number) => any;
-  fetchOrganizationRequest: (tenantId: string) => any;
-  fetchRoleList: (tenantId: string, limit: number, currentPage: number) => any;
-  fetchRolePermission: (tenantId: string, modelName: string) => any;
-  updateRolePermissionState: (rolePermission: IPermission) => any;
-  createRolePermission: (rolePermission: IRolePermissionReducer, tenantId: string, modelName: string) => any;
+  fetchConfigList: (configList: string, tenantId: string) => void;
+  fetchOrganizationList: (limit: number, currentPage: number) => void;
+  fetchOrganizationRequest: (tenantId: string) => void;
+  fetchRoleList: (tenantId: string, limit: number, currentPage: number) => void;
+  fetchRolePermission: (tenantId: string, modelName: string) => void;
+  updateRolePermissionState: (rolePermission: IPermission) => void;
+  createRolePermission: (rolePermission: IRolePermissionReducer, tenantId: string, modelName: string) => void;
 }
 
 export default compose(

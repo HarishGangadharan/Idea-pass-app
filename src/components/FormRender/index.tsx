@@ -5,7 +5,7 @@ import FormRenderer from './FormRendererWrapper';
 interface IRendererProps {
   formRendererSchema: any;
   submission?: object;
-  onChange?: (object?: any) => any;
+  onChange?: (object?: any) => void;
   handleSubmit(data: any): void;
   getFormio?(data: any): void;
 }
