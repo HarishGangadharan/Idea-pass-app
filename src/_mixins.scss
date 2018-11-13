@@ -10,3 +10,8 @@
   padding: 10px;
   margin-bottom: 20px;
 }
+
+@mixin sidemenu-transition($type) {
+  transition: $type $sidemenu-transition-delay;
+  -webkit-transition: $type $sidemenu-transition-delay;
+}

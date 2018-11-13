@@ -2,6 +2,10 @@
 @import '../../_theme2.scss';
 /* endinject */
 
+@import '../../_mixins.scss';
+
+$indicator-bar-opacity: 0.05;
+
 .nav-link {
   display: flex !important;
   align-items: center;
@@ -16,10 +20,9 @@
   left: 0;
   background-color: transparent;
   padding-top: 16px;
-  transition: width 0.5s;
-  -webkit-transition: width 0.5s;
   max-width: 400px;
   resize: both;
+  @include sidemenu-transition(width);
 
   a {
     padding: 6px 8px 6px 18px;
@@ -38,50 +41,44 @@
     }
   }
 
-  & .base-icon {
-    & .icon-label {
+  .base-icon {
+    .icon-label {
       opacity: 0;
-      transition: opacity 0.5s;
-      -webkit-transition: opacity 0.5s;
+      transition: opacity $indicator-bar-opacity;
+      -webkit-transition: opacity $indicator-bar-opacity;
     }
   }
 
   &.expand {
     width: 160px;
-    transition: width 0.5s;
-    -webkit-transition: width 0.5s;
+    @include sidemenu-transition(width);
 
     .base-icon {
-      & .icon-label {
+      .icon-label {
         opacity: 1;
-        transition: opacity 0.5s;
-        -webkit-transition: opacity 0.5s;
+        transition: opacity $indicator-bar-opacity;
+        -webkit-transition: opacity $indicator-bar-opacity;
         padding-left: 5px;
       }
     }
   }
 
-  & .indicator {
+  .indicator {
     display: block;
     position: absolute;
-    right: 0;
+    right: 5px;
     height: 100%;
     top: 0;
     width: 7px;
     cursor: pointer;
     .indicator-bar {
       background-color: $appBackgroundColor;
-      opacity: 0.5;
-      transition: opacity 0.1s;
-      -webkit-transition: opacity 0.1s;
     }
 
     &:hover {
       .indicator-bar {
-        opacity: 0.2;
+        opacity: $indicator-bar-opacity;
         background-color: $primaryColor;
-        transition: opacity 0.1s;
-        -webkit-transition: opacity 0.1s;
         height: 100%;
       }
       .base-icon {
@@ -90,10 +87,8 @@
         position: absolute;
         top: 50%;
         left: 0;
-         margin-left: -7px;
+        margin-left: -7px;
       }
     }
-
-
   }
 }

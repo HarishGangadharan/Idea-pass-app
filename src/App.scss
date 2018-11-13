@@ -12,8 +12,8 @@
   }
 
   .p-x-0 {
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
   .pt-10{
@@ -50,10 +50,30 @@
 
   .shadow-container {
     @include shadow-container;
+    .title {
+      h4 {
+        margin: 0;
+        padding-bottom: 10px;
+        border-bottom: 1px solid $border-color;
+        margin-bottom: 20px;
+      }
+    }
   }
 
   .full-height{
     min-height: calc(100vh - 90px);
   }
-  
+
+  .vr {
+    &:after {
+      content: '';
+      position: absolute;
+      display: block;
+      width: 1px;
+      height: 100%;
+      top: 0;
+      right: 0;
+      background-color: $primaryTextColor;
+    }
+  }
 }

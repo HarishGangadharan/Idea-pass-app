@@ -5,6 +5,7 @@ import CounterConstants from '../actions/counter/constants';
 import DynamicTableConstants from '../actions/dynamicTable/constants';
 import FormFieldDataConstants from '../actions/formfielddata/constants';
 import FormSchemaConstants from '../actions/formschema/constants';
+import FormTriggerConstants from '../actions/formTrigger/constants';
 import GlobalConstants from '../actions/global/constants';
 import OrganizationConstants from '../actions/organization/constants';
 import RoleConstants from '../actions/role/constants';
@@ -22,6 +23,7 @@ import {
 import DynamicTableSaga from './dynamicTable';
 import { fetchFormFieldData, fetchFormFieldDataList, saveFormFieldData  } from './formfielddata';
 import { createFormSchema, fetchFormList, fetchFormSchema } from './formschema';
+import { fetchFormTrigger, fetchFormTriggerList, saveFormTrigger  } from './formTrigger';
 import { fetchOrganization, fetchOrganizationList } from './organization';
 import { fetchRoleList } from './role';
 import { createRolePermission, fetchRolePermission, fetchRolePermissionRules } from './rolepermission';
@@ -39,6 +41,9 @@ export default function* rootSaga() {
   yield takeLatest(FormFieldDataConstants.SAVE_FORM_FIELD_DATA_REQUEST, saveFormFieldData);
   yield takeLatest(FormFieldDataConstants.FETCH_FORM_FIELD_DATA_LIST_REQUEST, fetchFormFieldDataList);
   yield takeLatest(FormFieldDataConstants.FETCH_FORM_FIELD_DATA_REQUEST, fetchFormFieldData);
+  yield takeLatest(FormTriggerConstants.SAVE_FORM_TRIGGER_REQUEST, saveFormTrigger);
+  yield takeLatest(FormTriggerConstants.FETCH_FORM_TRIGGER_LIST_REQUEST, fetchFormTriggerList);
+  yield takeLatest(FormTriggerConstants.FETCH_FORM_TRIGGER_REQUEST, fetchFormTrigger);
   yield takeLatest(FormSchemaConstants.FETCH_FORM_SCHEMA_REQUEST, fetchFormSchema);
   yield takeLatest(FormSchemaConstants.CREATE_FORM_SCHEMA_REQUEST, createFormSchema);
   yield takeLatest(DynamicTableConstants.GET_TABLE_DATA, DynamicTableSaga.fetchTableData);

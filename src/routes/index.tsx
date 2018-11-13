@@ -4,6 +4,8 @@ import ability from 'src/ability';
 import { Can } from 'src/ability-context';
 import Admin from 'src/pages/Admin';
 import AppForm from 'src/pages/AppForm';
+import FormTrigger from 'src/pages/FormTrigger';
+import FormTriggerList from 'src/pages/FormTriggerList';
 import DynamicTableRender from '../pages/DynamicTableRenderer';
 import FormBuilder from '../pages/FormBuilder';
 import FormDataList from '../pages/FormDataList';
@@ -50,9 +52,24 @@ export class LoggedInRoutes extends React.Component {
         path: '/formRenderer/:id/:submissionId'
       },
       {
+        component: FormTrigger,
+        exact: true,
+        path: '/formTrigger/:id'
+      },
+      {
+        component: FormTrigger,
+        exact: true,
+        path: '/formTrigger/:id/:triggerId'
+      },
+      {
         component: FormDataList,
         exact: true,
         path: '/formdatalist/:formName/:formId'
+      },
+      {
+        component: FormTriggerList,
+        exact: true,
+        path: '/formTriggerList/:formName/:formId'
       },
       {
         component: AppForm,

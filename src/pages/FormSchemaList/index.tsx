@@ -50,6 +50,12 @@ class FormSchemaList extends React.Component<
               name="List"
               onClick={() => this.viewFormData(row.name, row._id)}
             />
+            &nbsp;
+            <BaseIcon
+              display="inline"
+              name="Settings"
+              onClick={() => this.viewFormtriggers(row.name, row._id)}
+            />
           </div>
         ))
     ];
@@ -65,6 +71,10 @@ class FormSchemaList extends React.Component<
 
   public viewFormData(formName: string, formId: string) {
     this.props.history.push(`/formDataList/${formName}/${formId}`);
+  }
+
+  public viewFormtriggers(formName: string, formId: string) {
+    this.props.history.push(`/formTriggerList/${formName}/${formId}`);
   }
 
   public componentDidMount() {

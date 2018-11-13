@@ -7,6 +7,7 @@ import { counterReducer, ICounterReducer } from './counter';
 import dynamicTableReducer, { IDataState, IMetaState } from './dynamicTable';
 import { formFieldDataReducers, IFormFieldDataReducer } from './formfielddata';
 import { formSchemaReducers, IFormSchemaReducer } from './formschema';
+import { formTriggerReducers, IFormTriggerReducer } from './formTrigger';
 import { globalReducer, IGlobalReducer } from './global';
 import { IOrganizationReducer, organizationReducers } from './organization';
 import { IRoleReducer, roleReducers } from './role';
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   dynamicTable: dynamicTableReducer,
   formFieldData: formFieldDataReducers,
   formSchema: formSchemaReducers,
+  formTrigger: formTriggerReducers,
   global: globalReducer,
   localize: localizeReducer,
   organization: organizationReducers,
@@ -39,6 +41,7 @@ export interface IState {
   counter: ICounterReducer;
   formFieldData: IFormFieldDataReducer,
   formSchema: IFormSchemaReducer,
+  formTrigger: IFormTriggerReducer,
   languageSelection: any;
   router: RouterState;
   config: IConfigReducer;
