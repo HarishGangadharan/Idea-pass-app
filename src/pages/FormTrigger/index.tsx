@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { fetchFormSchemaRequest } from '../../actions/formschema';
 import { fetchFormTriggerRequest, saveFormTriggerRequest } from '../../actions/formTrigger';
+import QueryBuilder from '../../components/Triggers/QueryBuilder';
 import { IState } from '../../reducers';
 import './formTrigger.css';
 
@@ -89,6 +90,7 @@ class FormTrigger extends React.Component<IRendererDispatchMap & IRendererStateM
             <div className="title">
               <h4>Qualifications</h4>
             </div>
+            <QueryBuilder/>
           </div>
         </div>
         <div className="col-md-8 col-xs-12">

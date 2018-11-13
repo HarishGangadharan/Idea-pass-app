@@ -8,6 +8,7 @@ import FormSchemaConstants from '../actions/formschema/constants';
 import FormTriggerConstants from '../actions/formTrigger/constants';
 import GlobalConstants from '../actions/global/constants';
 import OrganizationConstants from '../actions/organization/constants';
+import QueryBuilderConstants from '../actions/querybuilder/constants';
 import RoleConstants from '../actions/role/constants';
 import RolePermissionConstants from '../actions/rolepermission/constants';
 import UserConstants from '../actions/user/constants';
@@ -25,6 +26,7 @@ import { fetchFormFieldData, fetchFormFieldDataList, saveFormFieldData  } from '
 import { createFormSchema, fetchFormList, fetchFormSchema } from './formschema';
 import { fetchFormTrigger, fetchFormTriggerList, saveFormTrigger  } from './formTrigger';
 import { fetchOrganization, fetchOrganizationList } from './organization';
+import { fetchQueryFields } from './querybuilder';
 import { fetchRoleList } from './role';
 import { createRolePermission, fetchRolePermission, fetchRolePermissionRules } from './rolepermission';
 import { onFetchUsers, onLoginUser, onLogoutUser } from './user';
@@ -56,4 +58,5 @@ export default function* rootSaga() {
   yield takeLatest(ConfigConstants.FETCH_CONFIG_REQUEST, fetchConfig);
   yield takeLatest(AppFormConstants.SAVE_APP_FORM_REQUEST, saveAppForm);
   yield takeLatest(GlobalConstants.SET_USER_ROLE, fetchRolePermissionRules);
+  yield takeLatest(QueryBuilderConstants.FETCH_QUERY_BUILDER_FIELDS_REQUEST, fetchQueryFields);
 }

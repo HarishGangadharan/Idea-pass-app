@@ -1,0 +1,64 @@
+/* inject:scss */
+@import '../../../_theme2.scss';
+/* endinject */
+
+.checkbox {
+  display: inline;
+  margin-left: 10px;
+}
+
+.rule-group {
+  padding: 1rem !important;
+  margin: 5px;
+}
+
+.rule-btn {
+  background: $green !important;
+  color: $white !important;
+  float: right;
+}
+
+.rule-combinator {
+  background: $orange !important;
+  color: $white !important;
+  option {
+    background: $white !important;
+    color: $primaryTextColor !important;
+  }
+}
+
+.rule {
+  margin-top: 5px !important;
+  .ruleGroup {
+    margin-top: 0.5rem;
+    margin-left: 0.5rem;
+  }
+}
+
+.ruleGroup {
+  padding: 0.5rem;
+  border: 1px solid $border-color;
+  border-radius: 4px;
+  background: $border-color-10;
+  button {
+    border: 1px solid $border-color;
+    border-radius: 2px;
+    padding: 4px 6px;
+    background: $white;
+    color: $primaryTextColor;
+  }
+  select {
+    @extend button;
+  }
+  input {
+    @extend button;
+    color: $primaryTextColor;
+  }
+}
+
+.shrink {
+  pre {
+    overflow-y: auto;
+    max-height: 200px;
+  }
+}

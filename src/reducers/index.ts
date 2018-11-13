@@ -1,6 +1,6 @@
 import { RouterState } from 'connected-react-router';
 import { localizeReducer } from 'react-localize-redux';
-import { combineReducers } from 'redux';
+import { combineReducers, Reducer } from 'redux';
 import { appFormReducer, IAppFormReducer } from './appform';
 import { configReducer, IConfigReducer } from './config';
 import { counterReducer, ICounterReducer } from './counter';
@@ -10,12 +10,14 @@ import { formSchemaReducers, IFormSchemaReducer } from './formschema';
 import { formTriggerReducers, IFormTriggerReducer } from './formTrigger';
 import { globalReducer, IGlobalReducer } from './global';
 import { IOrganizationReducer, organizationReducers } from './organization';
+import { IQueryBuilderReducer } from './querybuilder';
+import { queryBuilderReducer } from './querybuilder';
 import { IRoleReducer, roleReducers } from './role';
 import { IRolePermissionReducer, rolePermissionReducer } from './rolepermission';
 import { IthemeReducer, themeReducer } from './theme';
 import { IuserReducer, userReducer } from './user';
 
-const rootReducer = combineReducers({
+const rootReducer : Reducer<IState> = combineReducers({
   appForm: appFormReducer,
   config: configReducer,
   counter: counterReducer,
@@ -26,11 +28,13 @@ const rootReducer = combineReducers({
   global: globalReducer,
   localize: localizeReducer,
   organization: organizationReducers,
+  queryBuilder: queryBuilderReducer,
   role: roleReducers,
   rolePermission: rolePermissionReducer,
   theme: themeReducer,
   user: userReducer
 });
+
 
 export interface IActionProps {
   type: string;
@@ -48,6 +52,7 @@ export interface IState {
   appForm: IAppFormReducer;
   organization: IOrganizationReducer,
   role: IRoleReducer,
+  queryBuilder: IQueryBuilderReducer,
   rolePermission: IRolePermissionReducer
   theme: IthemeReducer;
   user: IuserReducer;

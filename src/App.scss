@@ -7,6 +7,10 @@
 .appContainer {
   font-size: 14px;
 
+  .cursor-pointer {
+    cursor: pointer;
+  }
+
   .p-0{
     padding: 0px !important;
   }
@@ -44,6 +48,10 @@
     margin-bottom: 20px;
   }
 
+  .pl-10 {
+    padding-left: 10px;
+  }
+
   .cursor-pointer {
     cursor: pointer;
   }
@@ -63,17 +71,8 @@
   .full-height{
     min-height: calc(100vh - 90px);
   }
-
-  .vr {
-    &:after {
-      content: '';
-      position: absolute;
-      display: block;
-      width: 1px;
-      height: 100%;
-      top: 0;
-      right: 0;
-      background-color: $primaryTextColor;
-    }
+  // icons 
+  .fa-trash {
+    color: $red;
   }
 }

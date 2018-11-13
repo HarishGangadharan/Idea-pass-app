@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import { combineReducers, Reducer } from 'redux';
 import { IActionProps } from '.';
 import FormFieldDataConstants from '../actions/formfielddata/constants';
 
@@ -109,7 +109,7 @@ const formFieldDataListReducer = (state: IFormFieldDatas = listInitialState, act
   }
 };
 
-const formFieldDataReducers = combineReducers({
+const formFieldDataReducers: Reducer<IFormFieldDataReducer> = combineReducers({
   list: formFieldDataListReducer,
   submission: formFieldDataReducer
 });
