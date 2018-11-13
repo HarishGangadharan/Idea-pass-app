@@ -14,6 +14,7 @@ export const AppProperties = {
   ROLES: 'roles',
   RULES_UPDATED: 'rulesUpdated',
   SELECTED_LANGUAGE_KEY: 'language',
+  SIDEBAR_EXPANDED: 'sidebarExpanded',
   TENANT: 'tenant',
   USER_ID: 'userId',
   USER_SESSION: 'userSession'

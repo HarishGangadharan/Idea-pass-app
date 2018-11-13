@@ -20,7 +20,9 @@ class BaseIcon extends React.PureComponent<IconProps> {
     return (
       <span className={`base-icon ${classname || ''}`} style={{'display' : display || 'flex'}}>
        <Icon size={size || '15'} onClick={onClick} className="cursor-pointer"/>&nbsp;
+       <span className="icon-label">
         <Translate id={label} options={{renderToStaticMarkup: false, onMissingTranslation: this.onMissingTranslation}}/>
+       </span>
       </span>
     );
   }

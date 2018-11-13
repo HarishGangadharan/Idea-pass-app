@@ -9,27 +9,91 @@
 
 .sidebar {
   height: 100%;
-  width: 160px;
+  width: 60px;
   position: fixed;
   z-index: 1;
   top: 45px;
   left: 0;
   background-color: transparent;
-  overflow-x: hidden;
   padding-top: 16px;
+  transition: width 0.5s;
+  -webkit-transition: width 0.5s;
+  max-width: 400px;
+  resize: both;
+
   a {
-    padding: 6px 8px 6px 16px;
+    padding: 6px 8px 6px 18px;
     text-decoration: none;
     display: block;
     border-left: 4px solid transparent;
     color: $primaryTextColor;
+
     &:hover {
       color: $primaryColor;
     }
-  
+
     &.active {
       color: $primaryColor;
       border-left: 4px solid $primaryColor;
     }
+  }
+
+  & .base-icon {
+    & .icon-label {
+      opacity: 0;
+      transition: opacity 0.5s;
+      -webkit-transition: opacity 0.5s;
+    }
+  }
+
+  &.expand {
+    width: 160px;
+    transition: width 0.5s;
+    -webkit-transition: width 0.5s;
+
+    .base-icon {
+      & .icon-label {
+        opacity: 1;
+        transition: opacity 0.5s;
+        -webkit-transition: opacity 0.5s;
+        padding-left: 5px;
+      }
+    }
+  }
+
+  & .indicator {
+    display: block;
+    position: absolute;
+    right: 0;
+    height: 100%;
+    top: 0;
+    width: 7px;
+    cursor: pointer;
+    .indicator-bar {
+      background-color: $appBackgroundColor;
+      opacity: 0.5;
+      transition: opacity 0.1s;
+      -webkit-transition: opacity 0.1s;
+    }
+
+    &:hover {
+      .indicator-bar {
+        opacity: 0.2;
+        background-color: $primaryColor;
+        transition: opacity 0.1s;
+        -webkit-transition: opacity 0.1s;
+        height: 100%;
+      }
+      .base-icon {
+        color: $primaryColor;
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 0;
+         margin-left: -7px;
+      }
+    }
+
+
   }
 }

@@ -53,7 +53,7 @@ class Home extends React.PureComponent<IProps & RouteComponentProps, IHomeState>
     const { activeLanguage }: any = this.props;
     return (
       <div className="row flex-column">
-        <div className="col-md-8">
+        <div className="col-md-8 p-x-0">
           <Component1 />
           <FormSchemaList {...this.props}/>
           <div className="shadow-container">

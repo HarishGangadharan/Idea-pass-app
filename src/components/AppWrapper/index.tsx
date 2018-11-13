@@ -5,15 +5,16 @@ import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { compose } from 'redux';
+import { AppProperties } from 'src/constants/application.properties';
+import storage from 'src/utils/storage';
 import { updateLoggedInStatus } from '../../actions/global';
 import NavBar from '../../components/NavBar';
 import SideBar from '../../components/SideBar';
-import { AppProperties } from '../../constants/application.properties';
 import { languages } from '../../global/languages';
 import { IState } from '../../reducers';
 import { LoggedInRoutes,
   persistantRoutes as PersistantRoutes } from '../../routes';
-import storage from '.././../utils/storage';
+
 import './style.css';
 
 interface IAppWrapperProps extends LocalizeContextProps {
@@ -22,6 +23,7 @@ interface IAppWrapperProps extends LocalizeContextProps {
 }
 
 interface IAppWrapperState {
+  isExpanded: boolean;
   status: string;
 }
 
@@ -43,6 +45,7 @@ class AppWrapper extends React.Component<IAppWrapperProps, IAppWrapperState> {
   constructor(props: IAppWrapperProps) {
     super(props);
     this.state = {
+      isExpanded: false,
       status: ''
     };
     const activeLanguage = this.currentLanguage ? this.currentLanguage : AppProperties.DEFAULT_LANGUAGE;
@@ -56,8 +59,16 @@ class AppWrapper extends React.Component<IAppWrapperProps, IAppWrapperState> {
     this.addTranslationsForActiveLanguage(activeLanguage);
   }
 
+  public componentDidMount() {
+    const isExpanded = storage.getItem(AppProperties.SIDEBAR_EXPANDED);
+    if (isExpanded === 'true') {
+      this.setState({isExpanded: true});
+    }
+  }
+
   public render() {
     const { isUserLoggedIn } = this.props;
+    const { isExpanded } = this.state;
     return (
       <Fragment>
         {
@@ -66,8 +77,8 @@ class AppWrapper extends React.Component<IAppWrapperProps, IAppWrapperState> {
               <NavBar key="nav"/>
               {/* <BackdropSvgImage /> */}
               <div className="container-fluid">
-                <SideBar/>
-                <div key="mainContainer" className="main">
+                <SideBar expandSideBar={this.expandSideBar} isExpanded={isExpanded}/>
+                <div key="mainContainer" className={isExpanded ? 'main expand' : 'main'}>
                   <LoggedInRoutes key="logged-in-routes"/>
                 </div>
               </div>
@@ -85,6 +96,11 @@ class AppWrapper extends React.Component<IAppWrapperProps, IAppWrapperState> {
     if (hasActiveLanguageChanged) {
       this.addTranslationsForActiveLanguage(this.props.activeLanguage);
     }
+  }
+
+  private expandSideBar = () => {
+    this.setState({isExpanded: !this.state.isExpanded});
+    storage.setItem(AppProperties.SIDEBAR_EXPANDED, !this.state.isExpanded );
   }
 
   private addTranslationsForActiveLanguage(activeLanguage: any) {

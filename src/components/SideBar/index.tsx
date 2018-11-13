@@ -4,11 +4,20 @@ import { Can } from 'src/ability-context';
 import { BaseIcon } from '../index';
 import './SideBar.css';
 
-class SideBar extends React.Component {
+interface ISideBarProps {
+  isExpanded: boolean;
+  expandSideBar: any;
+}
+
+class SideBar extends React.Component<ISideBarProps> {
+  constructor(props: ISideBarProps) {
+    super(props);
+  }
 
   public render() {
+    const { isExpanded } = this.props;
     return (
-      <div key="sidebar" className="sidebar">
+      <div key="sidebar" className={isExpanded ? 'sidebar expand' : 'sidebar'}>
         <NavLink
           exact={true}
           to="/"
@@ -41,6 +50,10 @@ class SideBar extends React.Component {
             <BaseIcon name="Globe" label="navbar.organization" />
         </NavLink>
         </Can>
+        <div className="indicator" onClick={this.props.expandSideBar}>
+          <div className="indicator-bar">&nbsp;</div>
+          <BaseIcon name={isExpanded ? 'ChevronLeft' : 'ChevronRight'} size={20} label="" />
+        </div>
       </div>
     );
   }
