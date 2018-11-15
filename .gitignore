@@ -30,5 +30,6 @@ yarn-error.log*
 
 # Generated css
 /src/**/*.css
+/plugins/**/node_modules
 
 credential.md

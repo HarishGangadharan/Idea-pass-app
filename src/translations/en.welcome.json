@@ -8,8 +8,7 @@
     "home":"Home",
     "schemas":"Schemas",
     "roles":"Roles",
-    "organization":"Organization",
-    "querybuilder" : "QueryBuilder"
+    "organization":"Organization"
   },
 
   "label": {

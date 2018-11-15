@@ -1,0 +1,19 @@
+{
+    "presets": [
+        "env",
+        "react",
+        "stage-1"
+    ],
+    "env": {
+        "test": {
+            "plugins": [
+                [
+                    "__coverage__",
+                    {
+                        "ignore": "*.test.*"
+                    }
+                ]
+            ]
+        }
+    }
+}

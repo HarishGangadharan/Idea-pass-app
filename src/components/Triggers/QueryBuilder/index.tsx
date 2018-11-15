@@ -1,6 +1,9 @@
 import * as React from 'react';
-// import { Translate } from 'react-localize-redux';
-import QueryBuilder from 'react-querybuilder';
+import QueryBuilder , {
+  Rule,
+  RuleGroup,
+  ValueEditorCustomControlProps
+} from 'react-querybuilder';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { compose } from 'redux';
@@ -14,43 +17,23 @@ interface IEditorProps {
   type?: string;
 }
 
-interface IFieldIndexKeys {
-  indexOfInnerRule: number;
-  indexOfRule: number;
-}
 interface IQueryBuilderProps extends IDispatchProps, IMapStateProps {
   fields: any[];
 }
 
 interface IQueryBuilderState {
   fields: any[];
-  query: IRuleGroup;
+  query: RuleGroup;
 }
 
-interface IValidatorProps {
-  field?: string;
-  operator?: string;
-  value?: string;
-  className: string;
-  level: number;
+interface ICustomRules {
+  [key: string]: string | number | boolean;
+  isOldValue: boolean;
+}
+
+interface IValidatorProps extends ValueEditorCustomControlProps {
+  customRules: ICustomRules;
   handleOnChange(value: any): void;
-}
-
-interface IRule {
-  id: string;
-  field: string;
-  rules?: IRule[];
-  operator: string;
-  isOldValue?: boolean;
-  value: string | number;
-}
-
-interface IRuleGroup {
-  id: string;
-  combinator: string;
-  field?: string;
-  isOldValue?: boolean;
-  rules: Array<IRule | IRuleGroup>;
 }
 
 interface IRemoveActionProps {
@@ -100,9 +83,11 @@ class QueryBuilderContainer extends React.Component<
         id: 'g-e4af2c13-a801-46dc-8e0c-bef3fde396be',
         rules: [
           {
+            customRules: {
+              isOldValue: false
+            },
             field: 'firstName',
             id: 'r-8b2f0dbf-47a7-422c-bf26-aa4f281ee1ee',
-            isOldValue: false,
             operator: 'null',
             value: 'firstName'
           }
@@ -115,84 +100,46 @@ class QueryBuilderContainer extends React.Component<
     this.fetchQueryFields();
   }
 
+  public isRuleGroup(rule: RuleGroup | Rule) {
+    return !!(rule.combinator && rule.rules);
+  }
+
+  public findRule(id: string, parent: RuleGroup | Rule): any {
+    if (parent.id === id) {
+      return parent;
+    }
+    if (parent.rules) {
+      for (const rule of parent.rules) {
+        if (rule.id === id) {
+          return rule;
+        } else if (this.isRuleGroup(rule)) {
+          const subRule = this.findRule(id, rule);
+          if (subRule) {
+            return subRule;
+          }
+        }
+      }
+    }
+  }
+
   public logQuery = (query: any) => {
     this.setState({ query });
   }
 
   public onOldValueSelect = (
     event: React.ChangeEvent<HTMLInputElement>,
-    findFieldIndexKeys: IFieldIndexKeys
+    rule: IValidatorProps
   ) => {
     event.persist();
-    this.setFieldValueByKeys(
-      'isOldValue',
-      findFieldIndexKeys,
-      event.target.checked
-    );
+    const targetRule  = this.findRule(rule.id, this.state.query);
+    Object.assign(targetRule.customRules, {isOldValue: event.target.checked});
     this.setState({});
-  }
-
-  public setFieldValueByKeys = (
-    key: string,
-    findFieldIndexKeys: IFieldIndexKeys,
-    value: string | number | boolean
-  ) => {
-    let field = this.state.query.rules[findFieldIndexKeys.indexOfRule];
-    if (findFieldIndexKeys.indexOfInnerRule !== -1 && field.rules) {
-      field = field.rules[findFieldIndexKeys.indexOfInnerRule];
-    }
-    return (field[key] = value);
-  }
-
-  public getFieldByRuleProp = (
-    props: IValidatorProps,
-    findFieldIndexKeys: IFieldIndexKeys
-  ): IRule | IRuleGroup => {
-    this.state.query.rules.forEach((rule: IRule, index: number) => {
-      if (rule.rules && rule.rules.length > 0) {
-        rule.rules = rule.rules.map(
-          (innerRule: IRule, innerRuleIndex: number): IRule => {
-            const isMatch =
-              innerRule.field === props.field &&
-              innerRule.operator === props.operator &&
-              innerRule.value === props.value;
-            if (isMatch) {
-              findFieldIndexKeys.indexOfRule = index;
-              findFieldIndexKeys.indexOfInnerRule = innerRuleIndex;
-            }
-            return innerRule;
-          }
-        );
-      } else {
-        const isMatch =
-          rule.field === props.field &&
-          rule.operator === props.operator &&
-          rule.value === props.value;
-        if (isMatch) {
-          findFieldIndexKeys.indexOfRule = index;
-        }
-      }
-    });
-    return this.getFieldByKeys(findFieldIndexKeys);
-  }
-
-  public getFieldByKeys = (
-    findFieldIndexKeys: IFieldIndexKeys
-  ): IRule | IRuleGroup => {
-    let field = this.state.query.rules[findFieldIndexKeys.indexOfRule];
-    if (findFieldIndexKeys.indexOfInnerRule !== -1 && field.rules) {
-      field = field.rules[findFieldIndexKeys.indexOfInnerRule];
-    }
-    return field;
   }
 
   public customValueEditor() {
     return (props: IValidatorProps) => {
-      const findFieldIndexKeys: IFieldIndexKeys = {
-        indexOfInnerRule: -1,
-        indexOfRule: -1
-      };
-      const field = this.getFieldByRuleProp(props, findFieldIndexKeys);
+      // tslint:disable-next-line:no-console
+      console.log('props', props.customRules.isOldValue);
       return (
         <span>
           <select
@@ -220,9 +167,9 @@ class QueryBuilderContainer extends React.Component<
             <label style={{ fontSize: '1em' }}>
               <input
                 type="checkbox"
-                checked={field ? field.isOldValue : false}
+                checked={props.customRules.isOldValue}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                  this.onOldValueSelect(event, findFieldIndexKeys)
+                  this.onOldValueSelect(event, props)
                 }
               />
               Is Oldvalue
@@ -251,6 +198,9 @@ class QueryBuilderContainer extends React.Component<
         <QueryBuilder
           fields={this.state.fields}
           controlElements={this.controlElements}
+          customRules={{
+            isOldValue: false
+          }}
           controlClassnames={{
             addGroup: 'rule-btn',
             addRule: 'rule-btn',

@@ -1,6 +1,6 @@
 const gulp = require('gulp');
 const inject = require('gulp-inject');
-
+const zip = require('gulp-zip');
 
 // RUN: gulp theme --option 1|2|3
 gulp.task('theme', function () {
@@ -20,3 +20,11 @@ gulp.task('theme', function () {
     }))
     .pipe(gulp.dest('./'));
 });
+
+
+// RUN: gulp zip --option ${plugin-name}
+gulp.task('zip', function () {
+  return gulp.src(`./plugins/${process.argv[4]}/**`)
+      .pipe(zip(`${process.argv[4]}.zip`))
+      .pipe(gulp.dest('./plugins'));
+}); 

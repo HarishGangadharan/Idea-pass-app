@@ -1,0 +1,80 @@
+{
+  "name": "react-querybuilder",
+  "version": "1.4.3",
+  "description": "The React <QueryBuilder /> component for constructing queries",
+  "main": "dist/index.js",
+  "types": "./index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sapientglobalmarkets/react-querybuilder"
+  },
+  "keywords": [
+    "react",
+    "query",
+    "builder",
+    "operators",
+    "ui",
+    "component"
+  ],
+  "author": "Pavan Podila <pavan@pixelingene.com> (http://blog.pixelingene.com)",
+  "license": "MIT",
+  "homepage": "https://github.com/sapientglobalmarkets/react-querybuilder",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-__coverage__": "^11.0.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1",
+    "chai": "^4.1.2",
+    "codecov.io": "^0.1.6",
+    "copy-webpack-plugin": "^4.2.3",
+    "css-loader": "^0.28.7",
+    "del-cli": "^1.1.0",
+    "enzyme": "^3.2.0",
+    "enzyme-adapter-react-16": "^1.1.0",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "gh-pages": "^1.1.0",
+    "github-changes": "^1.1.1",
+    "html-webpack-plugin": "^2.30.1",
+    "karma": "^1.7.1",
+    "karma-chai": "^0.1.0",
+    "karma-coverage": "^1.1.1",
+    "karma-es6-shim": "^1.0.0",
+    "karma-mocha": "^1.3.0",
+    "karma-mocha-reporter": "^2.2.5",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^2.0.6",
+    "mocha": "^4.0.1",
+    "node-sass": "^4.10.0",
+    "phantomjs-prebuilt": "^2.1.16",
+    "postcss-cssnext": "^3.0.2",
+    "postcss-loader": "^2.0.9",
+    "react-addons-test-utils": "^15.6.2",
+    "sass-loader": "^6.0.3",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.9.7",
+    "webpack-merge": "^4.1.1"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "uuid": "^3.0.1"
+  },
+  "peerDependencies": {
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  },
+  "scripts": {
+    "start": "webpack-dev-server --env dev",
+    "dist": "del dist; webpack --env prod",
+    "publish:demo": "npm run dist && node gh-pages.publish.js",
+    "test": "karma start karma.conf.js",
+    "test:watch": "npm test -- --no-single-run --auto-watch",
+    "codecov": "cat coverage/*/lcov.info | ./node_modules/codecov.io/bin/codecov.io.js",
+    "generate-changelog": "node node_modules/github-changes -o sapientglobalmarkets -r react-querybuilder -a --use-commit-body --only-pulls --date-format=\"(YYYY/MM/DD)\""
+  }
+}
