@@ -49,6 +49,7 @@ export const setupInterceptors = (store: any) => {
           storage.deleteItem(AppProperties.USER_ID);
           storage.deleteItem(AppProperties.RULES_UPDATED);
           storage.deleteItem(AppProperties.TENANT);
+          storage.deleteItem(AppProperties.USER_SESSION);
           store.dispatch(updateLoggedInStatus({ loggedIn: false }));
           throw new ApiError(ERRORS.SERVER_ERROR);
         case 409:

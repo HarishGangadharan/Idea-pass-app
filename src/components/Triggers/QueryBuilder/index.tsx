@@ -1,29 +1,10 @@
 import * as React from 'react';
-import QueryBuilder , {
-  Rule,
-  RuleGroup,
-  ValueEditorCustomControlProps
-} from 'react-querybuilder';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
-import { compose } from 'redux';
-import { fetchQueryFieldsRequest } from '../../../actions/querybuilder';
-import { AppProperties } from '../../../constants/application.properties';
-import { IState } from '../../../reducers';
-import storage from '../../../utils/storage';
+// import { Translate } from 'react-localize-redux';
+import QueryBuilder, { Rule, RuleGroup, ValueEditorCustomControlProps } from 'react-querybuilder';
 import './style.css';
 
 interface IEditorProps {
   type?: string;
-}
-
-interface IQueryBuilderProps extends IDispatchProps, IMapStateProps {
-  fields: any[];
-}
-
-interface IQueryBuilderState {
-  fields: any[];
-  query: RuleGroup;
 }
 
 interface ICustomRules {
@@ -43,23 +24,54 @@ interface IRemoveActionProps {
   level: number;
 }
 
-class QueryBuilderContainer extends React.Component<
-  IQueryBuilderProps,
-  IQueryBuilderState
-> {
+interface IEditorProps {
+  type?: string;
+}
+
+interface IOperator {
+  name: string;
+  label: string;
+}
+
+interface IQueryBuilderProps {
+  fields: any[];
+  targetFields: any[];
+  operators?: IOperator[]
+  disableOldValue?: boolean;
+  disableGroupAction?: boolean;
+  disableCombinators?: boolean;
+  disableOperators?: boolean;
+  query: any;
+  showQuery? : boolean;
+  onQueryChange: (query: any) => any;
+}
+
+interface IValidatorProps extends ValueEditorCustomControlProps {
+  handleOnChange(value: any): void;
+}
+
+interface IRemoveActionProps {
+  label: string;
+  className: string;
+  handleOnClick: () => void;
+  level: number;
+}
+
+class QueryBuilderContainer extends React.Component<IQueryBuilderProps> {
   /*
    * Doc => https://www.npmjs.com/package/react-querybuilder
    * */
   public controlElements = {
     /*
      * addRuleAction: {},
-     * combinatorSelector: {},
      * fieldSelector: {},
      * operatorSelector: {},
      * removeGroupAction: {},
      * removeRuleAction: {
      * },
      */
+    addGroupAction: () => (<span>&nbsp;</span>),
+    combinatorSelector: () => (<span>&nbsp;</span>),
     removeGroupAction: this.removeEditor({ type: 'group' }),
     removeRuleAction: this.removeEditor({ type: 'rule' }),
     valueEditor: this.customValueEditor()
@@ -67,37 +79,22 @@ class QueryBuilderContainer extends React.Component<
 
   constructor(props: IQueryBuilderProps) {
     super(props);
-    this.state = {
-      fields: [
-        { name: 'firstName', label: 'First Name' },
-        { name: 'lastName', label: 'Last Name' },
-        { name: 'age', label: 'Age' },
-        { name: 'address', label: 'Address' },
-        { name: 'phone', label: 'Phone' },
-        { name: 'email', label: 'Email' },
-        { name: 'twitter', label: 'Twitter' },
-        { name: 'isDev', label: 'Is a Developer?', value: false }
-      ],
-      query: {
-        combinator: 'and',
-        id: 'g-e4af2c13-a801-46dc-8e0c-bef3fde396be',
-        rules: [
-          {
-            customRules: {
-              isOldValue: false
-            },
-            field: 'firstName',
-            id: 'r-8b2f0dbf-47a7-422c-bf26-aa4f281ee1ee',
-            operator: 'null',
-            value: 'firstName'
-          }
-        ]
-      }
-    };
+    if (!props.disableGroupAction) {
+      delete this.controlElements.addGroupAction;
+    }
+    if (!props.disableCombinators) {
+      delete this.controlElements.combinatorSelector;
+    }
   }
 
-  public componentDidMount() {
-    this.fetchQueryFields();
+  public onOldValueSelect = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    rule: IValidatorProps
+  ) => {
+    event.persist();
+    const targetRule  = this.findRule(rule.id, this.props.query);
+    Object.assign(targetRule.customRules, {isOldValue: event.target.checked});
+    this.props.onQueryChange(this.props.query);
   }
 
   public isRuleGroup(rule: RuleGroup | Rule) {
@@ -122,24 +119,8 @@ class QueryBuilderContainer extends React.Component<
     }
   }
 
-  public logQuery = (query: any) => {
-    this.setState({ query });
-  }
-
-  public onOldValueSelect = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    rule: IValidatorProps
-  ) => {
-    event.persist();
-    const targetRule  = this.findRule(rule.id, this.state.query);
-    Object.assign(targetRule.customRules, {isOldValue: event.target.checked});
-    this.setState({});
-  }
-
   public customValueEditor() {
     return (props: IValidatorProps) => {
-      // tslint:disable-next-line:no-console
-      console.log('props', props.customRules.isOldValue);
       return (
         <span>
           <select
@@ -148,22 +129,11 @@ class QueryBuilderContainer extends React.Component<
             className="rule-fields"
             title="Fields"
           >
-            <option value="">Select</option>
-            <option value="firstName">First Name</option>
-            <option value="lastName">Last Name</option>
-            <option value="age">Age</option>
-            <option value="address">Address</option>
-            <option value="phone">Phone</option>
-            <option value="email">Email</option>
-            <option value="twitter">Twitter</option>
-            <option value="isDev">Is a Developer?</option>
+            {this.props.targetFields.map((targetField, index) => (<option key={index} value={targetField.value}>{targetField.label}</option>))}
           </select>
-          <input
-            value={props.value}
-            type="text"
-            onChange={e => props.handleOnChange(e.target.value)}
-          />
-          <div className="checkbox">
+          &nbsp;
+          {props.customRules && !this.props.disableOldValue && <span>
+            <div className="checkbox">
             <label style={{ fontSize: '1em' }}>
               <input
                 type="checkbox"
@@ -175,6 +145,7 @@ class QueryBuilderContainer extends React.Component<
               Is Oldvalue
             </label>
           </div>
+          </span>}
         </span>
       );
     };
@@ -196,11 +167,10 @@ class QueryBuilderContainer extends React.Component<
     return (
       <div>
         <QueryBuilder
-          fields={this.state.fields}
+          fields={this.props.fields}
+          customRules={{isOldValue: false}}
           controlElements={this.controlElements}
-          customRules={{
-            isOldValue: false
-          }}
+          operators={this.props.operators}
           controlClassnames={{
             addGroup: 'rule-btn',
             addRule: 'rule-btn',
@@ -244,48 +214,16 @@ class QueryBuilderContainer extends React.Component<
               title: 'value'
             }
           }}
-          query={this.state.query}
-          onQueryChange={this.logQuery}
+          query={this.props.query}
+          onQueryChange={this.props.onQueryChange}
         />
-        <div className="shrink query-log scroll">
+        {this.props.showQuery && <div className="shrink query-log scroll">
           <h4>Query</h4>
-          <pre>{JSON.stringify(this.state.query, null, 2)}</pre>
-        </div>
+          <pre>{JSON.stringify(this.props.query, null, 2)}</pre>
+        </div>}
       </div>
     );
   }
-
-  private fetchQueryFields = () => {
-    const tenant = storage.getItem(AppProperties.TENANT);
-    if (tenant) {
-      // this.props.fetchQueryFields(tenant);
-    }
-  }
 }
 
-interface IDispatchProps {
-  fetchQueryFields: (tenant: string) => void;
-}
-
-interface IMapStateProps {
-  loading: boolean;
-  fields: any[];
-}
-
-const mapStateTopProps = (state: IState) => ({
-  fields: state.queryBuilder.fields,
-  loading: state.queryBuilder.loading
-});
-
-const mapDispatchToProps = (dispatch: any) => ({
-  fetchQueryFields: (tenant: string) =>
-    dispatch(fetchQueryFieldsRequest(tenant))
-});
-
-export default compose(
-  withRouter,
-  connect<IMapStateProps, IDispatchProps>(
-    mapStateTopProps,
-    mapDispatchToProps
-  )
-)(QueryBuilderContainer);
+export default QueryBuilderContainer;

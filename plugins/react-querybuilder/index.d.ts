@@ -95,7 +95,7 @@ export interface QueryBuilderProps {
    * with {name: String, label: String}
    */
   fields: Field[];
-  customRules: CustomRules;
+  customRules?: CustomRules;
   /**
    * The array of operators that should be used.
    * @default
