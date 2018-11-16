@@ -11,6 +11,11 @@
     cursor: pointer;
   }
 
+  .error-text {
+    color: $red;
+    font-size: 13px;
+  }
+
   .p-0{
     padding: 0px !important;
   }

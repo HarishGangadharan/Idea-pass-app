@@ -1,6 +1,7 @@
 import { push } from 'connected-react-router';
 import { call, put } from 'redux-saga/effects';
 import {
+  addFormSchema,
   createFormSchemaFailure,
   createFormSchemaSuccess,
   fetchFormSchemaFailure,
@@ -13,10 +14,12 @@ import FormSchemaService from '../services/formschema';
 function* createFormSchema(action: any) {
   try {
     const response = yield call(FormSchemaService.createFormSchema, action.payload, action.schemaId);
-    yield put(createFormSchemaSuccess(response));
+    if (response) {
+      yield put(createFormSchemaSuccess(response));
+      yield put(addFormSchema(response));
+    }
     yield put(push('/formschemalist'));
   } catch (error) {
-    yield put(push('/formschemalist'));
     yield put(createFormSchemaFailure(error));
   }
 }

@@ -1,5 +1,10 @@
 import FormSchemaConstants from './constants';
 
+export const addFormSchema = (data: any) => ({
+  payload: data,
+  type: FormSchemaConstants.ADD_FORM_SCHEMA
+});
+
 export const createFormSchemaRequest = (data: any, schemaId?: string) => ({
   payload: data,
   schemaId,

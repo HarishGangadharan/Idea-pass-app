@@ -27,4 +27,4 @@ gulp.task('zip', function () {
   return gulp.src(`./plugins/${process.argv[4]}/**`)
       .pipe(zip(`${process.argv[4]}.zip`))
       .pipe(gulp.dest('./plugins'));
-}); 
+});

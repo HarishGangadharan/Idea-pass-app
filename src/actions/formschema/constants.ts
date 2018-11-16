@@ -1,5 +1,6 @@
 import keyMirror from 'key-mirror';
 export default keyMirror({
+  ADD_FORM_SCHEMA: null,
   CREATE_FORM_SCHEMA_FAILURE: null,
   CREATE_FORM_SCHEMA_REQUEST: null,
   CREATE_FORM_SCHEMA_SUCCESS: null,

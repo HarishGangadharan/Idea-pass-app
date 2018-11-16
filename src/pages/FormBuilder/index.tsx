@@ -32,7 +32,7 @@ class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchM
   }
 
   public componentDidMount() {
-    if (this.props.match) {
+    if (this.props.match && this.props.match.params.id) {
       this.props.fetchFormSchemaRequest(this.props.match.params.id);
     }
   }
@@ -47,7 +47,10 @@ class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchM
       form.formType = 'data';
       form.nameSingular = form.name;
     }
-    this.props.createFormSchema(form, form._id);
+    // name is a required field
+    if (form && form.name) {
+      this.props.createFormSchema(form, form._id);
+    }
   }
 
   public renderSchema = (schema: any) => {
@@ -101,8 +104,8 @@ class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchM
           <React.Fragment>
             <div>
               <div className="form-group">
-                <label className="control-label">Form Name</label>
-                <input type="text" defaultValue={form.name} className="form-control" onChange={this.setFormName} />
+                <label className="control-label">Form Name</label> <span className="error-text">*</span>
+                <input type="text" defaultValue={form.name} className="form-control" onChange={this.setFormName} required={true}/>
               </div>
             </div>
             <Builder

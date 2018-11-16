@@ -21,7 +21,7 @@ interface IFormSchemas {
 }
 
 interface IFormSchemaReducer {
-  currentFormSchema: IFormSchema,
+  currentFormSchema: IFormSchema;
   list: IFormSchemas;
 }
 
@@ -41,7 +41,10 @@ const currentFormInitialState: IFormSchema = {
   nameSingular: ''
 };
 
-const formSchemaReducer = (state: IFormSchema = currentFormInitialState, action: IActionProps): IFormSchema => {
+const formSchemaReducer = (
+  state: IFormSchema = currentFormInitialState,
+  action: IActionProps
+): IFormSchema => {
   switch (action.type) {
     case FormSchemaConstants.CREATE_FORM_SCHEMA_REQUEST:
       return {
@@ -49,9 +52,15 @@ const formSchemaReducer = (state: IFormSchema = currentFormInitialState, action:
         loading: true
       };
     case FormSchemaConstants.CREATE_FORM_SCHEMA_SUCCESS:
-      return currentFormInitialState;
+      return {
+        ...state,
+        loading: false
+      };
     case FormSchemaConstants.CREATE_FORM_SCHEMA_FAILURE:
-      return currentFormInitialState;
+      return {
+        ...state,
+        loading: false
+      };
     case FormSchemaConstants.FETCH_FORM_SCHEMA_REQUEST:
       return {
         ...state,
@@ -70,7 +79,10 @@ const formSchemaReducer = (state: IFormSchema = currentFormInitialState, action:
   }
 };
 
-const formSchemaListReducer = (state: IFormSchemas = listInitialState, action: IActionProps): IFormSchemas => {
+const formSchemaListReducer = (
+  state: IFormSchemas = listInitialState,
+  action: IActionProps
+): IFormSchemas => {
   switch (action.type) {
     case FormSchemaConstants.FETCH_FORM_SCHEMA_LIST:
       return {
@@ -88,6 +100,13 @@ const formSchemaListReducer = (state: IFormSchemas = listInitialState, action: I
       return {
         ...state,
         loading: false
+      };
+    case FormSchemaConstants.ADD_FORM_SCHEMA:
+      return {
+        ...state,
+        data:
+          state.data.length < 10 ? [...state.data, action.payload] : state.data,
+        total: state.total + 1
       };
     default:
       return state;
