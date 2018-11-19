@@ -1,4 +1,5 @@
 import { RouterState } from 'connected-react-router';
+import { LocalizeState } from 'react-localize-redux';
 import { localizeReducer } from 'react-localize-redux';
 import { combineReducers, Reducer } from 'redux';
 import { appFormReducer, IAppFormReducer } from './appform';
@@ -43,6 +44,7 @@ export interface IActionProps {
 
 export interface IState {
   counter: ICounterReducer;
+  locale: LocalizeState,
   formFieldData: IFormFieldDataReducer,
   formSchema: IFormSchemaReducer,
   formTrigger: IFormTriggerReducer,
