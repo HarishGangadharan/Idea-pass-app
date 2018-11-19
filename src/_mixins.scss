@@ -1,6 +1,4 @@
-/* inject:scss */
-@import '_theme2.scss';
-/* endinject */
+@import '_theme.scss';
 
 @mixin shadow-container {
   box-shadow: $box-shadow;

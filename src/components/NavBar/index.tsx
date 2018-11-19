@@ -34,7 +34,7 @@ class NavBar extends React.Component<INavProps, INavState> {
     });
     const sheet = document.createElement('link');
     sheet.rel = 'stylesheet';
-    sheet.href = `./static/css/${theme}.css`;
+    sheet.href = `./static/css/${theme}/theme.min.css`;
     sheet.type = 'text/css';
     document.head.appendChild(sheet);
   }
@@ -55,6 +55,10 @@ class NavBar extends React.Component<INavProps, INavState> {
         onClick: () => this.props.logoutUser()
       }
     ];
+  }
+
+  public componentWillMount = () => {
+    NavBar.loadStyleSheet(this.props.activeTheme);
   }
 
   public render() {
@@ -114,6 +118,7 @@ class NavBar extends React.Component<INavProps, INavState> {
 
   private handleThemeSelection = (theme: string) => {
     NavBar.loadStyleSheet(theme);
+    this.props.setActiveTheme(theme);
   }
 }
 

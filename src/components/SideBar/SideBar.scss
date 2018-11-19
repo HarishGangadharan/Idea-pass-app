@@ -1,8 +1,6 @@
-/* inject:scss */
-@import '../../_theme2.scss';
-/* endinject */
+@import 'src/_theme.scss';
 
-@import '../../_mixins.scss';
+@import 'src/_mixins.scss';
 
 $indicator-bar-opacity: 0.05;
 

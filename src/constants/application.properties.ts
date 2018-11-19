@@ -1,6 +1,7 @@
 // DEV Server URL: http://35.237.114.118:3030
 export const AppProperties = {
   ACCESS_TOKEN_KEY: 'accessToken',
+  ACTIVE_THEME: 'activeTheme',
   BASE_URL: 'http://192.168.1.92:3030',
   DEFAULT_LANGUAGE: {
     code : 'en',

@@ -1,7 +1,9 @@
+import { AppProperties } from 'src/constants/application.properties';
 import Constants from '../actions/theme/constants';
+import storage from '../utils/storage';
 
 const inititalState = {
-  activeTheme: 'theme1'
+  activeTheme: storage.getItem(AppProperties.ACTIVE_THEME) ? storage.getItem(AppProperties.ACTIVE_THEME) : 'theme1'
 };
 
 import { IActionProps } from './index';
@@ -13,6 +15,7 @@ export interface IthemeReducer {
 export const themeReducer = (state = inititalState, action: IActionProps) => {
   switch (action.type) {
     case Constants.CHANGE_THEME:
+      storage.setItem(AppProperties.ACTIVE_THEME, action.selectedTheme);
       return {
         ...state,
         activeTheme: action.selectedTheme
