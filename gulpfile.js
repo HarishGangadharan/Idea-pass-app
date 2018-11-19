@@ -1,6 +1,5 @@
 const gulp = require('gulp');
 const inject = require('gulp-inject');
-const zip = require('gulp-zip');
 const cleanCSS = require('gulp-clean-css');
 const concat = require('gulp-concat');
 const wait = require('gulp-wait');
@@ -44,10 +43,3 @@ gulp.task('css', () => {
 
 // RUN: gulp default --option theme1|2|3
 gulp.task('default', gulp.series('change-theme', 'css'));
-
-// RUN: gulp zip --option ${plugin-name}
-gulp.task('zip', function () {
-  return gulp.src(`./plugins/${process.argv[4]}/**`)
-    .pipe(zip(`${process.argv[4]}.zip`))
-    .pipe(gulp.dest('./plugins'));
-});

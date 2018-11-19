@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/local_npm
 
 # testing
 /coverage
@@ -25,12 +26,20 @@ docker-compose.yml
 .env.production.local
 .history
 
+# audit
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Generated css
+# dependencies
+package-lock.json
+
+# generated css
 /src/**/*.css
+
+# plugins
 /plugins/**/node_modules
+/plugins/**/dist
+/plugin_builds
 
 credential.md
