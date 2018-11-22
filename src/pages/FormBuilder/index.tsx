@@ -34,6 +34,8 @@ class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchM
   public componentDidMount() {
     if (this.props.match && this.props.match.params.id) {
       this.props.fetchFormSchemaRequest(this.props.match.params.id);
+    } else {
+      this.props.fetchFormSchemaRequest('');
     }
   }
 
@@ -45,7 +47,7 @@ class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchM
     const { form } = this.props;
     if (form._id) {
       form.formType = 'data';
-      form.nameSingular = form.name;
+      form.nameSingular = form.name.toLowercase();
     }
     // name is a required field
     if (form && form.name) {

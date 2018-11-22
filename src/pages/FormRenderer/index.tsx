@@ -17,7 +17,7 @@ interface IRendererDispatchMap {
     callback?: (name: string) => void
   ) => void;
   fetchFormFieldDataRequest: (name: string, dataId: string) => void;
-  saveFormFieldDataRequest: (data: any, formName: string) => void;
+  saveFormFieldDataRequest: (data: any, formName: string, formDataId?: string) => void;
 }
 
 interface IRendererStateMap {
@@ -29,13 +29,16 @@ interface IRendererStateMap {
 
 class FormRenderer extends React.Component<
   IRendererDispatchMap & IRendererStateMap & RouteComponentProps,
-  {}
-> {
+  { formId: string }
+  > {
   public formio: any;
   constructor(
     props: IRendererDispatchMap & IRendererStateMap & RouteComponentProps
   ) {
     super(props);
+    this.state = {
+      formId: ''
+    };
   }
 
   public componentDidMount() {
@@ -47,16 +50,21 @@ class FormRenderer extends React.Component<
         } = match;
         if (submissionId) {
           this.props.fetchFormFieldDataRequest(name, submissionId);
+        } else {
+          this.props.fetchFormFieldDataRequest('', '');
         }
       };
+      this.setState({ formId: match.params.id });
       this.props.fetchFormSchemaRequest(match.params.id, callBack);
     }
   }
 
   public handleSubmit = (formData: any) => {
-    const { formRendererSchema } = this.props;
-    this.props.saveFormFieldDataRequest(formData.data, formRendererSchema.name_singular);
+    const { formRendererSchema, history } = this.props;
+    const { data } = formData;
+    this.props.saveFormFieldDataRequest(data, formRendererSchema.name_singular, data._id);
     this.formio.emit('submitDone');
+    history.push(`/formDataList/${formRendererSchema.nameSingular}/${this.state.formId}`);
   }
 
   public getFormio = (formio: any) => {

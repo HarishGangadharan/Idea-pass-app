@@ -42,6 +42,7 @@ $indicator-bar-opacity: 0.05;
   .base-icon {
     .icon-label {
       opacity: 0;
+      display: none;
       transition: opacity $indicator-bar-opacity;
       -webkit-transition: opacity $indicator-bar-opacity;
     }
@@ -54,6 +55,7 @@ $indicator-bar-opacity: 0.05;
     .base-icon {
       .icon-label {
         opacity: 1;
+        display: block;
         transition: opacity $indicator-bar-opacity;
         -webkit-transition: opacity $indicator-bar-opacity;
         padding-left: 5px;

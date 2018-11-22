@@ -63,6 +63,7 @@ const formFieldDataReducer = (state: IFormFieldData = currentFormInitialState, a
     case FormFieldDataConstants.FETCH_FORM_FIELD_DATA_FAILURE:
       return {
         ...state,
+        data: {},
         isLoading: false
       };
     case FormFieldDataConstants.SAVE_FORM_FIELD_DATA_REQUEST:
@@ -73,6 +74,7 @@ const formFieldDataReducer = (state: IFormFieldData = currentFormInitialState, a
     case FormFieldDataConstants.SAVE_FORM_FIELD_DATA_SUCCESS:
       return {
         ...state,
+        data: action.data,
         isLoading: false
       };
     case FormFieldDataConstants.SAVE_FORM_FIELD_DATA_FAILURE:

@@ -54,7 +54,7 @@ class FormSchemaList extends React.Component<
             <BaseIcon
               display="inline"
               name="Settings"
-              onClick={() => this.viewFormtriggers(row.name, row._id)}
+              onClick={() => this.viewFormtriggers(row.name_singular, row._id)}
             />
           </div>
         ))

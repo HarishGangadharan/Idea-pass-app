@@ -33,13 +33,15 @@ export const fetchFormFieldDataListFailure = (error: any) => ({
   type: FormFieldDataConstants.FETCH_FORM_FIELD_DATA_LIST_FAILURE
 });
 
-export const saveFormFieldDataRequest = (data: any, formName: string) => ({
+export const saveFormFieldDataRequest = (data: any, formName: string, formDataId?: string) => ({
   data,
+  formDataId,
   formName,
   type: FormFieldDataConstants.SAVE_FORM_FIELD_DATA_REQUEST
 });
 
-export const saveFormFieldDataSuccess = () => ({
+export const saveFormFieldDataSuccess = (data: any) => ({
+  data,
   type: FormFieldDataConstants.SAVE_FORM_FIELD_DATA_SUCCESS
 });
 

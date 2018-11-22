@@ -33,7 +33,7 @@ function* saveFormFieldData(action: any) {
   try {
     const { data, formName, formDataId } = action;
     yield call(FormFieldDataService.saveFormFieldData, data, formName, formDataId);
-    yield put(saveFormFieldDataSuccess());
+    yield put(saveFormFieldDataSuccess(data));
   } catch (error) {
     yield put(saveFormFieldDataFailure(error));
   }
