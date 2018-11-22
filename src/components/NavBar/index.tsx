@@ -28,7 +28,7 @@ class NavBar extends React.Component<INavProps, INavState> {
   private static loadStyleSheet(theme: string) {
     const styleSheets = document.querySelectorAll('link[rel=stylesheet]');
     styleSheets.forEach((styleSheet: any) => {
-      if (styleSheet.parentNode && !styleSheet.sheet.href.includes('chunk')) {
+      if (styleSheet.parentNode && styleSheet.sheet && styleSheet.sheet.href && !styleSheet.sheet.href.includes('chunk')) {
         styleSheet.parentNode.removeChild(styleSheet);
       }
     });
@@ -36,7 +36,7 @@ class NavBar extends React.Component<INavProps, INavState> {
     sheet.rel = 'stylesheet';
     sheet.href = `./static/css/${theme}/theme.min.css`;
     sheet.type = 'text/css';
-    document.head.appendChild(sheet);
+    if (document.head) { document.head.appendChild(sheet); }
   }
   private userMenu: any[];
 
