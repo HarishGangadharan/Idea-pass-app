@@ -74,12 +74,18 @@ const formFieldDataReducer = (state: IFormFieldData = currentFormInitialState, a
     case FormFieldDataConstants.SAVE_FORM_FIELD_DATA_SUCCESS:
       return {
         ...state,
-        data: action.data,
+        data: {...action.data},
         isLoading: false
       };
     case FormFieldDataConstants.SAVE_FORM_FIELD_DATA_FAILURE:
       return {
         ...state,
+        isLoading: false
+      };
+    case FormFieldDataConstants.UPDATE_FORM_FIELD_DATA_STATE:
+      return {
+        ...state,
+        data: action.data ? action.data : currentFormInitialState.data,
         isLoading: false
       };
     default:

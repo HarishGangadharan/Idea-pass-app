@@ -1,17 +1,21 @@
 import * as React from 'react';
+import { Button, Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
+import { BaseIcon } from 'src/components';
 import CreateTriggerComponent from 'src/components/CreateTriggerComponent';
+import { ITrigger, ITriggerAction } from 'src/reducers/formTrigger';
 import { fetchFormSchemaRequest } from '../../actions/formschema';
-import { fetchFormTriggerRequest, saveFormTriggerRequest } from '../../actions/formTrigger';
+import { fetchFormTriggerRequest, saveFormTriggerRequest, updateFormTriggerState } from '../../actions/formTrigger';
 import QueryBuilder from '../../components/Triggers/QueryBuilder';
 import { IState } from '../../reducers';
 import './formTrigger.css';
 
 interface ITriggerDispatchMap {
   fetchFormSchemaRequest: (schemaId?: string, callback?: (name: string) => void) => void;
-  fetchFormTriggerRequest: (name: string, dataId: string) => void;
-  saveFormTriggerRequest: (data: any, formName: string) => void;
+  fetchFormTriggerRequest: (triggerId: string) => void;
+  saveFormTriggerRequest: (data: any, triggerId?: string) => void;
+  updateFormTriggerState: (data?: any) => void;
 }
 
 interface ITriggerStateMap {
@@ -21,31 +25,12 @@ interface ITriggerStateMap {
   isTriggerLoading: boolean;
 }
 
-interface ITriggerAction {
-  fieldMapping: any,
-  form?: string,
-  isBefore?: boolean,
-  matchingQualification?: any;
-  sequence?: number | string;
-  type: string;
-  valid?: boolean;
-}
-
-interface ITrigger {
-  actions: ITriggerAction[],
-  description: string,
-  form: string,
-  isActive: boolean,
-  isAsynchronous: boolean,
-  isOnCreate: boolean,
-  isOnUpdate: boolean,
-  name: string,
-  qualifications: any,
-  sequence: string | number
-}
 interface ITriggerState {
+  action: ITriggerAction;
+  actionIndex?: number;
   actionTypeList: any[];
   trigger: ITrigger;
+  showPopup: boolean;
 }
 
 class FormTrigger extends React.Component<ITriggerDispatchMap & ITriggerStateMap & RouteComponentProps, ITriggerState> {
@@ -53,6 +38,9 @@ class FormTrigger extends React.Component<ITriggerDispatchMap & ITriggerStateMap
   constructor(props: ITriggerDispatchMap & ITriggerStateMap & RouteComponentProps) {
     super(props);
     this.state = {
+      action: {
+        type: ''
+      },
       actionTypeList: [
         { value: 'fill', label: 'Fill' },
         { value: 'self-fill', label: 'Self Fill' },
@@ -60,58 +48,9 @@ class FormTrigger extends React.Component<ITriggerDispatchMap & ITriggerStateMap
         { value: 'update', label: 'Update' },
         { value: 'veto', label: 'Veto' }
       ],
+      showPopup: false,
       trigger: {
-        actions: [
-          {
-            fieldMapping: {
-              id: this.getRandom(),
-              rules: [
-                {
-                  customRules: {
-                  },
-                  field: '',
-                  id: this.getRandom(),
-                  operator: '=',
-                  value: ''
-                }
-              ]
-            },
-            form: '',
-            matchingQualification: {
-              id: this.getRandom(),
-              rules: [
-                {
-                  customRules: {
-                  },
-                  field: '',
-                  id: this.getRandom(),
-                  operator: '=',
-                  value: ''
-                }
-              ]
-            },
-            type: 'fill'
-          }
-        ],
-        description: 'New fill trigger',
-        form: '5be3dcaa2abe0d4350b5b8db',
-        isActive: true,
-        isAsynchronous: false,
-        isOnCreate: false,
-        isOnUpdate: false,
-        name: 'fill-trigger',
-        qualifications: {
-          id: this.getRandom(),
-          rules: [{
-            customRules: {
-              isOldValue: false
-            },
-            id: this.getRandom(),
-            operator: 'null',
-            value: ''
-          }]
-        },
-        sequence: '1'
+        ...this.props.triggerData
       }
     };
   }
@@ -123,108 +62,102 @@ class FormTrigger extends React.Component<ITriggerDispatchMap & ITriggerStateMap
   public componentDidMount() {
     const match: any = this.props.match;
     if (match) {
-      const callBack = (name: string) => {
-        const { params: { triggerId } } = match;
-        if (triggerId) {
-          this.props.fetchFormTriggerRequest(name, triggerId);
-        }
-      };
-      this.props.fetchFormSchemaRequest(match.params.id, callBack);
+      const { params: { triggerId, id } } = match;
+      this.props.fetchFormSchemaRequest(id);
+      if (triggerId) {
+        this.props.fetchFormTriggerRequest(triggerId);
+      }
     }
   }
 
   public saveFormTrigger = () => {
-    //
+    const { trigger } = this.state;
+    this.props.saveFormTriggerRequest(trigger, trigger._id);
+    this.props.updateFormTriggerState();
   }
 
-  public handleTriggerChange(trigger: any) {
-    //
+  public saveTriggerAction = () => {
+    const { action, actionIndex } = this.state;
+    this.setState((state: ITriggerState) => {
+      if (actionIndex !== undefined) {
+        state.trigger.actions[actionIndex] = action;
+      }
+    });
+    this.setState({ action: { type: '' }, actionIndex: undefined });
+  }
+
+  public handleTriggerChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, field: string) => {
+    const targetElem = e.target;
+    this.setState((state: ITriggerState) => {
+      if (targetElem.type === 'checkbox') {
+        state.trigger[field] = !state.trigger[field];
+      } else {
+        state.trigger[field] = targetElem.value;
+      }
+    });
   }
 
   public onActionChange = (
     e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>,
-    actionIndex: number,
     field: string) => {
     e.persist();
     if (e.target.type === 'checkbox') {
       this.setState((state: ITriggerState) => {
-        state.trigger.actions[actionIndex][field] = !state.trigger.actions[actionIndex][field];
+        state.action[field] = !state.action[field];
       });
     } else {
       this.setState((state: ITriggerState) => {
-        state.trigger.actions[actionIndex][field] = e.target.value;
+        state.action[field] = e.target.value;
       });
     }
   }
 
-  public chooseActionType = (
-    e: React.ChangeEvent<HTMLSelectElement>,
-    actionIndex: number) => {
+  public addActionQualification(action: ITriggerAction) {
+    action.matchingQualification = {
+      id: this.getRandom(),
+      rules: []
+    };
+    action.form = '';
+    this.addActionFieldMap(action);
+  }
+
+  public addActionFieldMap(action: ITriggerAction) {
+    action.fieldMapping = {
+      id: this.getRandom(),
+      rules: []
+    };
+  }
+
+  public chooseActionType = (e: React.ChangeEvent<HTMLSelectElement>) => {
     e.persist();
     const type = e.target.value;
-    const action = this.state.trigger.actions[actionIndex];
-    action.type = type;
+    let action = this.state.action;
+    action = {
+      type
+    };
     switch (type) {
       case 'fill':
-        action.matchingQualification = {
-          id: this.getRandom(),
-          rules: [
-            {
-              field: 'lastName',
-              id: this.getRandom(),
-              operator: '=',
-              value: 'firstName'
-            }
-          ]
-        };
-        action.form = '';
-        delete action.isBefore;
+        this.addActionQualification(action);
         break;
       case 'self-fill':
-        delete action.matchingQualification;
-        delete action.isBefore;
-        delete action.form;
+        this.addActionFieldMap(action);
         break;
       case 'insert':
-        action.matchingQualification = {
-          id: this.getRandom(),
-          rules: [
-            {
-              field: '',
-              id: this.getRandom(),
-              operator: '=',
-              value: ''
-            }
-          ]
-        };
-        action.form = '';
+        this.addActionQualification(action);
         action.isBefore = false;
         break;
       case 'update':
-        action.matchingQualification = {
-          id: this.getRandom(),
-          rules: [
-            {
-              field: '',
-              id: this.getRandom(),
-              operator: '=',
-              value: ''
-            }
-          ]
-        };
-        action.form = '';
+        this.addActionQualification(action);
         action.isBefore = false;
         break;
       case 'veto':
-        delete action.matchingQualification;
-        delete action.fieldMapping;
         action.form = '';
         action.isBefore = false;
         break;
       default:
         break;
     }
-    this.setState({});
+    this.setState({ action });
   }
 
   public logQualificationsQuery = (loggedQuery: any) => {
@@ -233,26 +166,82 @@ class FormTrigger extends React.Component<ITriggerDispatchMap & ITriggerStateMap
     });
   }
 
-  public logMatchingQualificationsQuery = (loggedQuery: any, actionIndex: number) => {
+  public logMatchingQualificationsQuery = (loggedQuery: any) => {
     this.setState((state: ITriggerState) => {
-      return state.trigger.actions[actionIndex].matchingQualification = loggedQuery;
+      return state.action.matchingQualification = loggedQuery;
     });
   }
 
-  public logFieldMapping = (loggedQuery: any, actionIndex: number) => {
+  public logFieldMapping = (loggedQuery: any) => {
     this.setState((state: ITriggerState) => {
-      return state.trigger.actions[actionIndex].fieldMapping = loggedQuery;
+      return state.action.fieldMapping = loggedQuery;
     });
+  }
+
+  public selectAction(action: ITriggerAction, actionIndex: number) {
+    this.setState({ action, actionIndex });
+    this.handleHidePopup();
+  }
+
+  public removeAction = (index: number) => {
+    const { trigger } = this.state;
+    trigger.actions.splice(index, 1);
+    this.setState({});
+  }
+
+  public handleHidePopup = () => {
+    this.setState({ showPopup: false });
+  }
+
+  public addNewAction = () => {
+    const { trigger } = this.state;
+    const actionIndex = trigger.actions.length;
+    this.setState({ actionIndex });
   }
 
   public render() {
-    const { actionTypeList, trigger } = this.state;
+    const { actionTypeList, trigger, actionIndex, action } = this.state;
     return (
       <div className="row">
+        <Modal
+          show={this.state.showPopup}
+          onHide={this.handleHidePopup}
+          container={this}
+          aria-labelledby="contained-modal-title"
+        >
+          <Modal.Header closeButton={true}>
+            <Modal.Title id="contained-modal-title">
+              Actions
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <ul className="list-group">
+              {trigger.actions.map((savedAction, index) =>
+                (<li className="list-group-item" key={index} >Action {index + 1}
+                  <span className="action-icons pull-right">
+                    <BaseIcon
+                      name="Edit"
+                      display="inline-block"
+                      classname="mr-10"
+                      onClick={() => this.selectAction(savedAction, index)}
+                    />
+                    <BaseIcon
+                      name="Trash2"
+                      display="inline-block"
+                      onClick={() => this.removeAction(index)}
+                    />
+                  </span>
+                </li>))
+              }
+            </ul>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.handleHidePopup}>Close</Button>
+          </Modal.Footer>
+        </Modal>
         <div className="col-md-4 col-xs-12">
           <CreateTriggerComponent
             trigger={trigger}
-            onCreate={this.saveFormTrigger}
             onTriggerChange={this.handleTriggerChange} />
         </div>
         <div className="col-md-8 col-xs-12">
@@ -264,28 +253,39 @@ class FormTrigger extends React.Component<ITriggerDispatchMap & ITriggerStateMap
               fields={[{ label: 'Source', value: '' }, { label: 'firstName', value: 'firstName' }, { label: 'lastName', value: 'lastName' }]}
               targetFields={[{ label: 'Target', value: '' }, { label: 'firstName', value: 'firstName' }, { label: 'lastName', value: 'lastName' }]}
               query={trigger.qualifications}
-              showQuery={true}
               onQueryChange={this.logQualificationsQuery} />
           </div>
         </div>
         <div className="col-md-8 col-xs-12">
           <div className="shadow-container">
             <div className="title">
-              <h4>Actions {trigger.actions.length && <span className="badge">{trigger.actions.length}</span>}</h4>
+              <h4>Actions {trigger.actions.length > 0 &&
+                <span className="badge btn btn-primary" onClick={() => this.setState({ showPopup: true })}>
+                  {trigger.actions.length}
+                </span>}
+              </h4>
             </div>
-            {trigger.actions.map((action, actionIndex) =>
-              (<div className="panel panel-default" key={actionIndex}>
+            {typeof actionIndex === 'undefined' ?
+              <div className="text-center">
+                <BaseIcon
+                  display="inline"
+                  name="PlusCircle"
+                  size={48}
+                  onClick={this.addNewAction}
+                />
+              </div> :
+              <div className="panel panel-default">
                 <div className="panel-heading">
                   <div className="row">
                     Action - {actionIndex + 1}
-                    <button className="btn btn-primary pull-right">Add</button>
+                    <button className="btn btn-primary pull-right" onClick={this.saveTriggerAction}>Add</button>
                   </div>
                 </div>
                 <div className="panel-body">
                   <div className="form-group">
                     <label htmlFor="type">Type</label>
                     <select className="form-control" defaultValue={action.type}
-                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => this.chooseActionType(e, actionIndex)}>
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => this.chooseActionType(e)}>
                       <option value="">Select Action</option>
                       {actionTypeList.map((actionType, actionTypeIndex) => (<option key={actionTypeIndex} value={actionType.value}>{actionType.label}</option>))}
                     </select>
@@ -293,13 +293,13 @@ class FormTrigger extends React.Component<ITriggerDispatchMap & ITriggerStateMap
                   {('isBefore' in action) &&
                     <div className="form-group">
                       <input type="checkbox" name="isBefore" defaultChecked={action.isBefore} required={true}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.onActionChange(e, actionIndex, 'isBefore')} /> Is Before
-                </div>}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.onActionChange(e, 'isBefore')} /> Is Before
+                    </div>}
                   {('form' in action) &&
                     <div className="form-group">
                       <label htmlFor="form">Form to fill</label>
                       <select className="form-control" defaultValue={action.form}
-                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => this.onActionChange(e, actionIndex, 'form')}>
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => this.onActionChange(e, 'form')}>
                         <option value="">Select Action</option>
                         {actionTypeList.map((actionType, actionTypeIndex) => (<option key={actionTypeIndex} value={actionType.value}>{actionType.label}</option>))}
                       </select>
@@ -314,7 +314,7 @@ class FormTrigger extends React.Component<ITriggerDispatchMap & ITriggerStateMap
                           disableOldValue={true}
                           operators={[{ name: '=', label: '=' }, { name: 'null', label: 'isNull' }]}
                           query={action.matchingQualification}
-                          onQueryChange={(query: any) => this.logMatchingQualificationsQuery(query, actionIndex)} />
+                          onQueryChange={(query: any) => this.logMatchingQualificationsQuery(query)} />
                       </div>
                     </div>}
                   {('fieldMapping' in action) &&
@@ -329,11 +329,23 @@ class FormTrigger extends React.Component<ITriggerDispatchMap & ITriggerStateMap
                           disableOldValue={true}
                           operators={[{ name: '=', label: '=' }]}
                           query={action.fieldMapping}
-                          onQueryChange={(query: any) => this.logFieldMapping(query, actionIndex)} />
+                          onQueryChange={(query: any) => this.logFieldMapping(query)} />
                       </div>
                     </div>}
                 </div>
-              </div>))}
+              </div>}
+          </div>
+        </div>
+        <div className="footer-fab-right mb-10 mr-10">
+          <div className="form-group">
+            <button className="btn btn-primary btn-round" onClick={() => this.saveFormTrigger()}>
+              <BaseIcon
+                name="Save"
+                display="inline-block"
+                size={24}
+                classname="ml-5"
+              />
+            </button>
           </div>
         </div>
       </div>
@@ -344,7 +356,8 @@ class FormTrigger extends React.Component<ITriggerDispatchMap & ITriggerStateMap
 const mapDispatchToProps = ({
   fetchFormSchemaRequest,
   fetchFormTriggerRequest,
-  saveFormTriggerRequest
+  saveFormTriggerRequest,
+  updateFormTriggerState
 });
 
 const mapStateToProps = (state: IState) => ({

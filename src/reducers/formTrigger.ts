@@ -2,8 +2,32 @@ import { combineReducers } from 'redux';
 import { IActionProps } from '.';
 import FormTriggerConstants from '../actions/formTrigger/constants';
 
+interface ITriggerAction {
+  fieldMapping?: any;
+  form?: string;
+  isBefore?: boolean;
+  matchingQualification?: any;
+  sequence?: number | string;
+  type: string;
+  valid?: boolean;
+}
+
+interface ITrigger {
+  _id?: string;
+  actions: ITriggerAction[];
+  description: string;
+  form: string;
+  isActive: boolean;
+  isAsynchronous: boolean;
+  isOnCreate: boolean;
+  isOnUpdate: boolean;
+  name: string;
+  qualifications: any;
+  sequence: string | number;
+}
+
 interface IFormTrigger {
-  data: any;
+  data: ITrigger;
   isLoading: boolean;
 }
 
@@ -15,12 +39,26 @@ interface IFormTriggers {
 }
 
 interface IFormTriggerReducer {
-  trigger: IFormTrigger,
+  trigger: IFormTrigger;
   list: IFormTriggers;
 }
 
 const currentFormInitialState = {
-  data: {},
+  data: {
+    actions: [],
+    description: '',
+    form: '',
+    isActive: false,
+    isAsynchronous: false,
+    isOnCreate: false,
+    isOnUpdate: false,
+    name: '',
+    qualifications: {
+      id: '',
+      rules: []
+    },
+    sequence: 1
+  },
   isLoading: false
 };
 
@@ -114,4 +152,4 @@ const formTriggerReducers = combineReducers({
   trigger: formTriggerReducer
 });
 
-export { formTriggerReducers, IFormTriggerReducer, IFormTrigger, IFormTriggers };
+export { formTriggerReducers, IFormTriggerReducer, IFormTrigger, IFormTriggers, ITrigger, ITriggerAction };

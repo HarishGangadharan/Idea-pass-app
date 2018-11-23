@@ -2,7 +2,7 @@
 
 # dependencies
 /node_modules
-/local_npm
+/local_npm/*
 
 # testing
 /coverage

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import { createFormSchemaRequest, fetchFormSchemaRequest } from '../../actions/formschema';
+import { createFormSchemaRequest, fetchFormSchemaRequest, updateFormSchemaState } from '../../actions/formschema';
 import Builder from '../../components/FormBuilder';
 import { IState } from '../../reducers';
 
@@ -13,6 +13,7 @@ interface IFBuilderStateMap {
 interface IFBuilderDispatchMap {
   createFormSchema: (data: any, schemaId?: string) => void;
   fetchFormSchemaRequest: (schemaId: string) => void;
+  updateFormSchemaState: (data?: any) => void;
 }
 
 interface IFBuilderStateProps {
@@ -34,9 +35,11 @@ class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchM
   public componentDidMount() {
     if (this.props.match && this.props.match.params.id) {
       this.props.fetchFormSchemaRequest(this.props.match.params.id);
-    } else {
-      this.props.fetchFormSchemaRequest('');
     }
+  }
+
+  public componentWillUnmount() {
+    this.props.updateFormSchemaState();
   }
 
   public setFormName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -129,7 +132,8 @@ class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchM
 
 const mapDispatchToProps = ({
   createFormSchema: createFormSchemaRequest,
-  fetchFormSchemaRequest
+  fetchFormSchemaRequest,
+  updateFormSchemaState
 });
 
 const mapStateToProps = (state: IState) => ({

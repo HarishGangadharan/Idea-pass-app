@@ -35,6 +35,14 @@
     margin: 0px !important;
   }
 
+  .ml-5 {
+    margin-left: 5px;
+  }
+
+  .mr-10 {
+    margin-right: 10px;
+  }
+
   .mt-10 {
     margin-top: 10px;
   }
@@ -77,5 +85,19 @@
   // icons 
   .fa-trash {
     color: $red;
+  }
+  .footer-fab-right {
+    display: block;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+  }
+
+  .btn-round {
+    border-radius: 50%;
+    border: 2px solid $primaryColor;
+    width: 70px;
+    height: 70px;
+    padding: 0;
   }
 }

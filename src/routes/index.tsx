@@ -69,7 +69,7 @@ export class LoggedInRoutes extends React.Component {
       {
         component: FormTriggerList,
         exact: true,
-        path: '/formTriggerList/:formName/:formId'
+        path: '/formTriggerList/:formId'
       },
       {
         component: AppForm,

@@ -10,6 +10,7 @@ import {
   fetchRolePermissionSuccess
 } from '../actions/rolepermission';
 import RolePermissionService from '../services/rolepermission';
+import { onLogoutUser } from './user';
 
 function* createRolePermission(action: any) {
   try {
@@ -66,6 +67,7 @@ function* fetchRolePermissionRules(action: any) {
     }
     storage.setItem(AppProperties.RULES_UPDATED, 'true');
   } catch (error) {
+    yield call(onLogoutUser, { user: {} });
     //
   }
 }

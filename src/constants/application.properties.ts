@@ -2,7 +2,7 @@
 export const AppProperties = {
   ACCESS_TOKEN_KEY: 'accessToken',
   ACTIVE_THEME: 'activeTheme',
-  BASE_URL: 'http://192.168.3.185:3030',
+  BASE_URL: 'http://192.168.15.108:3030',
   DEFAULT_LANGUAGE: {
     code : 'en',
     name: 'English'

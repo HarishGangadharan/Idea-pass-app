@@ -81,9 +81,9 @@ class FormTriggerList extends React.Component<IFormSchemasProps & RouteComponent
   }
 
   private fetchFormTriggers = () => {
-    const { formName } = this.props.match.params;
+    const { formId } = this.props.match.params;
     const { currentPage, length } = this.state;
-    this.props.fetchFormTriggerListRequest(formName, length, currentPage);
+    this.props.fetchFormTriggerListRequest(formId, length, currentPage);
   }
 }
 

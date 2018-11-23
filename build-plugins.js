@@ -91,4 +91,4 @@ shell.ls(localNPMDir).forEach((plugin) => {
 });
 
 // Removing installed packages
-shell.rm('-rf', `${localNPMDir}/*`);
+// shell.rm('-rf', `${localNPMDir}/*`);

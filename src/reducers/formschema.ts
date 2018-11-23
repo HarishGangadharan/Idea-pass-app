@@ -52,15 +52,9 @@ const formSchemaReducer = (
         loading: true
       };
     case FormSchemaConstants.CREATE_FORM_SCHEMA_SUCCESS:
-      return {
-        ...state,
-        loading: false
-      };
+      return currentFormInitialState;
     case FormSchemaConstants.CREATE_FORM_SCHEMA_FAILURE:
-      return {
-        ...state,
-        loading: false
-      };
+      return currentFormInitialState;
     case FormSchemaConstants.FETCH_FORM_SCHEMA_REQUEST:
       return {
         ...state,
@@ -74,6 +68,12 @@ const formSchemaReducer = (
       };
     case FormSchemaConstants.FETCH_FORM_SCHEMA_FAILURE:
       return currentFormInitialState;
+    case FormSchemaConstants.UPDATE_FORM_SCHEMA_STATE:
+      return {
+        ...state,
+        ...action.data ? action.data : currentFormInitialState,
+        isLoading: false
+      };
     default:
       return state;
   }

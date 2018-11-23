@@ -74,7 +74,7 @@ class FormSchemaList extends React.Component<
   }
 
   public viewFormtriggers(formName: string, formId: string) {
-    this.props.history.push(`/formTriggerList/${formName}/${formId}`);
+    this.props.history.push(`/formTriggerList/${formId}`);
   }
 
   public componentDidMount() {

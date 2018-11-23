@@ -54,3 +54,8 @@ export const fetchFormSchemaListFailure = (error: any) => ({
   error,
   type: FormSchemaConstants.FETCH_FORM_SCHEMA_LIST_FAILURE
 });
+
+export const updateFormSchemaState = (data?: any) => ({
+  data,
+  type: FormSchemaConstants.UPDATE_FORM_SCHEMA_STATE
+});

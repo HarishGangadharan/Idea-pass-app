@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import {
   fetchFormFieldDataRequest,
-  saveFormFieldDataRequest
+  saveFormFieldDataRequest,
+  updateFormFieldDataState
 } from '../../actions/formfielddata';
 import { fetchFormSchemaRequest } from '../../actions/formschema';
 import Renderer from '../../components/FormRender';
@@ -18,6 +19,7 @@ interface IRendererDispatchMap {
   ) => void;
   fetchFormFieldDataRequest: (name: string, dataId: string) => void;
   saveFormFieldDataRequest: (data: any, formName: string, formDataId?: string) => void;
+  updateFormFieldDataState: (data?: any) => void;
 }
 
 interface IRendererStateMap {
@@ -50,8 +52,6 @@ class FormRenderer extends React.Component<
         } = match;
         if (submissionId) {
           this.props.fetchFormFieldDataRequest(name, submissionId);
-        } else {
-          this.props.fetchFormFieldDataRequest('', '');
         }
       };
       this.setState({ formId: match.params.id });
@@ -64,7 +64,11 @@ class FormRenderer extends React.Component<
     const { data } = formData;
     this.props.saveFormFieldDataRequest(data, formRendererSchema.name_singular, data._id);
     this.formio.emit('submitDone');
-    history.push(`/formDataList/${formRendererSchema.nameSingular}/${this.state.formId}`);
+    history.push(`/formDataList/${formRendererSchema.name_singular}/${this.state.formId}`);
+  }
+
+  public componentWillUnmount() {
+    this.props.updateFormFieldDataState();
   }
 
   public getFormio = (formio: any) => {
@@ -103,7 +107,8 @@ class FormRenderer extends React.Component<
 const mapDispatchToProps = {
   fetchFormFieldDataRequest,
   fetchFormSchemaRequest,
-  saveFormFieldDataRequest
+  saveFormFieldDataRequest,
+  updateFormFieldDataState
 };
 
 const mapStateToProps = (state: IState) => ({

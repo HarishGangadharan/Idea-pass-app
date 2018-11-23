@@ -49,3 +49,8 @@ export const saveFormFieldDataFailure = (error: any) => ({
   error,
   type: FormFieldDataConstants.SAVE_FORM_FIELD_DATA_FAILURE
 });
+
+export const updateFormFieldDataState = (data?: any) => ({
+  data,
+  type: FormFieldDataConstants.UPDATE_FORM_FIELD_DATA_STATE
+});
