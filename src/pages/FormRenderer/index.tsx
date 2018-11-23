@@ -55,7 +55,7 @@ class FormRenderer extends React.Component<
 
   public handleSubmit = (formData: any) => {
     const { formRendererSchema } = this.props;
-    this.props.saveFormFieldDataRequest(formData.data, formRendererSchema.name);
+    this.props.saveFormFieldDataRequest(formData.data, formRendererSchema.name_singular);
     this.formio.emit('submitDone');
   }
 
@@ -74,13 +74,13 @@ class FormRenderer extends React.Component<
       <div className="shadow-container full-height">
         {!isLoading && !isSubmissionLoading && (
           <Fragment>
-            {formRendererSchema.formData && (
+            {formRendererSchema.form_data && (
               <div className="title">
                 <h4>{formRendererSchema.name}</h4>
               </div>
             )}
             <Renderer
-              formRendererSchema={formRendererSchema.formData}
+              formRendererSchema={formRendererSchema.form_data}
               submission={{ data: submissionData }}
               handleSubmit={this.handleSubmit}
               getFormio={this.getFormio}

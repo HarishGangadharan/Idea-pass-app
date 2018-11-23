@@ -3,7 +3,7 @@ import { IActionProps } from '.';
 import FormSchemaConstants from '../actions/formschema/constants';
 
 interface IFormSchema {
-  formData: {
+  form_data: {
     display: string;
     [key: string]: any;
   };
@@ -32,10 +32,10 @@ const listInitialState: IFormSchemas = {
 };
 
 const currentFormInitialState: IFormSchema = {
-  formData: {
+  formType: 'data',
+  form_data: {
     display: 'form'
   },
-  formType: 'data',
   loading: false,
   name: '',
   nameSingular: ''

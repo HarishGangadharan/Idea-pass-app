@@ -1,22 +1,22 @@
 import axios from 'axios';
 
 class RolePermissionService {
-  public static createRolePermission = (data: any, tenantId: string, modelName: string) => {
+  public static createRolePermission = (data: any) => {
     axios({
       data,
       method: 'patch',
-      url: `/permissions?tenant=${tenantId}&model=${modelName}`
+      url: `/permissions`
     });
   }
 
   public static fetchRolePermission = (tenantId: string, modelName: string) => axios({
     method: 'get',
-    url: `/permissions?tenant=${tenantId}&model=${modelName}`
+    url: `/permissions?tenant_id=${tenantId}&subject=${modelName}`
   })
 
   public static fetchRolePermissionRules = (roles: string) => axios({
     method: 'get',
-    url: `/permissions?roleId=${roles}`
+    url: `/permissions?role_id=${roles}`
   })
 }
 

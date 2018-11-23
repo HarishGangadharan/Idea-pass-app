@@ -48,7 +48,7 @@ class FormSchemaList extends React.Component<
             <BaseIcon
               display="inline"
               name="List"
-              onClick={() => this.viewFormData(row.name, row._id)}
+              onClick={() => this.viewFormData(row.name_singular, row._id)}
             />
             &nbsp;
             <BaseIcon

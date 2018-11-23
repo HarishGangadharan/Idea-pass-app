@@ -62,12 +62,12 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
   public componentDidMount() {
     const tenant = storage.getItem(AppProperties.TENANT);
     if (tenant) {
-      this.props.rolePermission.tenant = tenant;
+      this.props.rolePermission.tenant_id = tenant;
       this.props.fetchOrganizationRequest(tenant);
       this.props.fetchConfigList('registeredModels,permissionCategory,permissionTable', tenant);
       this.setState({tenantAdmin: true});
     } else {
-      this.props.rolePermission.tenant = '';
+      this.props.rolePermission.tenant_id = '';
       this.props.fetchOrganizationList(10, 1);
     }
   }
@@ -78,14 +78,14 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
 
   public getConfigList = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const tenant = e.target.value;
-    this.props.rolePermission.tenant = tenant;
+    this.props.rolePermission.tenant_id = tenant;
     this.props.fetchConfigList('registeredModels,permissionCategory,permissionTable', tenant);
   }
 
   public getRolePermission = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const model = e.target.value;
     if (model) {
-      this.props.fetchRolePermission(this.props.rolePermission.tenant, model);
+      this.props.fetchRolePermission(this.props.rolePermission.tenant_id, model);
     }
   }
 
@@ -95,7 +95,7 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
       delete permission.permission.availablePermissions;
     });
     delete rolePermission.loading;
-    this.props.createRolePermission(rolePermission, rolePermission.tenant, rolePermission.model);
+    this.props.createRolePermission(rolePermission);
   }
 
   public render() {
@@ -108,9 +108,9 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
             <h4>Organization</h4>
           </div>
           <div className="col-md-6">
-            {tenantAdmin ? <select className="form-control" defaultValue={rolePermission.tenant} disabled={true}>
+            {tenantAdmin ? <select className="form-control" defaultValue={rolePermission.tenant_id} disabled={true}>
                 <option value={organization._id}>{organization.name}</option>
-              </select> : <select className="form-control" defaultValue={rolePermission.tenant} onChange={(e) => this.getConfigList(e)}>
+              </select> : <select className="form-control" defaultValue={rolePermission.tenant_id} onChange={(e) => this.getConfigList(e)}>
               <option value="">SELECT ORGANIZATION</option>
               {organizations.map((org, i) => <option key={i} value={org._id}>{org.name}</option>)}
             </select>}
@@ -127,7 +127,7 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
             </select>
           </div>
           <div className="col-md-3">
-            <select className="form-control" defaultValue={rolePermission.model} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => this.getRolePermission(e)}>
+            <select className="form-control" defaultValue={rolePermission.subject} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => this.getRolePermission(e)}>
               <option value="">SELECT MODEL</option>
               {models.map((model, i) => <option key={i}>{model}</option>)}
             </select>
@@ -171,7 +171,7 @@ const mapStateToProps = (state: IState) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  createRolePermission: (rolePermission: IRolePermissionReducer, tenantId: string, modelName: string) => dispatch(createRolePermissionRequest(rolePermission, tenantId, modelName)),
+  createRolePermission: (rolePermission: IRolePermissionReducer) => dispatch(createRolePermissionRequest(rolePermission)),
   fetchConfigList: (configList: string, tenantId: string) => dispatch(fetchConfigRequest(configList, tenantId)),
   fetchOrganizationList: (limit: number, currentPage: number) => dispatch(fetchOrganizationListRequest(limit, currentPage)),
   fetchOrganizationRequest: (tenantId: string) => dispatch(fetchOrganizationRequest(tenantId)),
@@ -202,7 +202,7 @@ interface IDispatchProps {
   fetchRoleList: (tenantId: string, limit: number, currentPage: number) => void;
   fetchRolePermission: (tenantId: string, modelName: string) => void;
   updateRolePermissionState: (rolePermission: IPermission) => void;
-  createRolePermission: (rolePermission: IRolePermissionReducer, tenantId: string, modelName: string) => void;
+  createRolePermission: (rolePermission: IRolePermissionReducer) => void;
 }
 
 export default compose(

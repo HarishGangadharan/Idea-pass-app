@@ -21,17 +21,17 @@ interface IPermission {
 }
 
 interface IRolePermissionReducer {
-  model: string;
-  tenant: string;
+  subject: string;
+  tenant_id: string;
   permissions: IPermission[];
   loading: boolean;
 }
 
 const rolePermissionInitialState: IRolePermissionReducer = {
   loading: false,
-  model: '',
   permissions: [],
-  tenant: ''
+  subject: '',
+  tenant_id: ''
 };
 
 const rolePermissionReducer = (state: IRolePermissionReducer = rolePermissionInitialState, action: IActionProps): IRolePermissionReducer => {

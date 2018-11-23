@@ -109,7 +109,7 @@ class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchM
               </div>
             </div>
             <Builder
-              formBuilderSchema={form.formData}
+              formBuilderSchema={form.form_data}
               builderOptions={builderOptions}
               renderSchema={this.renderSchema}
               renderComponent={this.renderComponent}

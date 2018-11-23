@@ -4,16 +4,16 @@ class FormSchemaService {
   public static createFormSchema = (data: any, schemaId?: string) => axios({
       data,
       method: schemaId ? 'put' : 'post',
-      url: schemaId ? `/formschema/${schemaId}` : `/formschema/`
+      url: schemaId ? `/form-meta-ui/${schemaId}` : `/form-meta-ui/`
   })
 
   public static fetchFormSchema = (schemaId?: string) => axios({
     method: 'get',
-    url: `/formschema/${schemaId}`
+    url: `/form-meta-ui/${schemaId}`
   })
 
   public static getAllFormSchema = (limit: number, currentPage: number, sortField: string, sortOrder: number, filters?: string) => {
-    let queryString = '/formschema';
+    let queryString = '/form-meta-ui';
     let paginationApplied = false;
     if (limit && currentPage) {
       paginationApplied = true;

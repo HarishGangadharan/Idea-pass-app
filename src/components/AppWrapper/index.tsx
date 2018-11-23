@@ -4,6 +4,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import { ToastContainer } from 'react-toastify';
 import { compose } from 'redux';
 import { AppProperties } from 'src/constants/application.properties';
 import storage from 'src/utils/storage';
@@ -15,6 +16,7 @@ import { IState } from '../../reducers';
 import { LoggedInRoutes,
   persistantRoutes as PersistantRoutes } from '../../routes';
 
+import 'react-toastify/dist/ReactToastify.css';
 import './style.css';
 
 interface IAppWrapperProps extends LocalizeContextProps {
@@ -81,6 +83,7 @@ class AppWrapper extends React.Component<IAppWrapperProps, IAppWrapperState> {
                 <div key="mainContainer" className={isExpanded ? 'main expand' : 'main'}>
                   <LoggedInRoutes key="logged-in-routes"/>
                 </div>
+                <ToastContainer />
               </div>
              </Fragment>
           ) ||

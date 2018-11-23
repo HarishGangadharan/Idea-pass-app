@@ -16,7 +16,7 @@ class RoleService {
 
   public static getAllRole = (tenantId: string, limit: number, currentPage: number) => axios({
     method: 'get',
-    url: `/roles/?tenant=${'5bc5fd4ac34ad51cd6409db3'}&$limit=${limit}&$skip=${limit * (currentPage - 1)}`
+    url: `/roles/?tenant_id=${tenantId}&$limit=${limit}&$skip=${limit * (currentPage - 1)}`
   })
 }
 

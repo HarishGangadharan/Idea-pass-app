@@ -13,8 +13,8 @@ import RolePermissionService from '../services/rolepermission';
 
 function* createRolePermission(action: any) {
   try {
-    const { payload, tenantId, modelName } = action;
-    yield call(RolePermissionService.createRolePermission, payload, tenantId, modelName);
+    const { payload } = action;
+    yield call(RolePermissionService.createRolePermission, payload);
     yield put(createRolePermissionSuccess(payload));
   } catch (error) {
     yield put(createRolePermissionFailure(error));

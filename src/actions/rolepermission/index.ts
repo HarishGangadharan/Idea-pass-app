@@ -1,10 +1,8 @@
 import { IPermission } from 'src/reducers/rolepermission';
 import Constants from './constants';
 
-export const createRolePermissionRequest = (data: any, tenantId: string, modelName: string) => ({
-  modelName,
+export const createRolePermissionRequest = (data: any) => ({
   payload: data,
-  tenantId,
   type: Constants.CREATE_ROLE_PERMISSION_REQUEST
 });
 
