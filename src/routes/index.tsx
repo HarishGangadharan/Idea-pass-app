@@ -14,6 +14,7 @@ import FormSchemaList from '../pages/FormSchemaList';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import NoMatch from '../pages/NoMatch';
+import Users from '../pages/User';
 
 export class LoggedInRoutes extends React.Component {
   public render() {
@@ -81,6 +82,11 @@ export class LoggedInRoutes extends React.Component {
         component: DynamicTableRender,
         exact: true,
         path: '/dynamicTable'
+      },
+      {
+        component: Users,
+        exact: true,
+        path: '/users'
       },
       {
         component: NoMatch,

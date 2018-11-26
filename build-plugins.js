@@ -4,9 +4,9 @@ const chalk = require('chalk');
 
 //** helpers***//
 const success = (msg) =>  console.log(chalk.green(msg));
-const info = (info) =>  console.log(chalk.cyan(info));
-const error = (error) =>  console.log(chalk.red(error));
-const dullInfo = (info) => console.log(chalk.dim.italic(info));
+const info = (msg) =>  console.log(chalk.cyan(msg));
+const error = (msg) =>  console.log(chalk.red(msg));
+const dullInfo = (msg) => console.log(chalk.dim.italic(msg));
 const greatSucess = (msg) =>  console.log(chalk.black.bgGreen.bold(msg));
 const greatError = (msg) =>  console.log(chalk.black.bgRed.bold(msg));
 
@@ -25,12 +25,12 @@ const plugins = {
 };
 
 const pluginActions = [
-  {
-    name: 'React Querybuilder',
-    dir: plugins.reactQueryBuilder,
-    preBuild: 'npm install',
+ {
     build: 'npm run dist',
-    postBuild: `rm -rf dist; rm -rf node_modules;`
+    dir: plugins.reactQueryBuilder,
+    name: 'React Querybuilder',
+    postBuild: `rm -rf dist; rm -rf node_modules;`,
+    preBuild: 'npm install'
   }
 ];
 

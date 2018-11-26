@@ -50,6 +50,15 @@ class SideBar extends React.Component<ISideBarProps> {
             <BaseIcon name="Globe" label="navbar.organization" />
         </NavLink>
         </Can>
+        <Can I="read" a="users">
+          <NavLink
+            exact={true}
+            to="/users"
+            activeClassName="active"
+            className="nav-link">
+            <BaseIcon name="Users" label="navbar.users" />
+        </NavLink>
+        </Can>
         <div className="indicator" onClick={this.props.expandSideBar}>
           <div className="indicator-bar">&nbsp;</div>
           <BaseIcon name={isExpanded ? 'ChevronLeft' : 'ChevronRight'} size={20} label="" />

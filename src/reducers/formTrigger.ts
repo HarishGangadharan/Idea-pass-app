@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { IActionProps } from '.';
 import FormTriggerConstants from '../actions/formTrigger/constants';
+import { AppProperties } from '../constants/application.properties';
 
 interface ITriggerAction {
   fieldMapping?: any;
@@ -65,7 +66,7 @@ const currentFormInitialState = {
 const listInitialState = {
   data: [],
   isLoading: false,
-  limit: 10,
+  limit: AppProperties.TABLE_PROPS.LIMIT,
   total: 0
 };
 

@@ -19,12 +19,14 @@
     "noUnusedLocals": true
   },
   "exclude": [
+    "build-plugins.js",
     "node_modules",
     "plugins",
     "build",
     "scripts",
     "acceptance-tests",
     "webpack",
+    "local_npm",
     "jest",
     "src/setupTests.ts",
     "src/*.css",

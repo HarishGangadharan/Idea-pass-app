@@ -1,4 +1,5 @@
 import { call, put } from 'redux-saga/effects';
+import { IRequestFilter } from 'request-filter';
 import { AppProperties } from 'src/constants/application.properties';
 import storage from 'src/utils/storage';
 import { updateLoggedInStatus } from '../actions/global';
@@ -13,9 +14,9 @@ import { updateUserSession } from '../global/interceptors';
 import { fetchRolePermissionRules } from '../sagas/rolepermission';
 import { getUsers, loginUser, logoutUser } from '../services/user';
 
-function* onFetchUsers() {
+function* onFetchUsers(requestFilter: IRequestFilter) {
   try {
-    const data = yield call(getUsers);
+    const data = yield call(getUsers, requestFilter);
     yield put(fetchUsersSuccess(data));
   } catch (error) {
     yield put(fetchUsersFail(error));

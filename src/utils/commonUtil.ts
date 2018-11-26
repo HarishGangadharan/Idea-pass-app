@@ -1,3 +1,4 @@
+import { IRequestQuery } from 'request-filter';
 import Column, { IColDef } from '../components/Table/Column';
 
 export const isEmailValid = (email: string) : boolean => {
@@ -22,4 +23,24 @@ export const comparatorsForAPI = (comparator: string): string => {
   } else {
     return comparator;
   }
+};
+
+export const constructUrl = (requestQuery: IRequestQuery) =>  {
+  const {
+    currentPage,
+    sortField,
+    sortOrder,
+    limit,
+    resource,
+    filters
+  } = requestQuery;
+  let queryString = `${resource}?$limit=${limit}&$skip=${
+    currentPage ? limit || 0 * (currentPage - 1) : 0}`;
+  if (sortOrder && sortField) {
+    queryString += `&$sort[${sortField}]=${sortOrder}`;
+  }
+  if (filters) {
+    queryString += `&${filters}`;
+  }
+  return queryString;
 };

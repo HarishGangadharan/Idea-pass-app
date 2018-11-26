@@ -2,6 +2,7 @@ import Constants from '../actions/user/constants';
 
 const initialState = {
   loading: false,
+  total: 0,
   user: null,
   users: []
 };
@@ -12,6 +13,7 @@ export interface IuserReducer {
   loading: boolean;
   user: any;
   users: any[];
+  total: number
 }
 
 export const userReducer = (
@@ -33,7 +35,8 @@ export const userReducer = (
       return {
         ...state,
         loading: false,
-        users: action.response.data
+        total: action.response.data.total,
+        users: action.response.data.data
       };
     case Constants.LOGIN_USER:
       return {

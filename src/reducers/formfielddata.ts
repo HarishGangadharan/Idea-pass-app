@@ -1,7 +1,7 @@
 import { combineReducers, Reducer } from 'redux';
 import { IActionProps } from '.';
 import FormFieldDataConstants from '../actions/formfielddata/constants';
-
+import { AppProperties } from '../constants/application.properties';
 interface IFormFieldData {
   data: any;
   isLoading: boolean;
@@ -27,7 +27,7 @@ const currentFormInitialState = {
 const listInitialState = {
   data: [],
   isLoading: false,
-  limit: 10,
+  limit: AppProperties.TABLE_PROPS.LIMIT,
   total: 0
 };
 

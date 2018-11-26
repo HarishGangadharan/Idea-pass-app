@@ -1,6 +1,9 @@
+import { IRequestFilter } from 'request-filter';
+
 import Constants from './constants';
 
-export const fetchUsers = () => ({
+export const fetchUsers = (requestFilter: IRequestFilter = {}) => ({
+  requestFilter,
   type: Constants.FETCH_USERS
 });
 

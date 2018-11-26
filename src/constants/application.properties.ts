@@ -4,18 +4,26 @@ export const AppProperties = {
   ACTIVE_THEME: 'activeTheme',
   BASE_URL: 'http://192.168.15.108:3030',
   DEFAULT_LANGUAGE: {
-    code : 'en',
+    code: 'en',
     name: 'English'
   },
-  LANGUAGES: [
-    { name: 'English', code: 'en' },
-    { name: 'French', code: 'fr' },
-    { name: 'Spanish', code: 'es' }
-  ],
+  LANGUAGES: [{
+    code: 'en',
+    name: 'English'
+  }, {
+    code: 'fr',
+    name: 'French'
+  }, {
+    code: 'es',
+    name: 'Spanish'
+  }],
   ROLES: 'roles',
   RULES_UPDATED: 'rulesUpdated',
   SELECTED_LANGUAGE_KEY: 'language',
   SIDEBAR_EXPANDED: 'sidebarExpanded',
+  TABLE_PROPS: {
+    LIMIT: 10
+  },
   TENANT: 'tenant',
   USER_ID: 'userId',
   USER_SESSION: 'userSession'
