@@ -1,13 +1,11 @@
 import axios from 'axios';
 
 class FormFieldDataService {
-  public static saveFormFieldData = (data: any, formName: string, formDataId?: string) => {
-    axios({
+  public static saveFormFieldData = (data: any, formName: string, formDataId?: string) => axios({
       data,
       method: formDataId ? 'put' : 'post',
       url: formDataId ? `/forms/${formName}/${formDataId}` : `/forms/${formName}`
-    });
-  }
+    })
 
   public static fetchFormFieldData = (formName: string, submissionId?: string) => axios({
     method: 'get',

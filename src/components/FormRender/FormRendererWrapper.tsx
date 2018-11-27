@@ -7,7 +7,7 @@ import Form from 'formiojs/Form';
 interface IFormProps {
   src?: string,
   url?: string,
-  form: object,
+  form?: object,
   submission?: object,
   options?: {
     readOnly?: boolean,
@@ -31,6 +31,7 @@ interface IFormProps {
 export default class extends React.Component<IFormProps, any> {
   public formio: any;
   public element: React.RefObject<HTMLDivElement>;
+
   private createPromise: Promise<any>;
 
   constructor(props: IFormProps) {
@@ -41,26 +42,45 @@ export default class extends React.Component<IFormProps, any> {
 
   public componentDidMount = () => {
     const { options, src, url, form } = this.props;
-
     if (src) {
-      this.createPromise = new Form(this.element.current, src, options).render().then((formio: any) => {
-        this.formio = formio;
-        this.formio.src = src;
-      });
+      this.createFormPromise(src, options, url);
     }
     if (form) {
-      this.createPromise = new Form(this.element.current, form, options).render().then((formio: any) => {
-        this.formio = formio;
-        this.formio.form = form;
-        if (this.props.assignRef) {
-          this.props.assignRef(this.formio);
-        }
-        if (url) {
-          this.formio.url = url;
-        }
-      });
+      this.createFormPromise(form, options, url);
     }
+  }
 
+  public componentDidUpdate(prevProps: IFormProps) {
+    const { src, form, options, url, submission } = this.props;
+    if ((src && prevProps.src) && src !== prevProps.src) {
+      this.createFormPromise(src, options, url);
+    }
+    if ((form && prevProps.form) && form !== prevProps.form) {
+      this.createFormPromise(form, options, url);
+    }
+    if (prevProps.submission && submission !== prevProps.submission && this.formio) {
+      this.formio.submission = submission;
+    }
+  }
+
+  public createFormPromise = (jsonOrSrc: string | object, options: any, url?: string) => {
+    if (this.formio) {
+      this.formio.destroy(true);
+    }
+    this.createPromise = new Form(this.element.current, jsonOrSrc, options).render().then((formio: any) => {
+      this.formio = formio;
+      if (typeof jsonOrSrc === 'string') {
+        this.formio.src = jsonOrSrc;
+      } else {
+        this.formio.form = jsonOrSrc;
+      }
+      if (this.props.assignRef) {
+        this.props.assignRef(this.formio);
+      }
+      if (url) {
+        this.formio.url = url;
+      }
+    });
     this.initializeFormio();
   }
 

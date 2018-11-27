@@ -6,9 +6,10 @@
   "navbar": {
     "home":"Home",
     "schemas":"Schemas",
-    "roles":"Roles",
+    "permissions":"Permissions",
     "organization":"Organization",
-    "users": "Users"
+    "users": "Users",
+    "role":"Role"
   },
 
   "label": {

@@ -49,8 +49,7 @@ class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchM
   public saveFormSchema = (): void => {
     const { form } = this.props;
     if (form._id) {
-      form.formType = 'data';
-      form.nameSingular = form.name.toLowercase();
+      form.form_type = 'data';
     }
     // name is a required field
     if (form && form.name) {
@@ -142,6 +141,3 @@ const mapStateToProps = (state: IState) => ({
 });
 
 export default connect<IFBuilderStateMap, IFBuilderDispatchMap>(mapStateToProps, mapDispatchToProps)(FormBuilder);
-
-
-

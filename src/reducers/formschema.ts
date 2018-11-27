@@ -8,8 +8,8 @@ interface IFormSchema {
     [key: string]: any;
   };
   name: string;
-  nameSingular: string;
-  formType: string;
+  name_singular: string;
+  form_type: string;
   _id?: string;
   [key: string]: any;
 }
@@ -32,13 +32,13 @@ const listInitialState: IFormSchemas = {
 };
 
 const currentFormInitialState: IFormSchema = {
-  formType: 'data',
   form_data: {
     display: 'form'
   },
+  form_type: 'data',
   loading: false,
   name: '',
-  nameSingular: ''
+  name_singular: ''
 };
 
 const formSchemaReducer = (

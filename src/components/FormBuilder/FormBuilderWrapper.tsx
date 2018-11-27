@@ -36,6 +36,16 @@ export default class extends React.Component<IFormBuilder> {
     }
   }
 
+  public componentDidUpdate = (prevProps: IFormBuilder) => {
+    const {options, form} = this.props;
+    if (form !== prevProps.form) {
+      this.initializeBuilder();
+    }
+    if (options !== prevProps.options) {
+      this.initializeBuilder();
+    }
+  }
+
   public initializeBuilder = () => {
     const {options, form} = this.props;
 

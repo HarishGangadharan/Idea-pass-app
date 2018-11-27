@@ -1,3 +1,4 @@
+import { push } from 'connected-react-router';
 import { call, put } from 'redux-saga/effects';
 import {
   fetchFormFieldDataFailure,
@@ -13,7 +14,7 @@ function* fetchFormFieldData(action: any) {
   try {
     const { formName, formDataId } = action;
     const response = yield call(FormFieldDataService.fetchFormFieldData, formName, formDataId);
-    yield put(fetchFormFieldDataSuccess(response.data));
+      yield put(fetchFormFieldDataSuccess(response.data));
   } catch (error) {
     yield put(fetchFormFieldDataFailure(error));
   }
@@ -31,9 +32,12 @@ function* fetchFormFieldDataList(action: any) {
 
 function* saveFormFieldData(action: any) {
   try {
-    const { data, formName, formDataId } = action;
-    yield call(FormFieldDataService.saveFormFieldData, data, formName, formDataId);
-    yield put(saveFormFieldDataSuccess(data));
+    const { data, formName, formDataId, formId } = action;
+    const response = yield call(FormFieldDataService.saveFormFieldData, data, formName, formDataId);
+    if (response) {
+      yield put(saveFormFieldDataSuccess(data));
+      yield put(push(`/formDataList/${formName}/${formId}`));
+    }
   } catch (error) {
     yield put(saveFormFieldDataFailure(error));
   }

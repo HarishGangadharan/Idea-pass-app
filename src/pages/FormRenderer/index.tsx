@@ -18,7 +18,7 @@ interface IRendererDispatchMap {
     callback?: (name: string) => void
   ) => void;
   fetchFormFieldDataRequest: (name: string, dataId: string) => void;
-  saveFormFieldDataRequest: (data: any, formName: string, formDataId?: string) => void;
+  saveFormFieldDataRequest: (data: any, formName: string, formId?: string, formDataId?: string) => void;
   updateFormFieldDataState: (data?: any) => void;
 }
 
@@ -60,11 +60,11 @@ class FormRenderer extends React.Component<
   }
 
   public handleSubmit = (formData: any) => {
-    const { formRendererSchema, history } = this.props;
+    const { formRendererSchema } = this.props;
+    const { formId } = this.state;
     const { data } = formData;
-    this.props.saveFormFieldDataRequest(data, formRendererSchema.name_singular, data._id);
+    this.props.saveFormFieldDataRequest(data, formRendererSchema.name_singular, formId, data._id);
     this.formio.emit('submitDone');
-    history.push(`/formDataList/${formRendererSchema.name_singular}/${this.state.formId}`);
   }
 
   public componentWillUnmount() {
