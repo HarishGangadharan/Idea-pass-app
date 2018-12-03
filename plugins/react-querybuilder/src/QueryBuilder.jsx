@@ -208,15 +208,16 @@ export default class QueryBuilder extends React.Component {
 
   createRule() {
     const { customRules, fields, operators } = this.state.schema;
-    const createdRule = {
+    let createdRule = {
       id: `r-${uniqueId()}`,
       field: fields[0].name,
       value: "",
       operator: operators[0].name
     };
     if (Object.keys(customRules).length > 0) {
-      createdRule.customRules = {
-        ...createdRule
+      createdRule = {
+        ...createdRule,
+        ...customRules
       }; 
     }
     return createdRule;

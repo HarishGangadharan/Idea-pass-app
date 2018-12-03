@@ -9,7 +9,6 @@ interface IEditorProps {
 
 interface ICustomRules {
   [key: string]: string | number | boolean;
-  isOldValue: boolean;
 }
 
 interface IValidatorProps extends ValueEditorCustomControlProps {
@@ -37,16 +36,18 @@ interface IQueryBuilderProps {
   fields: any[];
   targetFields: any[];
   operators?: IOperator[]
-  disableOldValue?: boolean;
   disableGroupAction?: boolean;
   disableCombinators?: boolean;
   disableOperators?: boolean;
   query: any;
-  showQuery? : boolean;
+  showQuery?: boolean;
+  customRules?: ICustomRules;
   onQueryChange: (query: any) => any;
 }
 
 interface IValidatorProps extends ValueEditorCustomControlProps {
+  isOldValue?: boolean;
+  customValue?: string;
   handleOnChange(value: any): void;
 }
 
@@ -70,8 +71,8 @@ class QueryBuilderContainer extends React.Component<IQueryBuilderProps> {
      * removeRuleAction: {
      * },
      */
-    addGroupAction: () => (<span>&nbsp;</span>),
-    combinatorSelector: () => (<span>&nbsp;</span>),
+    addGroupAction: () => <span />,
+    combinatorSelector: () => <span />,
     removeGroupAction: this.removeEditor({ type: 'group' }),
     removeRuleAction: this.removeEditor({ type: 'rule' }),
     valueEditor: this.customValueEditor()
@@ -87,13 +88,18 @@ class QueryBuilderContainer extends React.Component<IQueryBuilderProps> {
     }
   }
 
-  public onOldValueSelect = (
+  public onCustomFieldChange = (
     event: React.ChangeEvent<HTMLInputElement>,
-    rule: IValidatorProps
+    rule: IValidatorProps,
+    fieldName: string
   ) => {
     event.persist();
-    const targetRule  = this.findRule(rule.id, this.props.query);
-    Object.assign(targetRule.customRules, {isOldValue: event.target.checked});
+    const targetRule = this.findRule(rule.id, this.props.query);
+    if (event.target.type === 'checkbox') {
+      Object.assign(targetRule, { [fieldName]: event.target.checked });
+    } else {
+      Object.assign(targetRule, { [fieldName]: event.target.value });
+    }
     this.props.onQueryChange(this.props.query);
   }
 
@@ -120,9 +126,10 @@ class QueryBuilderContainer extends React.Component<IQueryBuilderProps> {
   }
 
   public customValueEditor() {
+    const { customRules } = this.props;
     return (props: IValidatorProps) => {
       return (
-        <span>
+        <span className={props.level.toString()}>
           <select
             value={props.value}
             onChange={e => props.handleOnChange(e.target.value)}
@@ -132,19 +139,25 @@ class QueryBuilderContainer extends React.Component<IQueryBuilderProps> {
             {this.props.targetFields.map((targetField, index) => (<option key={index} value={targetField.value}>{targetField.label}</option>))}
           </select>
           &nbsp;
-          {props.customRules && !this.props.disableOldValue && <span>
-            <div className="checkbox">
-            <label style={{ fontSize: '1em' }}>
-              <input
-                type="checkbox"
-                checked={props.customRules.isOldValue}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                  this.onOldValueSelect(event, props)
-                }
-              />
-              Is Oldvalue
+          {customRules && <span>
+            {customRules.hasOwnProperty('isOldValue') && <div className="checkbox">
+              <label style={{ fontSize: '1em' }}>
+                <input
+                  type="checkbox"
+                  checked={props.isOldValue}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                    this.onCustomFieldChange(event, props, 'isOldValue')
+                  }
+                />
+                Is Oldvalue
             </label>
-          </div>
+            </div>}
+            {customRules.hasOwnProperty('customValue') && <div className="show-inline">
+              <label htmlFor="customValue">Custom Value</label>
+              <input type="text" defaultValue={props.customValue} onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                this.onCustomFieldChange(event, props, 'customValue');
+              }}/>
+            </div>}
           </span>}
         </span>
       );
@@ -168,7 +181,7 @@ class QueryBuilderContainer extends React.Component<IQueryBuilderProps> {
       <div>
         <QueryBuilder
           fields={this.props.fields}
-          customRules={{isOldValue: false}}
+          customRules={this.props.customRules || {}}
           controlElements={this.controlElements}
           operators={this.props.operators}
           controlClassnames={{
@@ -227,3 +240,4 @@ class QueryBuilderContainer extends React.Component<IQueryBuilderProps> {
 }
 
 export default QueryBuilderContainer;
+

@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
+import { IFormSchema } from 'src/reducers/formschema';
 import {
   fetchFormFieldDataRequest,
   saveFormFieldDataRequest,
@@ -15,7 +16,7 @@ import { IState } from '../../reducers';
 interface IRendererDispatchMap {
   fetchFormSchemaRequest: (
     schemaId?: string,
-    callback?: (name: string) => void
+    callback?: (form: IFormSchema) => void
   ) => void;
   fetchFormFieldDataRequest: (name: string, dataId: string) => void;
   saveFormFieldDataRequest: (data: any, formName: string, formId?: string, formDataId?: string) => void;
@@ -46,12 +47,12 @@ class FormRenderer extends React.Component<
   public componentDidMount() {
     const match: any = this.props.match;
     if (match) {
-      const callBack = (name: string) => {
+      const callBack = (form: IFormSchema) => {
         const {
           params: { submissionId }
         } = match;
         if (submissionId) {
-          this.props.fetchFormFieldDataRequest(name, submissionId);
+          this.props.fetchFormFieldDataRequest(form.name_singular, submissionId);
         }
       };
       this.setState({ formId: match.params.id });

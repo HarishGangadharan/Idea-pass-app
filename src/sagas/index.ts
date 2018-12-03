@@ -24,7 +24,7 @@ import {
 import DynamicTableSaga from './dynamicTable';
 import { fetchFormFieldData, fetchFormFieldDataList, saveFormFieldData  } from './formfielddata';
 import { createFormSchema, fetchFormList, fetchFormSchema } from './formschema';
-import { fetchFormTrigger, fetchFormTriggerList, saveFormTrigger  } from './formTrigger';
+import { fetchFormTrigger, fetchFormTriggerList, fetchSourceFormTrigger, fetchTargetFormTrigger, saveFormTrigger  } from './formTrigger';
 import { fetchOrganization, fetchOrganizationList } from './organization';
 import { fetchQueryFields } from './querybuilder';
 import { fetchRoleList } from './role';
@@ -46,6 +46,8 @@ export default function* rootSaga() {
   yield takeLatest(FormTriggerConstants.SAVE_FORM_TRIGGER_REQUEST, saveFormTrigger);
   yield takeLatest(FormTriggerConstants.FETCH_FORM_TRIGGER_LIST_REQUEST, fetchFormTriggerList);
   yield takeLatest(FormTriggerConstants.FETCH_FORM_TRIGGER_REQUEST, fetchFormTrigger);
+  yield takeLatest(FormTriggerConstants.FETCH_SOURCE_FORM_FIELDS_REQUEST, fetchSourceFormTrigger);
+  yield takeLatest(FormTriggerConstants.FETCH_TARGET_FORM_FIELDS_REQUEST, fetchTargetFormTrigger);
   yield takeLatest(FormSchemaConstants.FETCH_FORM_SCHEMA_REQUEST, fetchFormSchema);
   yield takeLatest(FormSchemaConstants.CREATE_FORM_SCHEMA_REQUEST, createFormSchema);
   yield takeLatest(DynamicTableConstants.GET_TABLE_DATA, DynamicTableSaga.fetchTableData);

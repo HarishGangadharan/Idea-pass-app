@@ -38,6 +38,8 @@
   border: 1px solid $border-color;
   border-radius: 4px;
   background: $border-color-10;
+  display: inline-block;
+  width: 100%;
   button {
     border: 1px solid $border-color;
     border-radius: 2px;
@@ -59,4 +61,9 @@
     overflow-y: auto;
     max-height: 200px;
   }
+}
+
+.show-inline {
+  display: inline;
+  margin-left: 10px;
 }

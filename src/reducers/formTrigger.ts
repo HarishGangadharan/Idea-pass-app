@@ -4,11 +4,11 @@ import FormTriggerConstants from '../actions/formTrigger/constants';
 import { AppProperties } from '../constants/application.properties';
 
 interface ITriggerAction {
-  fieldMapping?: any;
+  field_mapping?: any;
   form?: string;
   isBefore?: boolean;
-  matchingQualification?: any;
-  sequence?: number | string;
+  matching_qualification?: any;
+  sequence: string;
   type: string;
   valid?: boolean;
 }
@@ -16,15 +16,15 @@ interface ITriggerAction {
 interface ITrigger {
   _id?: string;
   actions: ITriggerAction[];
-  description: string;
+  description?: string;
   form: string;
-  isActive: boolean;
-  isAsynchronous: boolean;
-  isOnCreate: boolean;
-  isOnUpdate: boolean;
+  is_active?: boolean;
+  is_async?: boolean;
+  on_create?: boolean;
+  on_update?: boolean;
   name: string;
-  qualifications: any;
-  sequence: string | number;
+  qualification: any;
+  sequence: string;
 }
 
 interface IFormTrigger {
@@ -39,26 +39,29 @@ interface IFormTriggers {
   limit: number;
 }
 
+interface IFormFields {
+  [key: string]: any;
+}
+
 interface IFormTriggerReducer {
   trigger: IFormTrigger;
   list: IFormTriggers;
+  sourceFormFields: IFormFields;
+  targetFormFields: IFormFields;
 }
 
-const currentFormInitialState = {
+const currentFormTriggerInitialState = {
   data: {
     actions: [],
     description: '',
     form: '',
-    isActive: false,
-    isAsynchronous: false,
-    isOnCreate: false,
-    isOnUpdate: false,
+    is_active: false,
+    is_async: false,
     name: '',
-    qualifications: {
-      id: '',
-      rules: []
-    },
-    sequence: 1
+    on_create: false,
+    on_update: false,
+    qualification: {},
+    sequence: '1'
   },
   isLoading: false
 };
@@ -70,7 +73,63 @@ const listInitialState = {
   total: 0
 };
 
-const formTriggerReducer = (state: IFormTrigger = currentFormInitialState, action: IActionProps) => {
+const sourceFieldInitialState = {
+  data: [],
+  isLoading: false
+};
+
+const targetFieldInitialState = {
+  data: [],
+  isLoading: false
+};
+
+const sourceFormFieldsReducer = (state: IFormFields = sourceFieldInitialState, action: IActionProps) => {
+  switch (action.type) {
+    case FormTriggerConstants.FETCH_SOURCE_FORM_FIELDS_REQUEST:
+      return {
+        ...state,
+        isLoading: true
+      };
+    case FormTriggerConstants.FETCH_SOURCE_FORM_FIELDS_SUCCESS:
+      return {
+        ...state,
+        data: action.data.map((source: any) => ({ label: source, value: source })),
+        isLoading: false
+      };
+    case FormTriggerConstants.FETCH_SOURCE_FORM_FIELDS_FAILURE:
+      return {
+        ...state,
+        isLoading: false
+      };
+    default:
+      return state;
+  }
+};
+
+const targetFormFieldsReducer = (state: IFormFields = targetFieldInitialState, action: IActionProps) => {
+  switch (action.type) {
+    case FormTriggerConstants.FETCH_TARGET_FORM_FIELDS_REQUEST:
+      return {
+        ...state,
+        isLoading: true
+      };
+    case FormTriggerConstants.FETCH_TARGET_FORM_FIELDS_SUCCESS:
+      return {
+        ...state,
+        data: action.data.map((source: any) => ({ label: source, value: source })),
+        isLoading: false
+      };
+    case FormTriggerConstants.FETCH_TARGET_FORM_FIELDS_FAILURE:
+      return {
+        ...state,
+        isLoading: false
+      };
+    default:
+      return state;
+  }
+};
+
+const formTriggerReducer = (state: IFormTrigger = currentFormTriggerInitialState, action: IActionProps) => {
   switch (action.type) {
     case FormTriggerConstants.CREATE_FORM_TRIGGER_REQUEST:
       return {
@@ -96,7 +155,7 @@ const formTriggerReducer = (state: IFormTrigger = currentFormInitialState, actio
     case FormTriggerConstants.FETCH_FORM_TRIGGER_SUCCESS:
       return {
         ...state,
-        data: {...action.data},
+        data: { ...action.data },
         isLoading: false
       };
     case FormTriggerConstants.FETCH_FORM_TRIGGER_FAILURE:
@@ -112,11 +171,17 @@ const formTriggerReducer = (state: IFormTrigger = currentFormInitialState, actio
     case FormTriggerConstants.SAVE_FORM_TRIGGER_SUCCESS:
       return {
         ...state,
-        isLoading: false
+        ...currentFormTriggerInitialState
       };
     case FormTriggerConstants.SAVE_FORM_TRIGGER_FAILURE:
       return {
         ...state,
+        isLoading: false
+      };
+    case FormTriggerConstants.UPDATE_FORM_TRIGGER_STATE:
+      return {
+        ...state,
+        data: action.data ? { ...action.data } : currentFormTriggerInitialState.data ,
         isLoading: false
       };
     default:
@@ -150,6 +215,8 @@ const formTriggerListReducer = (state: IFormTriggers = listInitialState, action:
 
 const formTriggerReducers = combineReducers({
   list: formTriggerListReducer,
+  sourceFormFields: sourceFormFieldsReducer,
+  targetFormFields: targetFormFieldsReducer,
   trigger: formTriggerReducer
 });
 

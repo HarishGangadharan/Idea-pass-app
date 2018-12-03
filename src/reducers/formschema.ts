@@ -10,7 +10,7 @@ interface IFormSchema {
   name: string;
   name_singular: string;
   form_type: string;
-  _id?: string;
+  _id: string;
   [key: string]: any;
 }
 
@@ -32,6 +32,7 @@ const listInitialState: IFormSchemas = {
 };
 
 const currentFormInitialState: IFormSchema = {
+  _id: '',
   form_data: {
     display: 'form'
   },

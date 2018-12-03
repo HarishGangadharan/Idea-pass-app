@@ -1,3 +1,4 @@
+import { IFormSchema } from 'src/reducers/formschema';
 import FormSchemaConstants from './constants';
 
 export const addFormSchema = (data: any) => ({
@@ -21,7 +22,7 @@ export const createFormSchemaFailure = (error: any) => ({
   type: FormSchemaConstants.CREATE_FORM_SCHEMA_FAILURE
 });
 
-export const fetchFormSchemaRequest = (schemaId: string, callback?: (name: string) => any) => ({
+export const fetchFormSchemaRequest = (schemaId: string, callback?: (form: IFormSchema) => any) => ({
   callback,
   schemaId,
   type: FormSchemaConstants.FETCH_FORM_SCHEMA_REQUEST
@@ -37,7 +38,7 @@ export const fetchFormSchemaFailure = (error: any) => ({
   type: FormSchemaConstants.FETCH_FORM_SCHEMA_FAILURE
 });
 
-export const fetchFormSchemaList = (limit: number, currentPage: number, sortField: string, sortOrder: number) => ({
+export const fetchFormSchemaList = (limit?: number, currentPage?: number, sortField?: string, sortOrder?: number) => ({
   currentPage,
   limit,
   sortField,

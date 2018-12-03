@@ -12,10 +12,21 @@ class FormTriggerService {
     url: `/meta-triggers/${formTriggerId}`
   })
 
-  public static fetchFormTriggerList = (formId: string, limit: number, currentPage: number) => axios({
+  public static fetchFormFieldsTrigger = (formName: string) => axios({
     method: 'get',
-    url: `/form-meta-ui/${formId}/triggers`
+    url: `/form-fields/${formName}`
   })
+
+  public static fetchFormTriggerList = (formId: string, limit: number, currentPage: number) => {
+    let queryUrl: string = `/form-meta-ui/${formId}/triggers`;
+    if (limit && currentPage) {
+      queryUrl = `${queryUrl}?$limit=${limit}&$skip=${limit * (currentPage - 1)}`;
+    }
+    return axios({
+      method: 'get',
+      url: queryUrl
+    });
+  }
 
 }
 
