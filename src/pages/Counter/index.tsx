@@ -54,4 +54,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   incrementAsync: () => dispatch(incrementAsync())
 });
 
-export default connect<IStateProps, IDispatchProps, RouteComponentProps<any>>(mapStateToProps, mapDispatchToProps)(Counter);
+export default connect<IStateProps, IDispatchProps, RouteComponentProps<any>, IState>(mapStateToProps, mapDispatchToProps)(Counter);

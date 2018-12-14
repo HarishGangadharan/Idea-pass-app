@@ -1,5 +1,5 @@
-import { AppProperties } from 'src/constants/application.properties';
 import Constants from '../actions/theme/constants';
+import { AppProperties } from '../constants/application.properties';
 import storage from '../utils/storage';
 
 const inititalState = {

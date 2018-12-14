@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ITrigger } from 'src/reducers/formTrigger';
+import { ITrigger } from '../../reducers/formTrigger';
 
 interface ICreateTriggerProps {
   trigger: ITrigger;

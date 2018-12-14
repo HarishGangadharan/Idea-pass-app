@@ -22,12 +22,16 @@ interface IFBuilderStateProps {
   name: string;
 }
 
-class FormBuilder extends React.Component<IFBuilderStateMap & IFBuilderDispatchMap & RouteComponentProps<{ id: string }>, IFBuilderStateProps> {
-  constructor(props: IFBuilderStateMap & IFBuilderDispatchMap & RouteComponentProps<{ id: string }>) {
+interface IFBuilderMergedProps extends IFBuilderStateMap, IFBuilderDispatchMap, RouteComponentProps<{ id: string }>{
+
+}
+
+class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStateProps> {
+  constructor(props: IFBuilderMergedProps) {
     super(props);
     this.state = {
       formData: {},
-      formSchemaId: this.props.match.params.id,
+      formSchemaId: this.props.match ? this.props.match.params.id : '',
       name: ''
     };
   }
@@ -140,4 +144,6 @@ const mapStateToProps = (state: IState) => ({
   isLoading: state.formSchema.currentFormSchema.loading
 });
 
-export default connect<IFBuilderStateMap, IFBuilderDispatchMap>(mapStateToProps, mapDispatchToProps)(FormBuilder);
+export default connect<IFBuilderStateMap, IFBuilderDispatchMap, IFBuilderMergedProps, IState>
+  (mapStateToProps, mapDispatchToProps)
+  (FormBuilder);

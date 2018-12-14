@@ -2,16 +2,16 @@ import 'formiojs/dist/formio.full.min.css';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { matchPath, RouteComponentProps } from 'react-router';
-import { saveAppFormRequest } from 'src/actions/appform';
-import { AppProperties } from 'src/constants/application.properties';
-import storage from 'src/utils/storage';
+import { saveAppFormRequest } from '../../actions/appform';
 import { fetchFormFieldDataRequest, saveFormFieldDataRequest } from '../../actions/formfielddata';
 import { fetchFormSchemaRequest } from '../../actions/formschema';
 import Renderer from '../../components/FormRender';
+import { AppProperties } from '../../constants/application.properties';
 import { IState } from '../../reducers';
+import storage from '../../utils/storage';
 
 interface IRendererDispatchMap {
-  fetchFormSchemaRequest: (schemaId?: string) => void;
+  fetchFormSchemaRequest: (schemaId: string) => void;
   fetchFormFieldDataRequest: (name: string, dataId: string) => void;
   saveFormFieldDataRequest: (data: any, formName: string) => void;
   saveAppFormRequest: (api: string, data: any) => void;
@@ -32,11 +32,11 @@ interface IRendererSate {
   };
 }
 
-interface IAppFormProps {
+interface IAppFormProps extends IRendererDispatchMap, IRendererStateMap, RouteComponentProps {
   match: any;
 }
 
-class AppForm extends React.Component<IRendererDispatchMap & IRendererStateMap & RouteComponentProps & IAppFormProps, IRendererSate> {
+class AppForm extends React.Component<IAppFormProps, IRendererSate> {
   public static getDerivedStateFromProps(nextProps: any, prevState: any) {
     if (nextProps.match.params.id !== prevState.formName) {
       return { formName: nextProps.match.params.id};
@@ -46,7 +46,7 @@ class AppForm extends React.Component<IRendererDispatchMap & IRendererStateMap &
   }
 
   public formio: any;
-  constructor(props: IRendererDispatchMap & IRendererStateMap & RouteComponentProps) {
+  constructor(props: IAppFormProps) {
     super(props);
     this.state = {
       formData: {},
@@ -98,7 +98,7 @@ class AppForm extends React.Component<IRendererDispatchMap & IRendererStateMap &
   }
 }
 
-const mapDispatchToProps = ({
+const mapDispatchToProps: IRendererDispatchMap = ({
   fetchFormFieldDataRequest,
   fetchFormSchemaRequest,
   saveAppFormRequest,
@@ -112,4 +112,6 @@ const mapStateToProps = (state: IState) => ({
   submissionData: state.appForm.data
 });
 
-export default connect<IRendererStateMap, IRendererDispatchMap>(mapStateToProps, mapDispatchToProps)(AppForm);
+export default connect<IRendererStateMap, IRendererDispatchMap, IAppFormProps, IState>
+  (mapStateToProps, mapDispatchToProps)
+  (AppForm);

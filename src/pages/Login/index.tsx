@@ -135,8 +135,8 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 export default compose(
   withRouter,
-  connect<IMapStateProps, IDispatchProps>(
+  connect<IMapStateProps, IDispatchProps, ILoginProps, IState>(
     mapStateTopProps,
     mapDispatchToProps
   )
-)(Login);
+)(Login) as React.ComponentType<any>;

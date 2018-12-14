@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { IActionProps } from '.';
 import Constants from '../actions/role/constants';
 
-interface IRole {
+export interface IRole {
   _id?: string;
   name: string;
   applicationName: string;
@@ -11,13 +11,13 @@ interface IRole {
   loading: boolean;
 }
 
-interface IRoles {
+export interface IRoles {
   data: IRole[];
   total: number;
   loading: boolean;
 }
 
-interface IRoleReducer {
+export interface IRoleReducer {
   currentRole: IRole,
   list: IRoles;
 }
@@ -89,9 +89,7 @@ const roleListReducer = (state: IRoles = listInitialState, action: IActionProps)
   }
 };
 
-const roleReducers = combineReducers({
+export const roleReducers = combineReducers({
   currentRole: roleReducer,
   list: roleListReducer
 });
-
-export { roleReducers, IRoleReducer, IRole, IRoles };

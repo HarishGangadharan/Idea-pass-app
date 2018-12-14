@@ -32,7 +32,7 @@ export default class extends React.Component<IFormProps, any> {
   public formio: any;
   public element: React.RefObject<HTMLDivElement>;
 
-  private createPromise: Promise<any>;
+  private createPromise: Promise<any> = new Promise((resolve) => resolve());
 
   constructor(props: IFormProps) {
     super(props);

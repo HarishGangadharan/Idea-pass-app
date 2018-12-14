@@ -2,18 +2,18 @@ import * as React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import { BaseIcon } from 'src/components';
-import CreateTriggerComponent from 'src/components/CreateTriggerComponent';
-import { IFormSchema } from 'src/reducers/formschema';
-import { ITrigger, ITriggerAction } from 'src/reducers/formTrigger';
 import { fetchFormSchemaList, fetchFormSchemaRequest } from '../../actions/formschema';
 import { fetchFormTriggerRequest, fetchSourceFormFieldsRequest, fetchTargetFormFieldsRequest, saveFormTriggerRequest, updateFormTriggerState } from '../../actions/formTrigger';
+import { BaseIcon } from '../../components';
+import CreateTriggerComponent from '../../components/CreateTriggerComponent';
 import QueryBuilder from '../../components/Triggers/QueryBuilder';
 import { IState } from '../../reducers';
+import { IFormSchema } from '../../reducers/formschema';
+import { ITrigger, ITriggerAction } from '../../reducers/formTrigger';
 import './formTrigger.css';
 
 interface ITriggerDispatchMap {
-  fetchFormSchemaRequest: (schemaId?: string, callBack?: (form: IFormSchema) => void) => void;
+  fetchFormSchemaRequest: (schemaId: string, callBack?: (form: IFormSchema) => void) => void;
   fetchFormTriggerRequest: (triggerId: string, callBack?: (trigger: ITrigger) => void) => void;
   saveFormTriggerRequest: (data: any, triggerId?: string) => void;
   updateFormTriggerState: (data?: any) => void;
@@ -44,9 +44,13 @@ interface ITriggerState {
   trigger: ITrigger;
 }
 
-class FormTrigger extends React.Component<ITriggerDispatchMap & ITriggerStateMap & RouteComponentProps, ITriggerState> {
+interface IMergedProps extends ITriggerStateMap, ITriggerDispatchMap, RouteComponentProps {
+
+}
+
+class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
   public formio: any;
-  constructor(props: ITriggerDispatchMap & ITriggerStateMap & RouteComponentProps) {
+  constructor(props: IMergedProps) {
     super(props);
     this.state = {
       action: {
@@ -415,7 +419,7 @@ class FormTrigger extends React.Component<ITriggerDispatchMap & ITriggerStateMap
   }
 }
 
-const mapDispatchToProps = ({
+const mapDispatchToProps : ITriggerDispatchMap = ({
   fetchFormSchemaList,
   fetchFormSchemaRequest,
   fetchFormTriggerRequest,
@@ -425,7 +429,7 @@ const mapDispatchToProps = ({
   updateFormTriggerState
 });
 
-const mapStateToProps = (state: IState) => ({
+const mapStateToProps = (state: IState): ITriggerStateMap => ({
   formList: state.formSchema.list.data,
   formRendererSchema: state.formSchema.currentFormSchema,
   isLoading: state.formSchema.currentFormSchema.loading,
@@ -437,4 +441,6 @@ const mapStateToProps = (state: IState) => ({
   triggerData: state.formTrigger.trigger.data
 });
 
-export default connect<ITriggerStateMap, ITriggerDispatchMap>(mapStateToProps, mapDispatchToProps)(FormTrigger);
+export default connect<ITriggerStateMap, ITriggerDispatchMap, IMergedProps, IState>
+  (mapStateToProps, mapDispatchToProps)
+  (FormTrigger);

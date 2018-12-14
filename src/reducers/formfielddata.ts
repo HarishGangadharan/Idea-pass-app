@@ -2,19 +2,19 @@ import { combineReducers, Reducer } from 'redux';
 import { IActionProps } from '.';
 import FormFieldDataConstants from '../actions/formfielddata/constants';
 import { AppProperties } from '../constants/application.properties';
-interface IFormFieldData {
+export interface IFormFieldData {
   data: any;
   isLoading: boolean;
 }
 
-interface IFormFieldDatas {
+export interface IFormFieldDatas {
   data: IFormFieldData[];
   isLoading: boolean;
   total: number;
   limit: number;
 }
 
-interface IFormFieldDataReducer {
+export interface IFormFieldDataReducer {
   submission: IFormFieldData,
   list: IFormFieldDatas;
 }
@@ -117,9 +117,7 @@ const formFieldDataListReducer = (state: IFormFieldDatas = listInitialState, act
   }
 };
 
-const formFieldDataReducers: Reducer<IFormFieldDataReducer> = combineReducers({
+export const formFieldDataReducers: Reducer<IFormFieldDataReducer> = combineReducers({
   list: formFieldDataListReducer,
   submission: formFieldDataReducer
 });
-
-export { formFieldDataReducers, IFormFieldDataReducer, IFormFieldData, IFormFieldDatas };

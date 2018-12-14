@@ -6,15 +6,15 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { ToastContainer } from 'react-toastify';
 import { compose } from 'redux';
-import { AppProperties } from 'src/constants/application.properties';
-import storage from 'src/utils/storage';
 import { updateLoggedInStatus } from '../../actions/global';
 import NavBar from '../../components/NavBar';
 import SideBar from '../../components/SideBar';
+import { AppProperties } from '../../constants/application.properties';
 import { languages } from '../../global/languages';
 import { IState } from '../../reducers';
 import { LoggedInRoutes,
   persistantRoutes as PersistantRoutes } from '../../routes';
+import storage from '../../utils/storage';
 
 import 'react-toastify/dist/ReactToastify.css';
 import './style.css';
@@ -112,14 +112,13 @@ class AppWrapper extends React.Component<IAppWrapperProps, IAppWrapperState> {
 
 }
 
-const mapStateToProps = (state: IState) => ({
+const mapStateToProps = (state: IState): IStateProps => ({
   isUserLoggedIn: state.global.userStatus.loggedIn,
   loading: state.global.loading
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
-  updateLoggedInStatus: (userStatus: any) =>
-    dispatch(updateLoggedInStatus(userStatus))
+const mapDispatchToProps : IDispatchProps = ({
+  updateLoggedInStatus
 });
 
 interface IStateProps {
@@ -134,8 +133,8 @@ interface IDispatchProps {
 export default compose(
   withRouter,
   withLocalize,
-  connect<IStateProps, IDispatchProps>(
+  connect<IStateProps, IDispatchProps, IAppWrapperProps, IState>(
     mapStateToProps,
     mapDispatchToProps
   )
-)(AppWrapper);
+)(AppWrapper) as React.ComponentType<any>;

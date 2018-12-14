@@ -1,6 +1,5 @@
 import { RouterState } from 'connected-react-router';
-import { LocalizeState } from 'react-localize-redux';
-import { localizeReducer } from 'react-localize-redux';
+import { localizeReducer, LocalizeState } from 'react-localize-redux';
 import { combineReducers, Reducer } from 'redux';
 import { appFormReducer, IAppFormReducer } from './appform';
 import { configReducer, IConfigReducer } from './config';
@@ -27,7 +26,7 @@ const rootReducer : Reducer<IState> = combineReducers({
   formSchema: formSchemaReducers,
   formTrigger: formTriggerReducers,
   global: globalReducer,
-  localize: localizeReducer,
+  localize: localizeReducer as Reducer<any>,
   organization: organizationReducers,
   queryBuilder: queryBuilderReducer,
   role: roleReducers,

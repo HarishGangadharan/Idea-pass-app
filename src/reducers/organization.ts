@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { IActionProps } from '.';
 import Constants from '../actions/organization/constants';
 
-interface IOrganization {
+export interface IOrganization {
   _id?: string;
   name: string;
   applicationName: string;
@@ -11,13 +11,13 @@ interface IOrganization {
   loading: boolean;
 }
 
-interface IOrganizations {
+export interface IOrganizations {
   data: IOrganization[];
   total: number;
   loading: boolean;
 }
 
-interface IOrganizationReducer {
+export interface IOrganizationReducer {
   currentOrganization: IOrganization,
   list: IOrganizations;
 }
@@ -89,9 +89,7 @@ const organizationListReducer = (state: IOrganizations = listInitialState, actio
   }
 };
 
-const organizationReducers = combineReducers({
+export const organizationReducers = combineReducers({
   currentOrganization: organizationReducer,
   list: organizationListReducer
 });
-
-export { organizationReducers, IOrganizationReducer, IOrganization, IOrganizations };

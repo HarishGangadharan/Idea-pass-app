@@ -12,13 +12,13 @@ import { fetchRoleListRequest } from '../../actions/role';
 import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
 
-import { createRolePermissionRequest, fetchRolePermissionRequest, updateRolePermissionState } from 'src/actions/rolepermission';
-import Table, { ITableState } from 'src/components/Table';
-import { AppProperties } from 'src/constants/application.properties';
-import { IOrganization } from 'src/reducers/organization';
-import { IRole } from 'src/reducers/role';
-import { IPermission, IRolePermissionReducer } from 'src/reducers/rolepermission';
-import storage from 'src/utils/storage';
+import { createRolePermissionRequest, fetchRolePermissionRequest, updateRolePermissionState } from '../../actions/rolepermission';
+import Table, { ITableState } from '../../components/Table';
+import { AppProperties } from '../../constants/application.properties';
+import { IOrganization } from '../../reducers/organization';
+import { IRole } from '../../reducers/role';
+import { IPermission, IRolePermissionReducer } from '../../reducers/rolepermission';
+import storage from '../../utils/storage';
 import './admin.css';
 import RoleSelector from './roleSelector';
 
@@ -33,7 +33,6 @@ interface IAdminState {
 }
 
 class Admin extends React.Component<IAdminProps, IAdminState> {
-  public columns: Column[];
   constructor(props: IAdminProps) {
     super(props);
     this.state = {
@@ -207,7 +206,7 @@ interface IDispatchProps {
 
 export default compose(
   withRouter,
-  connect<IStateProps, IDispatchProps>(
+  connect<IStateProps, IDispatchProps, IAdminProps, IState>(
     mapStateToProps,
     mapDispatchToProps
   ),

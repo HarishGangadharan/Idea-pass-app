@@ -1,4 +1,4 @@
-import { ITrigger } from 'src/reducers/formTrigger';
+import { ITrigger } from '../../reducers/formTrigger';
 import FormTriggerConstants from './constants';
 
 export const fetchFormTriggerRequest = (formTriggerId: string, callBack?: (trigger: ITrigger) => void) => ({

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Can } from 'src/ability-context';
+import { Can } from '../../ability-context';
 import { BaseIcon } from '../index';
 import './SideBar.css';
 

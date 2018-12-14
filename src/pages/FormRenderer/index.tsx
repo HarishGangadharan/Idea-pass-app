@@ -3,7 +3,6 @@ import * as React from 'react';
 import { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import { IFormSchema } from 'src/reducers/formschema';
 import {
   fetchFormFieldDataRequest,
   saveFormFieldDataRequest,
@@ -12,10 +11,11 @@ import {
 import { fetchFormSchemaRequest } from '../../actions/formschema';
 import Renderer from '../../components/FormRender';
 import { IState } from '../../reducers';
+import { IFormSchema } from '../../reducers/formschema';
 
 interface IRendererDispatchMap {
   fetchFormSchemaRequest: (
-    schemaId?: string,
+    schemaId: string,
     callback?: (form: IFormSchema) => void
   ) => void;
   fetchFormFieldDataRequest: (name: string, dataId: string) => void;
@@ -30,14 +30,13 @@ interface IRendererStateMap {
   isSubmissionLoading: boolean;
 }
 
-class FormRenderer extends React.Component<
-  IRendererDispatchMap & IRendererStateMap & RouteComponentProps,
-  { formId: string }
-  > {
+interface IMergedProps extends IRendererDispatchMap, IRendererStateMap, RouteComponentProps {
+
+}
+
+class FormRenderer extends React.Component<IMergedProps, { formId: string }> {
   public formio: any;
-  constructor(
-    props: IRendererDispatchMap & IRendererStateMap & RouteComponentProps
-  ) {
+  constructor(props: IMergedProps) {
     super(props);
     this.state = {
       formId: ''
@@ -105,7 +104,7 @@ class FormRenderer extends React.Component<
   }
 }
 
-const mapDispatchToProps = {
+const mapDispatchToProps: IRendererDispatchMap = {
   fetchFormFieldDataRequest,
   fetchFormSchemaRequest,
   saveFormFieldDataRequest,
@@ -119,7 +118,6 @@ const mapStateToProps = (state: IState) => ({
   submissionData: state.formFieldData.submission.data
 });
 
-export default connect<IRendererStateMap, IRendererDispatchMap>(
-  mapStateToProps,
-  mapDispatchToProps
-)(FormRenderer);
+export default connect<IRendererStateMap, IRendererDispatchMap, IMergedProps, IState>
+  (mapStateToProps, mapDispatchToProps)
+  (FormRenderer);

@@ -1,7 +1,5 @@
 import { call, put } from 'redux-saga/effects';
 import { IRequestFilter } from 'request-filter';
-import { AppProperties } from 'src/constants/application.properties';
-import storage from 'src/utils/storage';
 import { updateLoggedInStatus } from '../actions/global';
 import { fetchUsersFail, fetchUsersSuccess } from '../actions/user';
 import {
@@ -10,9 +8,11 @@ import {
   logoutUserFail,
   logoutUserSuccess
 } from '../actions/user';
+import { AppProperties } from '../constants/application.properties';
 import { updateUserSession } from '../global/interceptors';
 import { fetchRolePermissionRules } from '../sagas/rolepermission';
 import { getUsers, loginUser, logoutUser } from '../services/user';
+import storage from '../utils/storage';
 
 function* onFetchUsers(requestFilter: IRequestFilter) {
   try {

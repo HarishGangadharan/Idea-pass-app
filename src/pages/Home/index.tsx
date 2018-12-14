@@ -17,7 +17,7 @@ import { IState } from '../../reducers';
 import FormSchemaList from '../FormSchemaList';
 import './home.css';
 
-interface IProps extends LocalizeContextProps {
+interface IProps extends LocalizeContextProps, RouteComponentProps {
   value: string;
   activeLanguage: Language;
   fetchUsers: () => void;
@@ -29,11 +29,8 @@ interface IHomeState {
   columns: Column[];
 }
 
-class Home extends React.PureComponent<IProps & RouteComponentProps, IHomeState> {
-  public columns: Column[];
-
-
-  constructor(props: IProps & RouteComponentProps) {
+class Home extends React.PureComponent<IProps, IHomeState> {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       columns: [
@@ -97,7 +94,7 @@ interface IDispatchProps {
 
 export default compose(
   withRouter,
-  connect<IStateProps, IDispatchProps>(
+  connect<IStateProps, IDispatchProps, IProps, IState>(
     mapStateToProps,
     mapDispatchToProps
   ),

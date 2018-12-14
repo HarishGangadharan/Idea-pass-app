@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { IRequestFilter } from 'request-filter';
-import { Can } from 'src/ability-context';
+import { Can } from '../../ability-context';
 import { fetchUsers } from '../../actions/user';
 import Table, { ITableUpdateProps } from '../../components/Table';
 import Column from '../../components/Table/Column';
@@ -78,7 +78,7 @@ class Users extends React.Component<IUserProps, IUserState> {
   }
 }
 
-const mapStateToProps = (state: IState) => ({
+const mapStateToProps = (state: IState): IStateProps => ({
   loading: state.user.loading,
   total: state.user.users.length,
   users: state.user.users
@@ -90,16 +90,16 @@ const mapDispatchToProps = (dispatch: any) => ({
 });
 
 interface IStateProps {
-  users: any[];
-  total: number;
   loading: boolean;
+  total: number;
+  users: any[];
 }
 
 interface IDispatchProps {
   fetchUsers: (requestFilter: IRequestFilter) => void;
 }
 
-export default connect<IStateProps, IDispatchProps>(
+export default connect<IStateProps, IDispatchProps, IUserProps, IState>(
   mapStateToProps,
   mapDispatchToProps
 )(Users);

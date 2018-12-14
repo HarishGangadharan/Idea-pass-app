@@ -62,7 +62,7 @@ class QueryBuilderContainer extends React.Component<IQueryBuilderProps> {
   /*
    * Doc => https://www.npmjs.com/package/react-querybuilder
    * */
-  public controlElements = {
+  public controlElements: any = {
     /*
      * addRuleAction: {},
      * fieldSelector: {},

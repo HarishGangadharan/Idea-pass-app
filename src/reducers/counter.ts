@@ -2,7 +2,7 @@ import Constants from '../actions/counter/constants';
 
 import { IActionProps } from './index';
 
-interface ICounterReducer {
+export interface ICounterReducer {
   count: number;
   isLoading: boolean;
 }
@@ -12,7 +12,7 @@ const initialState = {
   isLoading: false
 };
 
-const counterReducer = (state = initialState, action: IActionProps) => {
+export const counterReducer = (state = initialState, action: IActionProps) => {
   switch (action.type) {
     case Constants.INCREMENT:
       return {
@@ -62,5 +62,3 @@ const counterReducer = (state = initialState, action: IActionProps) => {
       return state;
   }
 };
-
-export { counterReducer, ICounterReducer };

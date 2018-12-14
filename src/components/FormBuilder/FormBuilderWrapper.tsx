@@ -20,7 +20,7 @@ interface IFormBuilder {
 
 export default class extends React.Component<IFormBuilder> {
   public builder: any;
-  public builderReady: Promise<any>;
+  public builderReady: Promise<any> = new Promise((resolve) => resolve());
   public element: React.RefObject<HTMLDivElement>;
   constructor(props: IFormBuilder) {
     super(props);

@@ -142,9 +142,9 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 export default compose(
   withRouter,
-  connect<IStateProps, IDispatchProps>(
+  connect<IStateProps, IDispatchProps, INavProps, IState>(
     mapStateToProps,
     mapDispatchToProps
   ),
   withLocalize
-)(NavBar);
+)(NavBar) as React.ComponentClass;

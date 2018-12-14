@@ -3,7 +3,7 @@ import { IActionProps } from '.';
 import FormTriggerConstants from '../actions/formTrigger/constants';
 import { AppProperties } from '../constants/application.properties';
 
-interface ITriggerAction {
+export interface ITriggerAction {
   field_mapping?: any;
   form?: string;
   isBefore?: boolean;
@@ -13,7 +13,7 @@ interface ITriggerAction {
   valid?: boolean;
 }
 
-interface ITrigger {
+export interface ITrigger {
   _id?: string;
   actions: ITriggerAction[];
   description?: string;
@@ -27,23 +27,23 @@ interface ITrigger {
   sequence: string;
 }
 
-interface IFormTrigger {
+export interface IFormTrigger {
   data: ITrigger;
   isLoading: boolean;
 }
 
-interface IFormTriggers {
+export interface IFormTriggers {
   data: IFormTrigger[];
   isLoading: boolean;
   total: number;
   limit: number;
 }
 
-interface IFormFields {
+export interface IFormFields {
   [key: string]: any;
 }
 
-interface IFormTriggerReducer {
+export interface IFormTriggerReducer {
   trigger: IFormTrigger;
   list: IFormTriggers;
   sourceFormFields: IFormFields;
@@ -213,11 +213,9 @@ const formTriggerListReducer = (state: IFormTriggers = listInitialState, action:
   }
 };
 
-const formTriggerReducers = combineReducers({
+export const formTriggerReducers = combineReducers({
   list: formTriggerListReducer,
   sourceFormFields: sourceFormFieldsReducer,
   targetFormFields: targetFormFieldsReducer,
   trigger: formTriggerReducer
 });
-
-export { formTriggerReducers, IFormTriggerReducer, IFormTrigger, IFormTriggers, ITrigger, ITriggerAction };

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import { Can } from 'src/ability-context';
+import { Can } from '../../ability-context';
 import { fetchFormSchemaList } from '../../actions/formschema';
 import { BaseIcon } from '../../components/index';
 import Table, { ITableUpdateProps } from '../../components/Table';

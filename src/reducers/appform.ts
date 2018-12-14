@@ -1,7 +1,7 @@
 import { IActionProps } from '.';
 import Constants from '../actions/appform/constants';
 
-interface IAppFormReducer {
+export interface IAppFormReducer {
   data: any;
   loading: boolean;
 }
@@ -11,7 +11,7 @@ const appFormInitialState: IAppFormReducer = {
   loading: false
 };
 
-const appFormReducer = (state: IAppFormReducer = appFormInitialState, action: IActionProps): IAppFormReducer => {
+export const appFormReducer = (state: IAppFormReducer = appFormInitialState, action: IActionProps): IAppFormReducer => {
   switch (action.type) {
     case Constants.SAVE_APP_FORM_REQUEST:
       return {
@@ -51,5 +51,3 @@ const appFormReducer = (state: IAppFormReducer = appFormInitialState, action: IA
       return state;
   }
 };
-
-export { appFormReducer, IAppFormReducer };

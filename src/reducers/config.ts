@@ -1,7 +1,7 @@
 import { IActionProps } from '.';
 import Constants from '../actions/config/constants';
 
-interface IConfigReducer {
+export interface IConfigReducer {
   categories: string[];
   models: string[];
   permissionList: any;
@@ -15,7 +15,7 @@ const configInitialState: IConfigReducer = {
   permissionList: {}
 };
 
-const configReducer = (state: IConfigReducer = configInitialState, action: IActionProps): IConfigReducer => {
+export const configReducer = (state: IConfigReducer = configInitialState, action: IActionProps): IConfigReducer => {
   switch (action.type) {
     case Constants.FETCH_CONFIG_REQUEST:
       return {
@@ -36,5 +36,3 @@ const configReducer = (state: IConfigReducer = configInitialState, action: IActi
       return state;
   }
 };
-
-export { configReducer, IConfigReducer };

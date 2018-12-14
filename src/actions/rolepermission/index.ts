@@ -1,4 +1,4 @@
-import { IPermission } from 'src/reducers/rolepermission';
+import { IPermission } from '../../reducers/rolepermission';
 import Constants from './constants';
 
 export const createRolePermissionRequest = (data: any) => ({

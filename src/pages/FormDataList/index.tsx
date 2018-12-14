@@ -6,7 +6,7 @@ import Table, { ITableUpdateProps } from '../../components/Table';
 import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
 
-interface IFormSchemasProps {
+interface IFormSchemasProps extends RouteComponentProps {
   data: object[],
   total: number,
   loading: boolean,
@@ -20,8 +20,8 @@ interface IFormSchemasState {
   length: number
 }
 
-class FormDataList extends React.Component<IFormSchemasProps & RouteComponentProps, IFormSchemasState>{
-  constructor(props: IFormSchemasProps & RouteComponentProps) {
+class FormDataList extends React.Component<IFormSchemasProps, IFormSchemasState>{
+  constructor(props: IFormSchemasProps) {
     super(props);
     this.state = {
       columns: [

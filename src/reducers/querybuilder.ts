@@ -1,7 +1,7 @@
 import { IActionProps } from '.';
 import Constants from '../actions/querybuilder/constants';
 
-interface IQueryBuilderReducer {
+export interface IQueryBuilderReducer {
   fields : any[],
   loading: boolean
 }
@@ -11,7 +11,7 @@ const queryBuilderInitialState: IQueryBuilderReducer = {
   loading: false
 };
 
-const queryBuilderReducer = (state: IQueryBuilderReducer = queryBuilderInitialState, action: IActionProps): IQueryBuilderReducer => {
+export const queryBuilderReducer = (state: IQueryBuilderReducer = queryBuilderInitialState, action: IActionProps): IQueryBuilderReducer => {
   switch (action.type) {
     case Constants.FETCH_QUERY_BUILDER_FIELDS_REQUEST:
       return {
@@ -30,5 +30,3 @@ const queryBuilderReducer = (state: IQueryBuilderReducer = queryBuilderInitialSt
       return state;
   }
 };
-
-export { queryBuilderReducer, IQueryBuilderReducer };

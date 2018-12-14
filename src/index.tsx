@@ -58,7 +58,6 @@ class Main extends React.Component<any, any> {
   }
 }
 
-
 ReactDOM.render(<Main />, document.getElementById('root') as HTMLElement);
 
 registerServiceWorker();

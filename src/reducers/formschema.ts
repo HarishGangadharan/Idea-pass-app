@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { IActionProps } from '.';
 import FormSchemaConstants from '../actions/formschema/constants';
 
-interface IFormSchema {
+export interface IFormSchema {
   form_data: {
     display: string;
     [key: string]: any;
@@ -14,13 +14,13 @@ interface IFormSchema {
   [key: string]: any;
 }
 
-interface IFormSchemas {
+export interface IFormSchemas {
   data: IFormSchema[];
   total: number;
   loading: boolean;
 }
 
-interface IFormSchemaReducer {
+export interface IFormSchemaReducer {
   currentFormSchema: IFormSchema;
   list: IFormSchemas;
 }
@@ -114,9 +114,7 @@ const formSchemaListReducer = (
   }
 };
 
-const formSchemaReducers = combineReducers({
+export const formSchemaReducers = combineReducers({
   currentFormSchema: formSchemaReducer,
   list: formSchemaListReducer
 });
-
-export { formSchemaReducers, IFormSchemaReducer, IFormSchema, IFormSchemas };

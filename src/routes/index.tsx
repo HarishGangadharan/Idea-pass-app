@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router';
-import ability from 'src/ability';
-import { Can } from 'src/ability-context';
-import Admin from 'src/pages/Admin';
-import AppForm from 'src/pages/AppForm';
-import FormTrigger from 'src/pages/FormTrigger';
-import FormTriggerList from 'src/pages/FormTriggerList';
+import ability from '../ability';
+import { Can } from '../ability-context';
+import Admin from '../pages/Admin';
+import AppForm from '../pages/AppForm';
 import DynamicTableRender from '../pages/DynamicTableRenderer';
 import FormBuilder from '../pages/FormBuilder';
 import FormDataList from '../pages/FormDataList';
 import FormRenderer from '../pages/FormRenderer';
 import FormSchemaList from '../pages/FormSchemaList';
+import FormTrigger from '../pages/FormTrigger';
+import FormTriggerList from '../pages/FormTriggerList';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import NoMatch from '../pages/NoMatch';
@@ -102,7 +102,7 @@ export class LoggedInRoutes extends React.Component {
                 exact={route.exact}
                 path={route.path}
                 render={(routeProps) => {
-                  const SubjectComponent = route.subject ? (ability.can('read', route.subject) ? route.component : NoMatch) : route.component;
+                  const SubjectComponent: any = route.subject ? (ability.can('read', route.subject) ? route.component : NoMatch) : route.component;
                   return <SubjectComponent {...routeProps} {...{ subject: route.subject }} />;
                 }}
               />

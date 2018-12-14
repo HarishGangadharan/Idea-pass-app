@@ -1,7 +1,5 @@
 import { unpackRules } from '@casl/ability/extra';
 import { call, put } from 'redux-saga/effects';
-import { AppProperties } from 'src/constants/application.properties';
-import storage from 'src/utils/storage';
 import ability from '../ability';
 import {
   createRolePermissionFailure,
@@ -9,7 +7,9 @@ import {
   fetchRolePermissionFailure,
   fetchRolePermissionSuccess
 } from '../actions/rolepermission';
+import { AppProperties } from '../constants/application.properties';
 import RolePermissionService from '../services/rolepermission';
+import storage from '../utils/storage';
 import { onLogoutUser } from './user';
 
 function* createRolePermission(action: any) {
