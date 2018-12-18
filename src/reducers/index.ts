@@ -9,6 +9,7 @@ import { formFieldDataReducers, IFormFieldDataReducer } from './formfielddata';
 import { formSchemaReducers, IFormSchemaReducer } from './formschema';
 import { formTriggerReducers, IFormTriggerReducer } from './formTrigger';
 import { globalReducer, IGlobalReducer } from './global';
+import { graphiQlReducer, IGraphiQlReducer } from './graphiQl';
 import { IOrganizationReducer, organizationReducers } from './organization';
 import { IQueryBuilderReducer } from './querybuilder';
 import { queryBuilderReducer } from './querybuilder';
@@ -26,6 +27,7 @@ const rootReducer : Reducer<IState> = combineReducers({
   formSchema: formSchemaReducers,
   formTrigger: formTriggerReducers,
   global: globalReducer,
+  graphiQl: graphiQlReducer,
   localize: localizeReducer as Reducer<any>,
   organization: organizationReducers,
   queryBuilder: queryBuilderReducer,
@@ -52,6 +54,7 @@ export interface IState {
   config: IConfigReducer;
   appForm: IAppFormReducer;
   organization: IOrganizationReducer,
+  graphiQl: IGraphiQlReducer
   role: IRoleReducer,
   queryBuilder: IQueryBuilderReducer,
   rolePermission: IRolePermissionReducer

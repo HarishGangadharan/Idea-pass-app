@@ -56,7 +56,7 @@ class SideBar extends React.Component<ISideBarProps> {
             to="/users"
             activeClassName="active"
             className="nav-link">
-            <BaseIcon name="Users" label="navbar.users" />
+          <BaseIcon name="Users" label="navbar.users" />
           </NavLink>
         </Can>
         <Can I="read" a="appforms">
@@ -66,6 +66,15 @@ class SideBar extends React.Component<ISideBarProps> {
             activeClassName="active"
             className="nav-link">
             <BaseIcon name="Award" label="navbar.role" />
+          </NavLink>
+        </Can>
+        <Can I="read" a="appforms">
+          <NavLink
+            exact={true}
+            to="/graphiQlList"
+            activeClassName="active"
+            className="nav-link">
+            <BaseIcon name="HardDrive" label="navbar.graphiQl" />
           </NavLink>
         </Can>
         <div className="indicator" onClick={this.props.expandSideBar}>

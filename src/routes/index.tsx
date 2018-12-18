@@ -11,6 +11,8 @@ import FormRenderer from '../pages/FormRenderer';
 import FormSchemaList from '../pages/FormSchemaList';
 import FormTrigger from '../pages/FormTrigger';
 import FormTriggerList from '../pages/FormTriggerList';
+import GraphiQl from '../pages/GraphiQl';
+import GraphiQlList from '../pages/GraphiQlList';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import NoMatch from '../pages/NoMatch';
@@ -87,6 +89,21 @@ export class LoggedInRoutes extends React.Component {
         component: Users,
         exact: true,
         path: '/users'
+      },
+      {
+        component: GraphiQlList,
+        exact: true,
+        path: '/graphiQlList'
+      },
+      {
+        component: GraphiQl,
+        exact: true,
+        path: '/graphiQl'
+      },
+      {
+        component: GraphiQl,
+        exact: true,
+        path: '/graphiQl/:id'
       },
       {
         component: NoMatch,

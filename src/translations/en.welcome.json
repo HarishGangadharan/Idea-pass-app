@@ -10,7 +10,8 @@
     "permissions":"Permissions",
     "organization":"Organization",
     "users": "Users",
-    "role":"Role"
+    "role":"Role",
+    "graphiQl": "GraphiQl"
   },
 
   "label": {

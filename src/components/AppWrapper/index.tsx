@@ -83,7 +83,7 @@ class AppWrapper extends React.Component<IAppWrapperProps, IAppWrapperState> {
                 <div key="mainContainer" className={isExpanded ? 'main expand' : 'main'}>
                   <LoggedInRoutes key="logged-in-routes"/>
                 </div>
-                <ToastContainer />
+                <ToastContainer/>
               </div>
              </Fragment>
           ) ||

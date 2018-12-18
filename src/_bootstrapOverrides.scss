@@ -35,6 +35,23 @@ label{
   color: $contrastTextColour;
 }
 
+.Toastify__toast {
+  border-radius: 5px;
+}
+
+.Toastify__toast--info {
+  background: $infoColor;
+}
+.Toastify__toast--success {
+  background: $successColor;
+}
+.Toastify__toast--warning {
+  background: $warningColor;
+}
+.Toastify__toast--error {
+  background: $errorColor;
+}
+
 .dropdown-menu {
   li {
     a {

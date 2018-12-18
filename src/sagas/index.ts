@@ -7,6 +7,7 @@ import FormFieldDataConstants from '../actions/formfielddata/constants';
 import FormSchemaConstants from '../actions/formschema/constants';
 import FormTriggerConstants from '../actions/formTrigger/constants';
 import GlobalConstants from '../actions/global/constants';
+import GraphiQlContants from '../actions/graphiQl/constants';
 import OrganizationConstants from '../actions/organization/constants';
 import QueryBuilderConstants from '../actions/querybuilder/constants';
 import RoleConstants from '../actions/role/constants';
@@ -25,6 +26,7 @@ import DynamicTableSaga from './dynamicTable';
 import { fetchFormFieldData, fetchFormFieldDataList, saveFormFieldData  } from './formfielddata';
 import { createFormSchema, fetchFormList, fetchFormSchema } from './formschema';
 import { fetchFormTrigger, fetchFormTriggerList, fetchSourceFormTrigger, fetchTargetFormTrigger, saveFormTrigger  } from './formTrigger';
+import { createOrUpdateGraphiQl, fetchGraphiQlById,  fetchGraphiQlList } from './graphiQl';
 import { fetchOrganization, fetchOrganizationList } from './organization';
 import { fetchQueryFields } from './querybuilder';
 import { fetchRoleList } from './role';
@@ -61,4 +63,7 @@ export default function* rootSaga() {
   yield takeLatest(AppFormConstants.SAVE_APP_FORM_REQUEST, saveAppForm);
   yield takeLatest(GlobalConstants.SET_USER_ROLE, fetchRolePermissionRules);
   yield takeLatest(QueryBuilderConstants.FETCH_QUERY_BUILDER_FIELDS_REQUEST, fetchQueryFields);
+  yield takeLatest(GraphiQlContants.CREATE_UPDATE_QUERY_REQUEST, createOrUpdateGraphiQl);
+  yield takeLatest(GraphiQlContants.FETCH_QUERY_REQUEST, fetchGraphiQlById);
+  yield takeLatest(GraphiQlContants.FETCH_QUERY_LIST_REQUEST, fetchGraphiQlList);
 }

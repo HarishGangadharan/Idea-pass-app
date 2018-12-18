@@ -1,0 +1,16 @@
+import keyMirror from 'key-mirror';
+
+export default keyMirror({
+  CREATE_UPDATE_QUERY_FAIL: null,
+  CREATE_UPDATE_QUERY_REQUEST: null,
+  CREATE_UPDATE_QUERY_SUCCESS: null,
+  FETCH_QUERY_FAIL: null,
+  FETCH_QUERY_LIST_FAIL: null,
+  FETCH_QUERY_LIST_REQUEST: null,
+  FETCH_QUERY_LIST_SUCCESS: null,
+  FETCH_QUERY_REQUEST: null,
+  FETCH_QUERY_SUCCESS: null,
+  UPDATE_QUERY_FAIL: null,
+  UPDATE_QUERY_REQUEST: null,
+  UPDATE_QUERY_SUCCESS: null
+});
