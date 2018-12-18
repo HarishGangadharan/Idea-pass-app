@@ -1,94 +1,80 @@
 const shell = require('shelljs');
 // pretty print
 const chalk = require('chalk');
+const readline = require('readline-sync');
 
-//** helpers***//
-const success = (msg) =>  console.log(chalk.green(msg));
-const info = (msg) =>  console.log(chalk.cyan(msg));
-const error = (msg) =>  console.log(chalk.red(msg));
-const dullInfo = (msg) => console.log(chalk.dim.italic(msg));
-const greatSucess = (msg) =>  console.log(chalk.black.bgGreen.bold(msg));
-const greatError = (msg) =>  console.log(chalk.black.bgRed.bold(msg));
+let input = readline.question('Do you want to install react-querybuilder locally.[Y/n]?');
 
-const execute = (cmd) => {
-  if (shell.exec(cmd).code !== 0) {
-    throw Error(`Error Executing command ${cmd}`);
-  }
-}
-//** helpers***//
+input = input.toLocaleLowerCase();
+if (input === '' || input === 'yes' || input === 'y') {
+  //* * helpers***//
+  const success = (msg) => console.log(chalk.green(msg));
+  const info = (msg) => console.log(chalk.cyan(msg));
+  const error = (msg) => console.log(chalk.red(msg));
+  const dullInfo = (msg) => console.log(chalk.dim.italic(msg));
+  const greatSucess = (msg) => console.log(chalk.black.bgGreen.bold(msg));
 
-const pluginDir = 'plugins';
-const localNPMDir = 'local_npm';
+  const execute = (cmd) => {
+    if (shell.exec(cmd).code !== 0) {
+      throw Error(`Error Executing command ${cmd}`);
+    }
+  };
+  //* * helpers***//
 
-const plugins = {
-  reactQueryBuilder: 'react-querybuilder'
-};
+  const pluginDir = 'plugins';
 
-const pluginActions = [
- {
+  const plugins = {
+    reactQueryBuilder: 'react-querybuilder'
+  };
+
+  const pluginActions = [{
     build: 'npm run dist',
     dir: plugins.reactQueryBuilder,
     name: 'React Querybuilder',
-    postBuild: `rm -rf dist; rm -rf node_modules;`,
     preBuild: 'npm install'
-  }
-];
+  }];
 
-// Removing prebuilt files
-shell.rm('-rf', `${localNPMDir}/*`);
+  dullInfo(`>> Moving to ${pluginDir}`);
+  shell.pushd(`${pluginDir}`);
 
-dullInfo(`>> Moving to ${pluginDir}`);
-shell.pushd(`${pluginDir}`);
+  // Building each plugins
+  pluginActions.some((plugin) => {
+    info(`::::Packaging:::${plugin.name}:::::::`);
+    dullInfo(`>> Moving to ${plugin.dir}`);
+    shell.pushd(`${plugin.dir}`);
+    try {
+      info(`::::Running PreBuild:::${plugin.preBuild}:::::::`);
+      execute(plugin.preBuild);
+      success(`Success:::PreBuild:::${plugin.preBuild}:::::::`);
 
-// Building each plugins
-pluginActions.some((plugin) => {
-  info(`::::Packaging:::${plugin.name}:::::::`);
-  dullInfo(`>> Moving to ${plugin.dir}`);
-  shell.pushd(`${plugin.dir}`)
-  try {
-    info(`::::Running PreBuild:::${plugin.preBuild}:::::::`);    
-    execute(plugin.preBuild);
-    success(`Success:::PreBuild:::${plugin.preBuild}:::::::`);
+      info(`::::Building:::${plugin.build}:::::::`);
+      execute(plugin.build);
+      success(`Success::::Build::${plugin.build}:::::::`);
 
-    info(`::::Building:::${plugin.build}:::::::`);
-    execute(plugin.build);
-    success(`Success::::Build::${plugin.build}:::::::`);
+      shell.popd();
+    } catch (err) {
+      error(err);
+      return true;
+    }
+    greatSucess(`:::::Packaging Completed:${plugin.preBuild}:::::::`);
+    return false;
+  });
 
-    shell.popd();
-    info(`::::Copying Local Package:::${plugin.dir}:::::::`);
-    shell.cp('-R', plugin.dir, `../${localNPMDir}`);    
-    success(`Success::::Local Package Created::${plugin.dir}:::::::`);
-    shell.pushd(`${plugin.dir}`)
-
-    info(`::::PostBuild:::${plugin.postBuild}:::::::`);
-    execute(plugin.postBuild);
-    success(`Success:::PostBuild:::${plugin.postBuild}:::::::`);
-
-  } catch(err) {
-    error(err);
-    return true;
-  }
-  greatSucess(`:::::Packaging Completed:${plugin.preBuild}:::::::`);
-  // returning to plugins dir
-  dullInfo(`<< Returing to ${pluginDir}`);
+  // returning to main home directory
+  dullInfo('<< Returing to Main Directory');
   shell.popd();
-  return false;
-});
 
-// returning to main home directory
-dullInfo(`<< Returing to Main Directory`);
-shell.popd();
+  // Installing Currently built packages
+  shell.ls(pluginDir).forEach((plugin) => {
+    info(`::::::Installing Local Package ${plugin}::::::`);
+    try {
+      execute(`npm install ${pluginDir}/${plugin}`);
+      success(`::::Install Success ${plugin}:::`);
+    } catch (err) {
+      error(err);
+    }
+  });
 
-// Installing Currently built packages
-shell.ls(localNPMDir).forEach((plugin) => {
-  info(`::::::Installing Local Package ${plugin}::::::`);
-  try {
-    execute(`npm install ${localNPMDir}/${plugin}`);
-    success(`::::Install Success ${plugin}:::`)
-  } catch(err) {
-    error(err);
-  }
-});
-
-// Removing installed packages
-// shell.rm('-rf', `${localNPMDir}/*`);
+  // Removing installed packages
+  // shell.rm('-rf', `${localNPMDir}/*`);
+}
