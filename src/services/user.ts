@@ -10,12 +10,11 @@ export const getUsers = (requestFilter: IRequestFilter) => {
   });
 };
 
-export const loginUser = (email: string , password: string) =>
+export const loginUser = (username: string , password: string) =>
   axios({
     data: {
-      email,
       password,
-      strategy: 'local'
+      username
     },
     method: 'post',
     url: '/login'

@@ -136,7 +136,7 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
           <button className="btn btn-primary pull-right" onClick={() => this.saveRolePermission()}>Save</button>
         </div>
         <Table
-          keyField="admin"
+          keyField="name"
           data={rolePermission.permissions}
           columns={columns}
           loading={false}

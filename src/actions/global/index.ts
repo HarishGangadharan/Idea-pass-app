@@ -7,3 +7,11 @@ export const updateLoggedInStatus = (userStatus: any) => {
 export const updateUserRole = (userRole: string) => {
   return { type: Constants.SET_USER_ROLE, userRole };
 };
+
+export const incrementLoaderQueue = () => {
+  return { type: Constants.INCREMENT_LOADER_QUEUE };
+};
+
+export const decrementLoaderQueue = () => {
+  return { type: Constants.DECREMENT_LOADER_QUEUE };
+};

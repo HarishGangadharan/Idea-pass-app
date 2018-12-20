@@ -8,7 +8,7 @@ import {
   saveFormFieldDataRequest,
   updateFormFieldDataState
 } from '../../actions/formfielddata';
-import { fetchFormSchemaRequest } from '../../actions/formschema';
+import { fetchFormSchemaRequest, updateFormSchemaState } from '../../actions/formschema';
 import Renderer from '../../components/FormRender';
 import { IState } from '../../reducers';
 import { IFormSchema } from '../../reducers/formschema';
@@ -20,7 +20,9 @@ interface IRendererDispatchMap {
   ) => void;
   fetchFormFieldDataRequest: (name: string, dataId: string) => void;
   saveFormFieldDataRequest: (data: any, formName: string, formId?: string, formDataId?: string) => void;
+  // TODO: Need to change type of data
   updateFormFieldDataState: (data?: any) => void;
+  updateFormSchemaState: (data?: any) => void;
 }
 
 interface IRendererStateMap {
@@ -69,6 +71,7 @@ class FormRenderer extends React.Component<IMergedProps, { formId: string }> {
 
   public componentWillUnmount() {
     this.props.updateFormFieldDataState();
+    this.props.updateFormSchemaState();
   }
 
   public getFormio = (formio: any) => {
@@ -108,7 +111,8 @@ const mapDispatchToProps: IRendererDispatchMap = {
   fetchFormFieldDataRequest,
   fetchFormSchemaRequest,
   saveFormFieldDataRequest,
-  updateFormFieldDataState
+  updateFormFieldDataState,
+  updateFormSchemaState
 };
 
 const mapStateToProps = (state: IState) => ({

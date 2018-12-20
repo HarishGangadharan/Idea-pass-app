@@ -5,6 +5,7 @@ import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { compose } from 'redux';
 import { updateLoggedInStatus } from '../../actions/global';
 import NavBar from '../../components/NavBar';
@@ -12,16 +13,18 @@ import SideBar from '../../components/SideBar';
 import { AppProperties } from '../../constants/application.properties';
 import { languages } from '../../global/languages';
 import { IState } from '../../reducers';
-import { LoggedInRoutes,
-  persistantRoutes as PersistantRoutes } from '../../routes';
+import {
+  LoggedInRoutes,
+  persistantRoutes as PersistantRoutes
+} from '../../routes';
 import storage from '../../utils/storage';
-
-import 'react-toastify/dist/ReactToastify.css';
+import LoaderComponent from '../Loader/index';
 import './style.css';
 
 interface IAppWrapperProps extends LocalizeContextProps {
-  loading: boolean;
   isUserLoggedIn: boolean;
+  loadingInProgress: number;
+  loading: boolean;
 }
 
 interface IAppWrapperState {
@@ -64,20 +67,19 @@ class AppWrapper extends React.Component<IAppWrapperProps, IAppWrapperState> {
   public componentDidMount() {
     const isExpanded = storage.getItem(AppProperties.SIDEBAR_EXPANDED);
     if (isExpanded === 'true') {
-      this.setState({isExpanded: true});
+      this.setState({ isExpanded: true });
     }
   }
 
   public render() {
-    const { isUserLoggedIn } = this.props;
+    const { isUserLoggedIn, loadingInProgress, loading } = this.props;
     const { isExpanded } = this.state;
     return (
       <Fragment>
-        {
-          isUserLoggedIn && (
-            <Fragment>
-              <NavBar key="nav"/>
-              {/* <BackdropSvgImage /> */}
+        {isUserLoggedIn && (
+          <Fragment>
+            <NavBar key="nav"/>
+            {loadingInProgress > 0 && <LoaderComponent loading={loading} />}
               <div className="container-fluid">
                 <SideBar expandSideBar={this.expandSideBar} isExpanded={isExpanded}/>
                 <div key="mainContainer" className={isExpanded ? 'main expand' : 'main'}>
@@ -85,17 +87,16 @@ class AppWrapper extends React.Component<IAppWrapperProps, IAppWrapperState> {
                 </div>
                 <ToastContainer/>
               </div>
-             </Fragment>
-          ) ||
-            <PersistantRoutes/>
-        }
+          </Fragment>
+        ) ||
+          <PersistantRoutes/>}
       </Fragment>
     );
   }
 
   public componentDidUpdate(prevProps: any) {
     const hasActiveLanguageChanged =
-      prevProps.activeLanguage &&  prevProps.activeLanguage !== this.props.activeLanguage;
+      prevProps.activeLanguage && prevProps.activeLanguage !== this.props.activeLanguage;
     if (hasActiveLanguageChanged) {
       this.addTranslationsForActiveLanguage(this.props.activeLanguage);
     }
@@ -103,7 +104,7 @@ class AppWrapper extends React.Component<IAppWrapperProps, IAppWrapperState> {
 
   private expandSideBar = () => {
     this.setState({isExpanded: !this.state.isExpanded});
-    storage.setItem(AppProperties.SIDEBAR_EXPANDED, !this.state.isExpanded );
+    storage.setItem(AppProperties.SIDEBAR_EXPANDED, !this.state.isExpanded);
   }
 
   private addTranslationsForActiveLanguage(activeLanguage: any) {
@@ -114,7 +115,8 @@ class AppWrapper extends React.Component<IAppWrapperProps, IAppWrapperState> {
 
 const mapStateToProps = (state: IState): IStateProps => ({
   isUserLoggedIn: state.global.userStatus.loggedIn,
-  loading: state.global.loading
+  loading: state.global.loader.loading,
+  loadingInProgress: state.global.loader.loadInProgress
 });
 
 const mapDispatchToProps : IDispatchProps = ({
@@ -123,6 +125,7 @@ const mapDispatchToProps : IDispatchProps = ({
 
 interface IStateProps {
   isUserLoggedIn: boolean;
+  loadingInProgress: number;
   loading: boolean;
 }
 

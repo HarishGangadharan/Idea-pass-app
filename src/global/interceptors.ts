@@ -1,5 +1,10 @@
 import axios from 'axios';
-import { updateLoggedInStatus, updateUserRole } from '../actions/global';
+import {
+  decrementLoaderQueue,
+  incrementLoaderQueue,
+  updateLoggedInStatus,
+  updateUserRole
+} from '../actions/global';
 import { AppProperties } from '../constants/application.properties';
 import ERRORS from '../constants/errorConstants';
 import ApiError from '../errors/ApiError';
@@ -24,6 +29,20 @@ export const setupInterceptors = (store: any) => {
   axios.defaults.validateStatus = () => true;
   axios.interceptors.request.use(config => {
     config.withCredentials = true;
+    /**
+     * We receive removeFromQueue from service - Role Permission.
+     * It comes with default value true.
+     */
+    if (config.data && config.data.removeFromQueue) {
+      /**
+       * If removeFromQueue is true, this dispatch method decrease the value.
+       */
+      store.dispatch(decrementLoaderQueue());
+    }
+    /**
+     * If removeFromQueue is false, this dispatch method increase the value.
+     */
+    store.dispatch(incrementLoaderQueue());
     return config;
   }, error => Promise.reject(error));
   const userSession = storage.getItem(AppProperties.USER_SESSION);
@@ -39,6 +58,17 @@ export const setupInterceptors = (store: any) => {
      *  use store.dispatch() to dispatch any redux actions
      *  considered for logout status to be 201
      */
+    const header = response.config.data;
+    if (header && JSON.parse(header).removeFromQueue) {
+      /**
+       * Increase the value deponds on how many request receives.
+       */
+      store.dispatch(incrementLoaderQueue());
+    }
+    /**
+     * Decrease the value deponds on how many request done.
+     */
+    store.dispatch(decrementLoaderQueue());
     if (status > 205 && status !== 201) {
       switch (status) {
         case 500:

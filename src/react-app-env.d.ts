@@ -35,3 +35,4 @@ declare module 'react-bootstrap-table2-filter';
 declare module 'react-bootstrap-table2-overlay';
 declare module 'react-bootstrap-table2-toolkit';
 declare module '*.css';
+declare module '*.gif';
