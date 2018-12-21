@@ -10,6 +10,7 @@ import {
   fetchGraphiQlSuccess
 }
   from '../actions/graphiQl';
+import ErrorConstants from '../constants/errorConstants';
 import { fetchGraphiQlQueries, getGraphiQlById, saveOrUpdateGraphiQl } from '../services/graphiQl';
 
 export function* createOrUpdateGraphiQl (action: any) {
@@ -22,7 +23,7 @@ export function* createOrUpdateGraphiQl (action: any) {
     toast.success(message);
   } catch (error) {
     yield(put(createOrUpdateGraphiQlFail(error)));
-    toast.error('Something went wrong.Pls try again');
+    toast.error(ErrorConstants.REQUEST_FAIL.message);
   }
 }
 
@@ -33,7 +34,7 @@ export function* fetchGraphiQlById (action: any) {
     yield put(fetchGraphiQlSuccess(response.data));
   } catch (error) {
     yield(put(fetchGraphiQlFail(error)));
-    toast.error('Something went wrong.Pls try again');
+    toast.error(ErrorConstants.REQUEST_FAIL.message);
   }
 }
 
@@ -44,6 +45,6 @@ export function* fetchGraphiQlList(action: any) {
     yield put(fetchGraphiQlListSuccess(response.data));
   } catch (error) {
     yield(put(fetchGraphiQlListFail(error)));
-    toast.error('Something went wrong.Pls try again');
+    toast.error(ErrorConstants.REQUEST_FAIL.message);
   }
 }

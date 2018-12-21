@@ -77,6 +77,15 @@ class SideBar extends React.Component<ISideBarProps> {
             <BaseIcon name="HardDrive" label="navbar.graphiQl" />
           </NavLink>
         </Can>
+        <Can I="read" a="appforms">
+          <NavLink
+            exact={true}
+            to="/emailTemplateList"
+            activeClassName="active"
+            className="nav-link">
+            <BaseIcon name="Mail" label="navbar.emailTemplate" />
+          </NavLink>
+        </Can>
         <div className="indicator" onClick={this.props.expandSideBar}>
           <div className="indicator-bar">&nbsp;</div>
           <BaseIcon name={isExpanded ? 'ChevronLeft' : 'ChevronRight'} size={20} label="" />

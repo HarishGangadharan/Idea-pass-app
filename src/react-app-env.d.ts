@@ -1,6 +1,6 @@
 /// <reference types="react-scripts" />
 declare module 'graphiql';
-declare module 'graphql'; 
+declare module 'graphql';
 declare module "jss-preset-default";
 declare module "react-jss/*";
 declare module "key-mirror";
@@ -34,5 +34,6 @@ declare module 'react-bootstrap-table2-paginator';
 declare module 'react-bootstrap-table2-filter';
 declare module 'react-bootstrap-table2-overlay';
 declare module 'react-bootstrap-table2-toolkit';
+declare module 'react-email-editor';
 declare module '*.css';
 declare module '*.gif';

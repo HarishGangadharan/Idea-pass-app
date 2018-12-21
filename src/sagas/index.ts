@@ -3,6 +3,7 @@ import AppFormConstants from '../actions/appform/constants';
 import ConfigConstants from '../actions/config/constants';
 import CounterConstants from '../actions/counter/constants';
 import DynamicTableConstants from '../actions/dynamicTable/constants';
+import EmailTemplateConstants from '../actions/emailTemplate/constants';
 import FormFieldDataConstants from '../actions/formfielddata/constants';
 import FormSchemaConstants from '../actions/formschema/constants';
 import FormTriggerConstants from '../actions/formTrigger/constants';
@@ -23,6 +24,7 @@ import {
   onIncrementAsync
 } from './counter';
 import DynamicTableSaga from './dynamicTable';
+import { createOrUpdateEmailTemplate, getAllEmailTemplates, getEmailTemplate } from './emailTemplate';
 import { fetchFormFieldData, fetchFormFieldDataList, saveFormFieldData  } from './formfielddata';
 import { createFormSchema, fetchFormList, fetchFormSchema } from './formschema';
 import { fetchFormTrigger, fetchFormTriggerList, fetchSourceFormTrigger, fetchTargetFormTrigger, saveFormTrigger  } from './formTrigger';
@@ -66,4 +68,7 @@ export default function* rootSaga() {
   yield takeLatest(GraphiQlContants.CREATE_UPDATE_QUERY_REQUEST, createOrUpdateGraphiQl);
   yield takeLatest(GraphiQlContants.FETCH_QUERY_REQUEST, fetchGraphiQlById);
   yield takeLatest(GraphiQlContants.FETCH_QUERY_LIST_REQUEST, fetchGraphiQlList);
+  yield takeLatest(EmailTemplateConstants.CREATE_OR_UPDATE_EMAIL_TEMPLATE, createOrUpdateEmailTemplate);
+  yield takeLatest(EmailTemplateConstants.GET_EMAIL_TEMPLATE, getEmailTemplate);
+  yield takeLatest(EmailTemplateConstants.GET_ALL_EMAIL_TEMPLATES, getAllEmailTemplates);
 }

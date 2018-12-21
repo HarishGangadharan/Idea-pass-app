@@ -11,6 +11,7 @@ import { IState } from '../../reducers';
 interface IGraphiQlList {
   data?: any[];
   total?: number;
+  length?: number;
   loading?: boolean;
   fetchGraphiQlList?: any;
 }
@@ -19,8 +20,10 @@ class GraphiQlList extends React.Component<
   IGraphiQlList & RouteComponentProps,
   object
   > {
+    public static defaultProps = {
+      length: 10
+    };
   private columns: Column[];
-
   constructor(props: IGraphiQlList & RouteComponentProps) {
     super(props);
     this.columns = [
@@ -51,7 +54,7 @@ class GraphiQlList extends React.Component<
     this.fetchGraphiQlList(data);
   }
   public render() {
-    const { loading, data, total } = this.props;
+    const { loading, data, total, length } = this.props;
     return (
       <div className="shadow-container">
         <Can I="read" a="admin">

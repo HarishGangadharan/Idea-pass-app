@@ -5,6 +5,8 @@ import { Can } from '../ability-context';
 import Admin from '../pages/Admin';
 import AppForm from '../pages/AppForm';
 import DynamicTableRender from '../pages/DynamicTableRenderer';
+import EmailTemplateList from '../pages/EmailTemplate/';
+import EmailTemplate from '../pages/EmailTemplate/create';
 import FormBuilder from '../pages/FormBuilder';
 import FormDataList from '../pages/FormDataList';
 import FormRenderer from '../pages/FormRenderer';
@@ -104,6 +106,21 @@ export class LoggedInRoutes extends React.Component {
         component: GraphiQl,
         exact: true,
         path: '/graphiQl/:id'
+      },
+      {
+        component: EmailTemplate,
+        exact: true,
+        path: '/emailTemplate'
+      },
+      {
+        component: EmailTemplate,
+        exact: true,
+        path: '/emailTemplate/:id'
+      },
+      {
+        component: EmailTemplateList,
+        exact: true,
+        path: '/emailTemplateList'
       },
       {
         component: NoMatch,

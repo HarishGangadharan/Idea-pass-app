@@ -1,7 +1,11 @@
 const ERRORS = {
-  NETWORK_ERROR : {
+  NETWORK_ERROR: {
     message: 'Network down kindly try again',
     name: 'NOT_FOUND'
+  },
+  REQUEST_FAIL: {
+    message: 'Something went wrong.Please try again',
+    name: 'Request Fail'
   },
   SERVER_CONFLICT: {
     message: 'Unexpected server conflict.',
@@ -12,5 +16,4 @@ const ERRORS = {
     name: 'SERVER_ERROR'
   }
 };
-
 export default ERRORS;

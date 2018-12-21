@@ -11,6 +11,7 @@ import { IState } from '../../reducers';
 interface IFormSchemasProps {
   data?: object[];
   total?: number;
+  length?:number;
   loading?: boolean;
   fetchFormSchemaList?: any;
 }
@@ -19,6 +20,9 @@ class FormSchemaList extends React.Component<
   IFormSchemasProps & RouteComponentProps,
   object
   > {
+  static defaultProps = {
+    length: 10
+  }
   private columns: Column[];
 
   constructor(props: IFormSchemasProps & RouteComponentProps) {
@@ -81,7 +85,7 @@ class FormSchemaList extends React.Component<
     this.fetchFormSchemas(1, 10, '_id', 1);
   }
   public render() {
-    const { loading, data, total } = this.props;
+    const { loading, data, total, length } = this.props;
     return (
       <div className="shadow-container">
         <Can I="read" a="admin">

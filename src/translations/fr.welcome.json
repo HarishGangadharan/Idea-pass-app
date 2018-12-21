@@ -10,7 +10,8 @@
     "organization":"Organization",
     "users": "Users",
     "role":"Role",
-    "graphiQl": "GraphiQl"
+    "graphiQl": "GraphiQl",
+    "emailTemplate": "Email Template"
   },
 
   "label": {
