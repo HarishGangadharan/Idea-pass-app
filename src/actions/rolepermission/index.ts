@@ -1,9 +1,10 @@
-import { IPermission } from '../../reducers/rolepermission';
+import { IPermission, IRolePermissionReducer } from '../../reducers/rolepermission';
 import Constants from './constants';
 
-export const createRolePermissionRequest = (data: any) => ({
+export const createRolePermissionRequest = (data: IRolePermissionReducer, updatedRolePermissions: IRolePermissionReducer) => ({
   payload: data,
-  type: Constants.CREATE_ROLE_PERMISSION_REQUEST
+  type: Constants.CREATE_ROLE_PERMISSION_REQUEST,
+  updatedRolePermissions
 });
 
 export const createRolePermissionSuccess = (data: any) => ({
@@ -16,9 +17,10 @@ export const createRolePermissionFailure = (error: any) => ({
   type: Constants.CREATE_ROLE_PERMISSION_FAILURE
 });
 
-export const updateRolePermissionState = (row: IPermission) => ({
+export const updateRolePermissionState = (row: IPermission, updatedPermissions: []) => ({
   row,
-  type: Constants.UPDATE_ROLE_PERMISSION_STATE
+  type: Constants.UPDATE_ROLE_PERMISSION_STATE,
+  updatedPermissions
 });
 
 export const fetchRolePermissionRequest = (tenantId: string, modelName: string) => ({

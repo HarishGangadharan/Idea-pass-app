@@ -2,13 +2,16 @@ import { IActionProps } from '.';
 import Constants from '../actions/rolepermission/constants';
 
 export interface IPermission {
-  _id?: string,
+  role_id?: string,
   name: string,
   permission: {
     create: {
       action: string
     },
     delete: {
+      action: string
+    },
+    manage: {
       action: string
     },
     update: {
@@ -24,14 +27,18 @@ export interface IRolePermissionReducer {
   subject: string;
   tenant_id: string;
   permissions: IPermission[];
+  isSaveDisabled: boolean;
   loading: boolean;
+  updatedPermissions: any[]
 }
 
 const rolePermissionInitialState: IRolePermissionReducer = {
+  isSaveDisabled: true,
   loading: false,
   permissions: [],
   subject: '',
-  tenant_id: ''
+  tenant_id: '',
+  updatedPermissions: []
 };
 
 export const rolePermissionReducer = (state: IRolePermissionReducer = rolePermissionInitialState, action: IActionProps): IRolePermissionReducer => {
@@ -44,21 +51,25 @@ export const rolePermissionReducer = (state: IRolePermissionReducer = rolePermis
     case Constants.CREATE_ROLE_PERMISSION_SUCCESS:
       return {
         ...action.payload,
-        loading: false
+        isSaveDisabled: true,
+        loading: false,
+        updatedPermissions: []
       };
     case Constants.CREATE_ROLE_PERMISSION_FAILURE:
       return rolePermissionInitialState;
     case Constants.UPDATE_ROLE_PERMISSION_STATE:
       return {
         ...state,
+        isSaveDisabled: false,
         loading: false,
         permissions: state.permissions.map(permission => {
-          if (permission._id === action.row._id) {
+          if (permission.role_id === action.row.role_id) {
             return action.row;
           } else {
             return permission;
           }
-        })
+        }),
+        updatedPermissions: action.updatedPermissions
       };
     case Constants.FETCH_ROLE_PERMISSION_REQUEST:
       return {
@@ -73,6 +84,12 @@ export const rolePermissionReducer = (state: IRolePermissionReducer = rolePermis
       };
     case Constants.FETCH_ROLE_PERMISSION_FAILURE:
       return rolePermissionInitialState;
+    case Constants.UPDATE_MANAGE_STATE:
+      return {
+        ...state,
+        isSaveDisabled: false,
+        loading: false
+      };
     default:
       return state;
   }

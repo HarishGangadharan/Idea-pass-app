@@ -12,11 +12,14 @@ import RolePermissionService from '../services/rolepermission';
 import storage from '../utils/storage';
 import { onLogoutUser } from './user';
 
+import _ from 'lodash';
+
 function* createRolePermission(action: any) {
   try {
-    const { payload } = action;
-    yield call(RolePermissionService.createRolePermission, payload);
-    yield put(createRolePermissionSuccess(payload));
+    const { payload, updatedRolePermissions } = action;
+    const response = yield call(RolePermissionService.createRolePermission, payload);
+    updatedRolePermissions.permissions = _.merge(response.data.permissions, updatedRolePermissions.permissions);
+    yield put(createRolePermissionSuccess(updatedRolePermissions));
   } catch (error) {
     yield put(createRolePermissionFailure(error));
   }
@@ -30,18 +33,26 @@ function* fetchRolePermission(action: any) {
       if (!permission.permission || !Object.keys(permission.permission).length) {
         permission.permission = {
           create: {
-            action: 'cannot'
+            action: ''
           },
           delete: {
-            action: 'cannot'
+            action: ''
           },
           read: {
-            action: 'cannot'
+            action: ''
           },
           update: {
-            action: 'cannot'
+            action: ''
           }
         };
+      } else {
+        Object.keys(permission.permission).forEach((rule: any) => {
+          ['create', 'delete', 'read', 'update'].forEach((accessRule: any) => {
+            if (accessRule !== rule && !permission.permission[accessRule]) {
+              permission.permission[accessRule] = { action: '' };
+            }
+          });
+        });
       }
     });
     yield put(fetchRolePermissionSuccess(response.data));

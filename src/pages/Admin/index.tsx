@@ -22,6 +22,8 @@ import storage from '../../utils/storage';
 import './admin.css';
 import RoleSelector from './roleSelector';
 
+import _ from 'lodash';
+
 interface IAdminProps extends LocalizeContextProps, IStateProps, IDispatchProps { }
 
 interface IAdminState {
@@ -71,8 +73,8 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
     }
   }
 
-  public handleChangeEvent = (newPermission: IPermission) => {
-    this.props.updateRolePermissionState(newPermission);
+  public handleChangeEvent = (newPermission: IPermission, updatedPermissions: []) => {
+    this.props.updateRolePermissionState(newPermission, updatedPermissions);
   }
 
   public getConfigList = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -90,15 +92,17 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
 
   public saveRolePermission = () => {
     const { rolePermission } = this.props;
-    rolePermission.permissions.forEach((permission: any) => {
-      delete permission.permission.availablePermissions;
-    });
-    delete rolePermission.loading;
-    this.props.createRolePermission(rolePermission);
+    const permissions = rolePermission.updatedPermissions;
+    if (permissions.length) {
+      const updatedRolePermissions = _.cloneDeep(rolePermission);
+      updatedRolePermissions.permissions = permissions;
+      delete rolePermission.updatedPermissions;
+      this.props.createRolePermission(updatedRolePermissions, rolePermission);
+    }
   }
 
   public render() {
-    const { organization, organizations, models, categories, rolePermission } = this.props;
+    const { organization, organizations, models, categories, rolePermission, saveDisabled } = this.props;
     const { categoryName, length, currentPage, columns, tenantAdmin } = this.state;
     return (
       <div className="shadow-container">
@@ -107,12 +111,15 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
             <h4>Organization</h4>
           </div>
           <div className="col-md-6">
-            {tenantAdmin ? <select className="form-control" defaultValue={rolePermission.tenant_id} disabled={true}>
+            {tenantAdmin ?
+              <select className="form-control" defaultValue={rolePermission.tenant_id} disabled={true}>
                 <option value={organization._id}>{organization.name}</option>
-              </select> : <select className="form-control" defaultValue={rolePermission.tenant_id} onChange={(e) => this.getConfigList(e)}>
-              <option value="">SELECT ORGANIZATION</option>
-              {organizations.map((org, i) => <option key={i} value={org._id}>{org.name}</option>)}
-            </select>}
+              </select> :
+              <select className="form-control upper-case" defaultValue={rolePermission.tenant_id} onChange={(e) => this.getConfigList(e)}>
+                <option value="">SELECT ORGANIZATION</option>
+                {organizations.map((org, i) => <option key={i} value={org._id}>{org.name}</option>)}
+              </select>
+            }
           </div>
         </div>
         <div className="row">
@@ -120,20 +127,21 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
             <h4>Category</h4>
           </div>
           <div className="col-md-3">
-            <select className="form-control" defaultValue={categoryName}>
+            <select className="form-control upper-case" defaultValue={categoryName}>
               <option value="">SELECT CATEGORY</option>
               {categories.map((category, i) => <option key={i}>{category}</option>)}
             </select>
           </div>
           <div className="col-md-3">
-            <select className="form-control" defaultValue={rolePermission.subject} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => this.getRolePermission(e)}>
+            <select className="form-control upper-case" defaultValue={rolePermission.subject}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => this.getRolePermission(e)}>
               <option value="">SELECT MODEL</option>
               {models.map((model, i) => <option key={i}>{model}</option>)}
             </select>
           </div>
         </div>
         <div className="row">
-          <button className="btn btn-primary pull-right" onClick={() => this.saveRolePermission()}>Save</button>
+          <button className="btn btn-primary pull-right" disabled={saveDisabled} onClick={() => this.saveRolePermission()}>Save</button>
         </div>
         <Table
           keyField="name"
@@ -166,17 +174,18 @@ const mapStateToProps = (state: IState) => ({
   roleLoading: state.role.list.loading,
   rolePermission: state.rolePermission,
   rolePermissionLoading: state.rolePermission.loading,
-  roles: state.role.list.data
+  roles: state.role.list.data,
+  saveDisabled: state.rolePermission.isSaveDisabled
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  createRolePermission: (rolePermission: IRolePermissionReducer) => dispatch(createRolePermissionRequest(rolePermission)),
+  createRolePermission: (updatedRolePermissions: IRolePermissionReducer, rolePermission: IRolePermissionReducer) => dispatch(createRolePermissionRequest(updatedRolePermissions, rolePermission)),
   fetchConfigList: (configList: string, tenantId: string) => dispatch(fetchConfigRequest(configList, tenantId)),
   fetchOrganizationList: (limit: number, currentPage: number) => dispatch(fetchOrganizationListRequest(limit, currentPage)),
   fetchOrganizationRequest: (tenantId: string) => dispatch(fetchOrganizationRequest(tenantId)),
   fetchRoleList: (tenantId: string, limit: number, currentPage: number) => dispatch(fetchRoleListRequest(tenantId, limit, currentPage)),
   fetchRolePermission: (tenantId: string, modelName: string) => dispatch(fetchRolePermissionRequest(tenantId, modelName)),
-  updateRolePermissionState: (rolePermission: IPermission) => dispatch(updateRolePermissionState(rolePermission))
+  updateRolePermissionState: (rolePermission: IPermission, updatedPermissions: []) => dispatch(updateRolePermissionState(rolePermission, updatedPermissions))
 });
 
 interface IStateProps {
@@ -192,6 +201,7 @@ interface IStateProps {
   roleLoading: boolean;
   rolePermission: IRolePermissionReducer;
   rolePermissionLoading: boolean;
+  saveDisabled: boolean;
 }
 
 interface IDispatchProps {
@@ -200,8 +210,8 @@ interface IDispatchProps {
   fetchOrganizationRequest: (tenantId: string) => void;
   fetchRoleList: (tenantId: string, limit: number, currentPage: number) => void;
   fetchRolePermission: (tenantId: string, modelName: string) => void;
-  updateRolePermissionState: (rolePermission: IPermission) => void;
-  createRolePermission: (rolePermission: IRolePermissionReducer) => void;
+  updateRolePermissionState: (rolePermission: IPermission, updatedPermissions: []) => void;
+  createRolePermission: (updatedRolePermissions: IRolePermissionReducer, rolePermission: IRolePermissionReducer) => void;
 }
 
 export default compose(
