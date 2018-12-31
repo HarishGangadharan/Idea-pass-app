@@ -1,34 +1,26 @@
-@import '_theme.scss';
+@import 'theme';
+@import '../src/global/BootstrapOverride/buttonMixin';
 
 // Global Bootstrap overrides START
-body {
-  background-color: $appBackgroundColor;
-  color: $primaryTextColor;
-}
 
-.btn-primary {
-  border-color: $primaryColor;
-  background-color: $contrastBgColour;
-  color: $primaryColor;
+$body-bg:  $appBackgroundColor;
+$text-color: $primaryTextColor;
+$btn-primary-color: $primaryColor;
+$btn-primary-bg: $contrastBgColour;
+$btn-primary-border: $primaryColor;
+$navbar-default-border: transparent;
+$dropdown-link-color: $primaryTextColor;
+$navbar-default-link-active-color: $contrastTextColour;
+$navbar-default-link-active-bg: $primaryColor-120;
+.btn-primary { @include btn-styles($primaryColor); }
+@import "../src/global/BootstrapOverride/bootstrapCustom";
 
-  &:hover {
-    background-color: $primaryColor;
-  }
+.row {
+  margin: 0;
 }
 
 label{
   font-weight: normal;
-}
-
-.navbar-default {
-  border-color: transparent;
-
-  .navbar-nav>.open>a,
-  .navbar-nav>.open>a:focus,
-  .navbar-nav>.open>a:hover {
-    color: $contrastTextColour;
-    background-color: $primaryColor-120;
-  }
 }
 
 .navbar-container .navbar .dropdown-toggle {
@@ -50,14 +42,6 @@ label{
 }
 .Toastify__toast--error {
   background: $errorColor;
-}
-
-.dropdown-menu {
-  li {
-    a {
-      color: $primaryTextColor;
-    }
-  }
 }
 
 // Global Bootstrap overrides END

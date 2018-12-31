@@ -24,7 +24,7 @@ $indicator-bar-opacity: 0.05;
 
   a {
     padding: 6px 8px 6px 18px;
-    text-decoration: none;
+    text-decoration: none !important;
     display: block;
     border-left: 4px solid transparent;
     color: $primaryTextColor;

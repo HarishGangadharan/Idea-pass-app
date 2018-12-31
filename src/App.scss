@@ -1,6 +1,6 @@
-@import '_theme.scss';
-@import '_bootstrapOverrides.scss';
-@import '_mixins.scss';
+@import 'theme';
+@import 'bootstrapOverrides';
+@import 'mixins';
 
 .appContainer {
   font-size: 14px;

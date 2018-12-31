@@ -1,10 +1,5 @@
 @import '../../../_theme.scss';
 
-.checkbox {
-  display: inline;
-  margin-left: 10px;
-}
-
 .rule-group {
   padding: 1rem !important;
   margin: 5px;
@@ -30,6 +25,10 @@
   .ruleGroup {
     margin-top: 0.5rem;
     margin-left: 0.5rem;
+  }
+  .checkbox {
+    display: inline;
+    margin-left: 10px;
   }
 }
 

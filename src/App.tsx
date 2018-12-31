@@ -4,9 +4,6 @@ import * as React from 'react';
 import AppWrapper from './components/AppWrapper';
 import ErrorBoundary from './components/ErrorWrapper';
 
-
-import './App.css';
-
 interface IAppProps {
   history: History;
 }

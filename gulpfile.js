@@ -4,6 +4,7 @@ const cleanCSS = require('gulp-clean-css');
 const concat = require('gulp-concat');
 const wait = require('gulp-wait');
 const sass = require('gulp-sass');
+const typedoc = require("gulp-typedoc");
 
 // RUN: gulp theme --option theme1|2|3
 gulp.task('change-theme', function () {
@@ -39,6 +40,20 @@ gulp.task('css', () => {
     }))
     .pipe(concat('app.min.css'))
     .pipe(gulp.dest(`build/static/css/${theme}/`))
+});
+
+gulp.task('typedoc', function() {
+  return gulp
+      .src(["./src/**/*.ts"])
+      .pipe(typedoc({
+          module: "commonjs",
+          ignoreCompilerErrors: true,
+          jsx: "preserve",
+          target: "es6",
+          out: "./frontend-doc",
+          name: "Idea Paas"
+      }))
+  ;
 });
 
 // RUN: gulp default --option theme1|2|3
