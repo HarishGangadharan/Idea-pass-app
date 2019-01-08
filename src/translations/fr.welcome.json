@@ -16,7 +16,12 @@
 
   "label": {
     "emailAddress": "Email Address",
-    "password":"Password"
+    "password":"Password",
+    "formName": "Form Name",
+    "formType": "Form Type",
+    "templateType": "Template Type",
+    "createForm": "Create Form",
+    "updateForm": "Update Form"
   },
 
   "validations" : {

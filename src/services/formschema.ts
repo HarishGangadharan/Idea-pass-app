@@ -2,14 +2,19 @@ import axios from 'axios';
 
 class FormSchemaService {
   public static createFormSchema = (data: any, schemaId?: string) => axios({
-      data,
-      method: schemaId ? 'put' : 'post',
-      url: schemaId ? `/form-meta-ui/${schemaId}` : `/form-meta-ui/`
+    data,
+    method: schemaId ? 'put' : 'post',
+    url: schemaId ? `/form-meta-ui/${schemaId}` : `/form-meta-ui/`
   })
 
   public static fetchFormSchema = (schemaId?: string) => axios({
     method: 'get',
     url: `/form-meta-ui/${schemaId}`
+  })
+
+  public static fetchTemplateList = () => axios({
+    method: 'get',
+    url: '/form-meta-ui?is_template_form=true'
   })
 
   public static getAllFormSchema = (limit: number, currentPage: number, sortField: string, sortOrder: number, filters?: string) => {

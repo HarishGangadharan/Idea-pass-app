@@ -7,7 +7,9 @@ import {
   fetchFormSchemaFailure,
   fetchFormSchemaListFailure,
   fetchFormSchemaListSuccess,
-  fetchFormSchemaSuccess
+  fetchFormSchemaSuccess,
+  fetchTemplateListFailure,
+  fetchTemplateListSuccess
 } from '../actions/formschema';
 import FormSchemaService from '../services/formschema';
 
@@ -48,8 +50,18 @@ function* fetchFormList(action: any) {
   }
 }
 
+function* fetchTemplateList() {
+  try {
+    const templateList = yield call(FormSchemaService.fetchTemplateList);
+    yield put(fetchTemplateListSuccess(templateList.data));
+  } catch (error) {
+    yield put(fetchTemplateListFailure(error));
+  }
+}
+
 export {
   createFormSchema,
   fetchFormSchema,
-  fetchFormList
+  fetchFormList,
+  fetchTemplateList
 };

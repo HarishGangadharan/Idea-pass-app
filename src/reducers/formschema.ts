@@ -10,6 +10,7 @@ export interface IFormSchema {
   name: string;
   name_singular: string;
   form_type: string;
+  template_type: string;
   _id: string;
   [key: string]: any;
 }
@@ -17,6 +18,11 @@ export interface IFormSchema {
 export interface IFormSchemas {
   data: IFormSchema[];
   total: number;
+  loading: boolean;
+}
+
+export interface ITemplateFormSchema {
+  data: IFormSchema[];
   loading: boolean;
 }
 
@@ -39,7 +45,13 @@ const currentFormInitialState: IFormSchema = {
   form_type: 'data',
   loading: false,
   name: '',
-  name_singular: ''
+  name_singular: '',
+  template_type: 'default'
+};
+
+const templateList: ITemplateFormSchema = {
+  data: [],
+  loading: false
 };
 
 const formSchemaReducer = (
@@ -114,7 +126,34 @@ const formSchemaListReducer = (
   }
 };
 
+const templateListReducer = (
+  state: ITemplateFormSchema = templateList,
+  action: IActionProps
+): ITemplateFormSchema => {
+  switch (action.type) {
+    case FormSchemaConstants.FETCH_TEMPLATE_LIST:
+      return {
+        ...state,
+        loading: true
+      };
+    case FormSchemaConstants.FETCH_TEMPLATE_LIST_SUCCESS:
+      return {
+        ...state,
+        data: action.payload.data,
+        loading: false
+      };
+    case FormSchemaConstants.FETCH_TEMPLATE_LIST_FAILURE:
+      return {
+        ...state,
+        loading: false
+      };
+    default:
+      return state;
+  }
+};
+
 export const formSchemaReducers = combineReducers({
   currentFormSchema: formSchemaReducer,
-  list: formSchemaListReducer
+  list: formSchemaListReducer,
+  templateList: templateListReducer
 });

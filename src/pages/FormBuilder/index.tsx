@@ -1,10 +1,14 @@
 import * as React from 'react';
+import {
+  Translate,
+  withLocalize
+} from 'react-localize-redux';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import { createFormSchemaRequest, fetchFormSchemaRequest, updateFormSchemaState } from '../../actions/formschema';
+import { compose } from 'redux';
+import { createFormSchemaRequest, fetchFormSchemaRequest, fetchTemplateList, updateFormSchemaState } from '../../actions/formschema';
 import Builder from '../../components/FormBuilder';
 import { IState } from '../../reducers';
-
 interface IFBuilderStateMap {
   form: any;
   isLoading: boolean;
@@ -13,6 +17,7 @@ interface IFBuilderStateMap {
 interface IFBuilderDispatchMap {
   createFormSchema: (data: any, schemaId?: string) => void;
   fetchFormSchemaRequest: (schemaId: string) => void;
+  fetchTemplateList: () => void;
   updateFormSchemaState: (data?: any) => void;
 }
 
@@ -27,6 +32,8 @@ interface IFBuilderMergedProps extends IFBuilderStateMap, IFBuilderDispatchMap, 
 }
 
 class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStateProps> {
+  public formTypes: Array<{ id: string, name: string }>;
+  public templateTypes: Array<{ id: string, name: string }>;
   constructor(props: IFBuilderMergedProps) {
     super(props);
     this.state = {
@@ -34,26 +41,34 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
       formSchemaId: this.props.match ? this.props.match.params.id : '',
       name: ''
     };
+    this.formTypes = [{ id: 'data', name: 'Data' }, { id: 'ticket', name: 'Ticket' }];
+    this.templateTypes = [
+      { id: 'default', name: 'Default' },
+      { id: 'app_form', name: 'Application Form' },
+      { id: 'template_form', name: 'Template Form' }
+    ];
   }
 
   public componentDidMount() {
     if (this.props.match && this.props.match.params.id) {
       this.props.fetchFormSchemaRequest(this.props.match.params.id);
     }
+    this.props.fetchTemplateList();
   }
 
   public componentWillUnmount() {
     this.props.updateFormSchemaState();
   }
 
-  public setFormName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.form.name = e.target.value;
+  public setFormNameAndType = (e: any) => {
+    const fieldName = e.target.id;
+    this.props.form[fieldName] = e.target.value;
   }
 
   public saveFormSchema = (): void => {
     const { form } = this.props;
-    if (form._id) {
-      form.form_type = 'data';
+    if (!form._id) {
+      delete form._id;
     }
     // name is a required field
     if (form && form.name) {
@@ -84,6 +99,7 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
 
   public render() {
     const { isLoading, form } = this.props;
+    const { formTypes, templateTypes } = this;
     const builderOptions = {
       editForm: {
         textfield: [
@@ -110,10 +126,31 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
       <div className="shadow-container">
         {!isLoading &&
           <React.Fragment>
-            <div>
-              <div className="form-group">
-                <label className="control-label">Form Name</label> <span className="error-text">*</span>
-                <input type="text" defaultValue={form.name} className="form-control" onChange={this.setFormName} required={true}/>
+            <div className="row mb-10">
+              <div className="col-md-6">
+                <label className="control-label">
+                  <Translate id="label.formName" />
+                </label> <span className="error-text">*</span>
+                <input
+                  type="text"
+                  id="name"
+                  defaultValue={form.name}
+                  className="form-control"
+                  onChange={this.setFormNameAndType}
+                  required={true}
+                />
+              </div>
+              <div className="col-md-3">
+                <label className="control-label"><Translate id="label.formType" /></label> <span className="error-text">*</span>
+                <select className="form-control" id="form_type" defaultValue={form.form_type} onChange={this.setFormNameAndType}>
+                  {formTypes.map((type) => <option key={type.id} value={type.id}>{type.name}</option>)}
+                </select>
+              </div>
+              <div className="col-md-3">
+                <label className="control-label"><Translate id="label.templateType" /></label> <span className="error-text">*</span>
+                <select className="form-control" id="template_type" defaultValue={form.template_type} onChange={this.setFormNameAndType}>
+                  {templateTypes.map((template) => <option key={template.id} value={template.id}>{template.name}</option>)}
+                </select>
               </div>
             </div>
             <Builder
@@ -122,10 +159,11 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
               renderSchema={this.renderSchema}
               renderComponent={this.renderComponent}
             />
-          </React.Fragment>}
+          </React.Fragment>
+        }
         <div className="row text-right">
           <button className="btn btn-primary" onClick={() => this.saveFormSchema()} >
-            {form._id ? 'Update' : 'Create'} Form
+            <Translate id={form._id ? 'label.updateForm' : 'label.createForm'} />
           </button>
         </div>
       </div>
@@ -136,6 +174,7 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
 const mapDispatchToProps = ({
   createFormSchema: createFormSchemaRequest,
   fetchFormSchemaRequest,
+  fetchTemplateList,
   updateFormSchemaState
 });
 
@@ -144,6 +183,6 @@ const mapStateToProps = (state: IState) => ({
   isLoading: state.formSchema.currentFormSchema.loading
 });
 
-export default connect<IFBuilderStateMap, IFBuilderDispatchMap, IFBuilderMergedProps, IState>
-  (mapStateToProps, mapDispatchToProps)
-  (FormBuilder);
+export default compose (connect<IFBuilderStateMap, IFBuilderDispatchMap, IFBuilderMergedProps, IState>
+  (mapStateToProps, mapDispatchToProps),
+  withLocalize)(FormBuilder);

@@ -26,7 +26,7 @@ import {
 import DynamicTableSaga from './dynamicTable';
 import { createOrUpdateEmailTemplate, getAllEmailTemplates, getEmailTemplate } from './emailTemplate';
 import { fetchFormFieldData, fetchFormFieldDataList, saveFormFieldData  } from './formfielddata';
-import { createFormSchema, fetchFormList, fetchFormSchema } from './formschema';
+import { createFormSchema, fetchFormList, fetchFormSchema, fetchTemplateList } from './formschema';
 import { fetchFormTrigger, fetchFormTriggerList, fetchSourceFormTrigger, fetchTargetFormTrigger, saveFormTrigger  } from './formTrigger';
 import { createOrUpdateGraphiQl, fetchGraphiQlById,  fetchGraphiQlList } from './graphiQl';
 import { fetchOrganization, fetchOrganizationList } from './organization';
@@ -44,6 +44,7 @@ export default function* rootSaga() {
   yield takeLatest(UserConstants.LOGIN_USER, onLoginUser);
   yield takeLatest(UserConstants.LOGOUT_USER, onLogoutUser);
   yield takeLatest(FormSchemaConstants.FETCH_FORM_SCHEMA_LIST, fetchFormList);
+  yield takeLatest(FormSchemaConstants.FETCH_TEMPLATE_LIST, fetchTemplateList);
   yield takeLatest(FormFieldDataConstants.SAVE_FORM_FIELD_DATA_REQUEST, saveFormFieldData);
   yield takeLatest(FormFieldDataConstants.FETCH_FORM_FIELD_DATA_LIST_REQUEST, fetchFormFieldDataList);
   yield takeLatest(FormFieldDataConstants.FETCH_FORM_FIELD_DATA_REQUEST, fetchFormFieldData);
