@@ -1,9 +1,12 @@
 import * as React from 'react';
+import { Modal, ModalBody, ModalHeader } from 'react-bootstrap';
 import EmailEditor from 'react-email-editor';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import { createOrUpdateEmailTemplate, getEmailTemplate,
-  IEmailTemplate, resetInitialState }
+import {
+  createOrUpdateEmailTemplate, getEmailTemplate,
+  IEmailTemplate, resetInitialState
+}
 from '../../../actions/emailTemplate';
 import { IState } from '../../../reducers';
 import styles from './emailTemplate.css';
@@ -25,11 +28,19 @@ interface IEmailTemplateState {
   name: string;
   description: string;
   type: string;
+  previewTemplate: string;
+  isPreviewTemplate: boolean;
 }
 
 interface IEmailTemplateRef {
   exportHtml: (data: any) => {};
   loadDesign: any;
+}
+
+interface ITemplate {
+  css: string,
+  design: object,
+  html: string
 }
 
 declare global {
@@ -50,7 +61,7 @@ interface IEditorProps {
 class EmailTemplate extends React.Component<IEmailTemplateProps & RouteComponentProps<{ id: string }>, IEmailTemplateState> {
 
   public static getDerivedStateFromProps(props: IEmailTemplateProps, state: IEmailTemplateState) {
-    if (props.template && props.template._id !== state._id ) {
+    if (props.template && props.template._id !== state._id) {
       const { _id, name, description, type } = props.template;
       return {
         _id,
@@ -70,18 +81,20 @@ class EmailTemplate extends React.Component<IEmailTemplateProps & RouteComponent
     this.state = {
       _id: '',
       description: '',
+      isPreviewTemplate: false,
       name: '',
+      previewTemplate: '',
       type: 'email'
     };
     const customTags = [
-      {name: 'First Name', value: '{{first_name}}'},
-      {name: 'Last Name', value: '{{last_name}}'},
-      {name: 'Full Name', value: '{{full_name}}'},
-      {name: 'User Name', value: '{{user_name}}'},
-      {name: 'Company Name', value: '{{company_name}}'},
-      {name: 'Email', value: '{{email}}'}
+      { name: 'First Name', value: '{{first_name}}' },
+      { name: 'Last Name', value: '{{last_name}}' },
+      { name: 'Full Name', value: '{{full_name}}' },
+      { name: 'User Name', value: '{{user_name}}' },
+      { name: 'Company Name', value: '{{company_name}}' },
+      { name: 'Email', value: '{{email}}' }
     ];
-    this.editor  = React.createRef<IEmailTemplateRef>();
+    this.editor = React.createRef<IEmailTemplateRef>();
     this.editorProps = {
       options: {
         customCSS: [`.blockbuilder-preferences .blockbuilder-tools-panel .nav-tabs {
@@ -113,7 +126,7 @@ class EmailTemplate extends React.Component<IEmailTemplateProps & RouteComponent
   }
 
   public render() {
-    const { name, description} = this.state;
+    const { name, description, isPreviewTemplate, previewTemplate } = this.state;
     const { match, template } = this.props;
     return (
       <div className="shadow-container">
@@ -123,7 +136,9 @@ class EmailTemplate extends React.Component<IEmailTemplateProps & RouteComponent
             type="text"
             className="form-control"
             value={name}
-            onChange = { evt => {this.setState({ name: evt.target.value }); }}
+            onChange={(evt: React.ChangeEvent<HTMLInputElement>) =>
+              { this.setState({ name: evt.target.value }); }
+            }
             required={true}
           />
         </div>
@@ -132,14 +147,16 @@ class EmailTemplate extends React.Component<IEmailTemplateProps & RouteComponent
           <textarea
             value={description}
             className="form-control"
-            onChange = { evt => {this.setState({ description: evt.target.value }); }}
+            onChange={(evt: React.ChangeEvent<HTMLTextAreaElement>) =>
+              { this.setState({ description: evt.target.value }); }
+            }
           />
         </div>
         {
-          match && match.params.id  ?
+          match && match.params.id ?
             template && <EmailEditor
               {...this.editorProps}
-              onLoad={this.onLoad }
+              onLoad={this.onLoad}
             /> : <EmailEditor
               {...this.editorProps}
             />
@@ -148,9 +165,29 @@ class EmailTemplate extends React.Component<IEmailTemplateProps & RouteComponent
           <button
             className="mt-20 btn btn-primary"
             type="button"
+            onClick={this.resetEmailTemplate}
+          > Reset </button>
+          <button
+            className="mt-20 ml-10 btn btn-primary"
+            type="button"
+            onClick={this.previewEmailTemplate}
+          > Preview </button>
+          <button
+            className="mt-20 ml-10 btn btn-primary"
+            type="button"
             onClick={this.saveOrUpdateEmailTemplate}
           > Save </button>
         </div>
+        {isPreviewTemplate &&
+          <Modal bsSize="lg" backdrop={false} show={isPreviewTemplate} onHide={this.hidePreviewTemplate} >
+            <ModalHeader closeButton={true}>{template.name}</ModalHeader>
+            <ModalBody>
+              <div >
+                <iframe style={{ minHeight: '75vh' }} width="100%" srcDoc={previewTemplate} />
+              </div>
+            </ModalBody>
+          </Modal>
+        }
       </div>
     );
   }
@@ -166,7 +203,7 @@ class EmailTemplate extends React.Component<IEmailTemplateProps & RouteComponent
 
   private saveOrUpdateEmailTemplate = () => {
     if (this.editor.current) {
-      this.editor.current.exportHtml((template: any) => {
+      this.editor.current.exportHtml((template: ITemplate) => {
         const { _id, name, description } = this.state;
         const data = {
           _id,
@@ -181,6 +218,31 @@ class EmailTemplate extends React.Component<IEmailTemplateProps & RouteComponent
         }
         this.props.createOrUpdateEmailTemplate(data);
       });
+    }
+  }
+
+  private previewEmailTemplate = () => {
+    if (this.editor.current) {
+      this.editor.current.exportHtml((template: ITemplate) => {
+        this.setState({
+          isPreviewTemplate: true,
+          previewTemplate: template.html
+        });
+      });
+    }
+  }
+
+  private hidePreviewTemplate = () => {
+    this.setState({
+      isPreviewTemplate: false,
+      previewTemplate: ''
+    });
+  }
+
+  private resetEmailTemplate = () => {
+    const { template } = this.props;
+    if (template) {
+      window.unlayer.loadDesign(template.body_json.design);
     }
   }
 }

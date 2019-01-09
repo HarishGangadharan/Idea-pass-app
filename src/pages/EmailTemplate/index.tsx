@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { ModalBody, ModalHeader } from 'react-bootstrap';
-import Modal from 'react-bootstrap/lib/Modal';
+import { Modal, ModalBody, ModalHeader } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Can } from '../../ability-context';
@@ -123,7 +122,7 @@ class EmailTemplateList extends React.Component<
             <ModalHeader closeButton={true}>{template.name}</ModalHeader>
             <ModalBody>
               <div >
-                <iframe style={{minHeight: '60vh'}} width="100%" srcDoc={template.body} />
+                <iframe style={{minHeight: '75vh'}} width="100%" srcDoc={template.body} />
               </div>
             </ModalBody>
           </Modal>
