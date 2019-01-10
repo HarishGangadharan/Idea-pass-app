@@ -29,6 +29,7 @@ export interface ITemplateFormSchema {
 export interface IFormSchemaReducer {
   currentFormSchema: IFormSchema;
   list: IFormSchemas;
+  templateList: ITemplateFormSchema;
 }
 
 const listInitialState: IFormSchemas = {

@@ -9,15 +9,17 @@ import { compose } from 'redux';
 import { createFormSchemaRequest, fetchFormSchemaRequest, fetchTemplateList, updateFormSchemaState } from '../../actions/formschema';
 import Builder from '../../components/FormBuilder';
 import { IState } from '../../reducers';
+import { IFormSchema } from '../../reducers/formschema';
 interface IFBuilderStateMap {
   form: any;
   isLoading: boolean;
+  templates: IFormSchema[];
 }
 
 interface IFBuilderDispatchMap {
   createFormSchema: (data: any, schemaId?: string) => void;
   fetchFormSchemaRequest: (schemaId: string) => void;
-  fetchTemplateList: () => void;
+  fetchTemplateList: (callback?: (templates: IFormSchema[]) => void) => void;
   updateFormSchemaState: (data?: any) => void;
 }
 
@@ -27,13 +29,56 @@ interface IFBuilderStateProps {
   name: string;
 }
 
-interface IFBuilderMergedProps extends IFBuilderStateMap, IFBuilderDispatchMap, RouteComponentProps<{ id: string }>{
+interface IFormBuildSchema {
+  icon: string;
+  key: string;
+  title: string;
+  weight: number;
+  schema: {
+    type: 'template',
+    components: any[]
+  }
+}
+interface IBuilderOptions {
+  [key: string]: any;
+  builder: {
+    [key: string]: any;
+    custom: {
+      title: string;
+      weight: number;
+      components: {
+        [key: string]: IFormBuildSchema | boolean;
+      }
+    }
+  }
+}
+
+interface IFBuilderMergedProps extends IFBuilderStateMap, IFBuilderDispatchMap, RouteComponentProps<{ id: string }> {
 
 }
 
 class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStateProps> {
   public formTypes: Array<{ id: string, name: string }>;
   public templateTypes: Array<{ id: string, name: string }>;
+  public formBuildSchema: IFormBuildSchema = {
+    icon: 'fa fa-folder',
+    key: '',
+    schema: {
+      components: [],
+      type: 'template'
+    },
+    title: '',
+    weight: 0
+  };
+  public builderOptions: IBuilderOptions = {
+    builder: {
+      custom: {
+        components: {},
+        title: 'Form Templates',
+        weight: 40
+      }
+    }
+  };
   constructor(props: IFBuilderMergedProps) {
     super(props);
     this.state = {
@@ -53,7 +98,22 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
     if (this.props.match && this.props.match.params.id) {
       this.props.fetchFormSchemaRequest(this.props.match.params.id);
     }
-    this.props.fetchTemplateList();
+    const renderTemplateList = (templates: IFormSchema[]) => {
+      templates.forEach((template: any, index) => {
+        const templateSchema: any = {...this.formBuildSchema};
+        templateSchema.title = template.name;
+        templateSchema.key = template.name_singular;
+        templateSchema.weight = index;
+        const formMeta = templateSchema.schema;
+        formMeta.label = template.name;
+        formMeta.ref = template.name;
+        formMeta.key = template.name_singular;
+        formMeta.components = [...JSON.parse(template.form_data).components];
+        templateSchema.schema = {...formMeta};
+        this.builderOptions.builder.custom.components[template.name_singular] = {...templateSchema};
+      });
+    };
+    this.props.fetchTemplateList(renderTemplateList);
   }
 
   public componentWillUnmount() {
@@ -100,28 +160,6 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
   public render() {
     const { isLoading, form } = this.props;
     const { formTypes, templateTypes } = this;
-    const builderOptions = {
-      editForm: {
-        textfield: [
-          {
-            components: [
-              {
-                'input': true,
-                'key': 'isAuditTrail',
-                'label': 'Audit Trail',
-                'tooltip': 'Check whether audit trail is enabled',
-                'type': 'checkbox',
-                'weight': 0
-              }
-            ],
-            ignore: false,
-            key: 'custom',
-            label: 'Custom',
-            weight: 60
-          }
-        ]
-      }
-    };
     return (
       <div className="shadow-container">
         {!isLoading &&
@@ -155,7 +193,7 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
             </div>
             <Builder
               formBuilderSchema={form.form_data}
-              builderOptions={builderOptions}
+              builderOptions={this.builderOptions}
               renderSchema={this.renderSchema}
               renderComponent={this.renderComponent}
             />
@@ -180,9 +218,10 @@ const mapDispatchToProps = ({
 
 const mapStateToProps = (state: IState) => ({
   form: state.formSchema.currentFormSchema,
-  isLoading: state.formSchema.currentFormSchema.loading
+  isLoading: state.formSchema.currentFormSchema.loading,
+  templates: state.formSchema.templateList.data
 });
 
-export default compose (connect<IFBuilderStateMap, IFBuilderDispatchMap, IFBuilderMergedProps, IState>
+export default compose(connect<IFBuilderStateMap, IFBuilderDispatchMap, IFBuilderMergedProps, IState>
   (mapStateToProps, mapDispatchToProps),
   withLocalize)(FormBuilder);

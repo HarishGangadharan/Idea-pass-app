@@ -3,7 +3,10 @@ import Components from 'formiojs/components/Components';
 import * as React from 'react';
 Components.setComponents(AllComponents);
 import FormBuilder from 'formiojs/FormBuilder';
+import TemplateComponent from './customComponents/template/template';
+declare const Formio: any;
 
+Formio.registerComponent('template', TemplateComponent);
 interface IFormBuilder {
   form: {
     display: string,
@@ -37,13 +40,10 @@ export default class extends React.Component<IFormBuilder> {
   }
 
   public componentDidUpdate = (prevProps: IFormBuilder) => {
-    const {options, form} = this.props;
-    if (form !== prevProps.form) {
-      this.initializeBuilder();
+    if (this.builder !== undefined) {
+      this.builder.instance.destroy(true);
     }
-    if (options !== prevProps.options) {
-      this.initializeBuilder();
-    }
+    this.initializeBuilder();
   }
 
   public initializeBuilder = () => {

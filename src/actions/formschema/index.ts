@@ -56,7 +56,8 @@ export const fetchFormSchemaListFailure = (error: any) => ({
   type: FormSchemaConstants.FETCH_FORM_SCHEMA_LIST_FAILURE
 });
 
-export const fetchTemplateList = () => ({
+export const fetchTemplateList = (callback?: (templates: IFormSchema[]) => void) => ({
+  callback,
   type: FormSchemaConstants.FETCH_TEMPLATE_LIST
 });
 

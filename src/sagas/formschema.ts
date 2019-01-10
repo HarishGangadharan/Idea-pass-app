@@ -11,6 +11,7 @@ import {
   fetchTemplateListFailure,
   fetchTemplateListSuccess
 } from '../actions/formschema';
+import { IActionProps } from '../reducers';
 import FormSchemaService from '../services/formschema';
 
 function* createFormSchema(action: any) {
@@ -50,10 +51,14 @@ function* fetchFormList(action: any) {
   }
 }
 
-function* fetchTemplateList() {
+function* fetchTemplateList(action: IActionProps) {
   try {
-    const templateList = yield call(FormSchemaService.fetchTemplateList);
-    yield put(fetchTemplateListSuccess(templateList.data));
+    const { callback } = action;
+    const response = yield call(FormSchemaService.fetchTemplateList);
+    if (callback) {
+      callback(response.data.data);
+    }
+    yield put(fetchTemplateListSuccess(response.data));
   } catch (error) {
     yield put(fetchTemplateListFailure(error));
   }

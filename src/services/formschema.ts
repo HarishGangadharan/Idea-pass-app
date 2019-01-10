@@ -14,7 +14,7 @@ class FormSchemaService {
 
   public static fetchTemplateList = () => axios({
     method: 'get',
-    url: '/form-meta-ui?is_template_form=true'
+    url: '/form-meta-ui?template_type=template_form&$select[]=form_data'
   })
 
   public static getAllFormSchema = (limit: number, currentPage: number, sortField: string, sortOrder: number, filters?: string) => {

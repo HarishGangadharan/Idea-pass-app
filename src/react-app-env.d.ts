@@ -23,6 +23,7 @@ declare module "request-filter" {
 }
 declare module '@nivo/line';
 declare module 'formiojs/*';
+declare module 'core-js/*';
 declare module '*.svg'
 declare module '*.png'
 declare module '*.jpg'
