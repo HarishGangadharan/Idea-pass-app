@@ -70,11 +70,11 @@
   .shadow-container {
     @include shadow-container;
     .title {
-      h4 {
-        margin: 0;
+      padding: 0 15px;
+      h2 {
+        margin: 0 0 20px;
         padding-bottom: 10px;
         border-bottom: 1px solid $border-color;
-        margin-bottom: 20px;
       }
     }
   }

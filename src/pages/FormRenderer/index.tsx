@@ -10,6 +10,7 @@ import {
 } from '../../actions/formfielddata';
 import { fetchFormSchemaRequest, updateFormSchemaState } from '../../actions/formschema';
 import Renderer from '../../components/FormRender';
+import '../../global/FormBuilder/formBuilder.css';
 import { IState } from '../../reducers';
 import { IFormSchema } from '../../reducers/formschema';
 
@@ -91,7 +92,7 @@ class FormRenderer extends React.Component<IMergedProps, { formId: string }> {
           <Fragment>
             {formRendererSchema.form_data && (
               <div className="title">
-                <h4>{formRendererSchema.name}</h4>
+                <h2>{formRendererSchema.name}</h2>
               </div>
             )}
             <Renderer
