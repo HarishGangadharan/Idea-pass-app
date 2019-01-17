@@ -1,4 +1,5 @@
 import FormFieldDataConstants from './constants';
+import { IFormFieldData } from '../../reducers/formfielddata'
 
 export const fetchFormFieldDataRequest = (formName: string, formDataId?: string) => ({
   formDataId,
@@ -6,12 +7,12 @@ export const fetchFormFieldDataRequest = (formName: string, formDataId?: string)
   type: FormFieldDataConstants.FETCH_FORM_FIELD_DATA_REQUEST
 });
 
-export const fetchFormFieldDataSuccess = (data: any) => ({
+export const fetchFormFieldDataSuccess = (data: IFormFieldData) => ({
   data,
   type: FormFieldDataConstants.FETCH_FORM_FIELD_DATA_SUCCESS
 });
 
-export const fetchFormFieldDataFailure = (error: any) => ({
+export const fetchFormFieldDataFailure = (error: Object) => ({
   error,
   type: FormFieldDataConstants.FETCH_FORM_FIELD_DATA_FAILURE
 });
@@ -23,12 +24,12 @@ export const fetchFormFieldDataListRequest = (formName: string, limit: number, c
   type: FormFieldDataConstants.FETCH_FORM_FIELD_DATA_LIST_REQUEST
 });
 
-export const fetchFormFieldDataListSuccess = (data: any) => ({
+export const fetchFormFieldDataListSuccess = (data: IFormFieldData[]) => ({
   data,
   type: FormFieldDataConstants.FETCH_FORM_FIELD_DATA_LIST_SUCCESS
 });
 
-export const fetchFormFieldDataListFailure = (error: any) => ({
+export const fetchFormFieldDataListFailure = (error: object) => ({
   error,
   type: FormFieldDataConstants.FETCH_FORM_FIELD_DATA_LIST_FAILURE
 });
@@ -41,7 +42,7 @@ export const saveFormFieldDataRequest = (data: any, formName: string, formId?: s
   type: FormFieldDataConstants.SAVE_FORM_FIELD_DATA_REQUEST
 });
 
-export const saveFormFieldDataSuccess = (data: any) => ({
+export const saveFormFieldDataSuccess = (data: IFormFieldData) => ({
   data,
   type: FormFieldDataConstants.SAVE_FORM_FIELD_DATA_SUCCESS
 });

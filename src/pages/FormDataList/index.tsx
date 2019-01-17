@@ -5,6 +5,7 @@ import { fetchFormFieldDataListRequest } from '../../actions/formfielddata';
 import Table, { ITableUpdateProps } from '../../components/Table';
 import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
+import CButton from '../../components/Button/CButton';
 
 interface IFormSchemasProps extends RouteComponentProps {
   data: object[],
@@ -57,7 +58,11 @@ class FormDataList extends React.Component<IFormSchemasProps, IFormSchemasState>
     const { currentPage, length } = this.state;
     return (
       <div className="shadow-container">
-        <button className="btn btn-primary pull-right" onClick={() => this.renderFormSchema()}>Add Data</button>
+        <CButton
+          className="btn btn-primary pull-right"
+          onClick={() => this.renderFormSchema()}
+          name="Add Data"
+        />
         <Table
           keyField="formfielddata"
           data={data}

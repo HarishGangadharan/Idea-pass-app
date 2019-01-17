@@ -9,7 +9,7 @@ import Table, { ITableUpdateProps } from '../../components/Table';
 import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
 import { IRequestFilter } from 'request-filter';
-
+import CButton from '../../components/Button/CButton';
 interface IMapStateToProps {
   data: ITemplateList[];
   loading: boolean;
@@ -91,12 +91,11 @@ class EmailTemplateList extends React.Component<
       <div className="shadow-container">
         <Can I="read" a="admin">
           <div className="form-group">
-            <button
+            <CButton
               className="btn btn-primary pull-right"
               onClick={() => this.createEmailTemplate()}
-            >
-              Create Template
-            </button>
+              name="Create Template"
+            />
           </div>
         </Can>
         <Table

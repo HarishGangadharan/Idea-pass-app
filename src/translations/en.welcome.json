@@ -22,7 +22,8 @@
     "formType": "Form Type",
     "templateType": "Template Type",
     "createForm": "Create Form",
-    "updateForm": "Update Form"
+    "updateForm": "Update Form",
+    "cancel": "Cancel"
   },
 
   "validations" : {

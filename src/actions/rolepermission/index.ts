@@ -7,7 +7,7 @@ export const createRolePermissionRequest = (data: IRolePermissionReducer, update
   updatedRolePermissions
 });
 
-export const createRolePermissionSuccess = (data: any) => ({
+export const createRolePermissionSuccess = (data: IPermission) => ({
   payload: data,
   type: Constants.CREATE_ROLE_PERMISSION_SUCCESS
 });
@@ -29,7 +29,7 @@ export const fetchRolePermissionRequest = (tenantId: string, modelName: string) 
   type: Constants.FETCH_ROLE_PERMISSION_REQUEST
 });
 
-export const fetchRolePermissionSuccess = (data: any) => ({
+export const fetchRolePermissionSuccess = (data: IPermission) => ({
   payload: data,
   type: Constants.FETCH_ROLE_PERMISSION_SUCCESS
 });

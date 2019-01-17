@@ -10,6 +10,7 @@ import {
 from '../../../actions/emailTemplate';
 import { IState } from '../../../reducers';
 import styles from './emailTemplate.css';
+import CButton from '../../../components/Button/CButton';
 
 interface IMapStateToProps {
   loading: boolean;
@@ -162,21 +163,24 @@ class EmailTemplate extends React.Component<IEmailTemplateProps & RouteComponent
             />
         }
         <div className="row text-right mb-20">
-          <button
+          <CButton
             className="mt-20 btn btn-primary"
             type="button"
             onClick={this.resetEmailTemplate}
-          > Reset </button>
-          <button
-            className="mt-20 ml-10 btn btn-primary"
+            name="Reset"
+          />
+          <CButton
+            className="mt-20 ml-3 btn btn-primary"
             type="button"
             onClick={this.previewEmailTemplate}
-          > Preview </button>
-          <button
-            className="mt-20 ml-10 btn btn-primary"
+            name="Preview"
+          />
+          <CButton
+            className="mt-20 ml-3 btn btn-primary"
             type="button"
             onClick={this.saveOrUpdateEmailTemplate}
-          > Save </button>
+            name="Save"
+          />
         </div>
         {isPreviewTemplate &&
           <Modal bsSize="lg" backdrop={false} show={isPreviewTemplate} onHide={this.hidePreviewTemplate} >

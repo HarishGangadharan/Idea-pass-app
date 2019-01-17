@@ -5,6 +5,7 @@ import { fetchFormTriggerListRequest } from '../../actions/formTrigger';
 import Table, { ITableUpdateProps } from '../../components/Table';
 import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
+import CButton from '../../components/Button/CButton';
 
 interface IFormSchemasProps {
   data: object[],
@@ -59,7 +60,11 @@ class FormTriggerList extends React.Component<IFormSchemasProps & RouteComponent
     const { currentPage, length } = this.state;
     return (
       <div className="shadow-container">
-        <button className="btn btn-primary pull-right" onClick={() => this.addFormTrigger()}>Add Trigger</button>
+        <CButton
+          className="btn btn-primary pull-right"
+          onClick={() => this.addFormTrigger()}
+          name="Add Trigger"
+        />
         <Table
           keyField="formtrigger"
           data={data}

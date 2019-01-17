@@ -7,6 +7,7 @@ import { BaseIcon } from '../../components/index';
 import Table, { ITableUpdateProps } from '../../components/Table';
 import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
+import CButton from '../../components/Button/CButton';
 
 interface IFormSchemasProps {
   data?: object[];
@@ -90,12 +91,11 @@ class FormSchemaList extends React.Component<
       <div className="shadow-container">
         <Can I="read" a="admin">
           <div className="form-group">
-            <button
+            <CButton
               className="btn btn-primary pull-right"
               onClick={() => this.builderFormSchema()}
-            >
-              Create New Schema
-            </button>
+              name="Create New Schema"
+            />
           </div>
         </Can>
         <Table

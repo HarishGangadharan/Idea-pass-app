@@ -1,6 +1,7 @@
 import { ResponsiveLine } from '@nivo/line';
 import * as React from 'react';
 
+import CButton from '../Button/CButton';
 import './index.css';
 
 /**
@@ -61,7 +62,10 @@ class ResponsiveLineChart extends React.Component<{}, any> {
             <h4 className="chartHead">Ticket Trends</h4>
           </div>
           <div className="col-md-6 text-right p-0">
-            <button className="btn btn-primary">View full status</button>
+            <CButton
+              className="btn btn-primary"
+              name="View full status"
+            />
           </div>
         </div>
         <div className="lineChart" key="1">

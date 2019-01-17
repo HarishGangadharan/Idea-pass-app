@@ -1,4 +1,5 @@
 import actions from './constants';
+import { IDataState } from '../../reducers/dynamicTable';
 
 export const getTableMeta = (callback: any) => ({
   callback,
@@ -27,7 +28,7 @@ export const getTableData = (resource: string, limit: number, currentPage: numbe
   type: actions.GET_TABLE_DATA
 });
 
-export const getTableDataSuccess = (response: object, retainData: boolean = false) => ({
+export const getTableDataSuccess = (response: IDataState, retainData: boolean = false) => ({
   response,
   retainData,
   type: actions.GET_TABLE_DATA_SUCCESS

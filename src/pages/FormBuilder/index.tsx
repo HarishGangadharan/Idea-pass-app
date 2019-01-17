@@ -27,6 +27,7 @@ interface IFBuilderStateProps {
   formData: any;
   formSchemaId: string;
   name: string;
+  isFormNameEmpty: boolean;
 }
 
 interface IFormBuildSchema {
@@ -52,7 +53,6 @@ interface IBuilderOptions {
     }
   }
 }
-
 interface IFBuilderMergedProps extends IFBuilderStateMap, IFBuilderDispatchMap, RouteComponentProps<{ id: string }> {
 
 }
@@ -84,7 +84,8 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
     this.state = {
       formData: {},
       formSchemaId: this.props.match ? this.props.match.params.id : '',
-      name: ''
+      name: '',
+      isFormNameEmpty: false
     };
     this.formTypes = [{ id: 'data', name: 'Data' }, { id: 'ticket', name: 'Ticket' }];
     this.templateTypes = [
@@ -127,15 +128,24 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
 
   public saveFormSchema = (): void => {
     const { form } = this.props;
+    if (form && form.name === '') {
+      this.setState({
+        isFormNameEmpty: true
+      });
+    }
     if (!form._id) {
       delete form._id;
     }
+    form.template_type = 'default';
     // name is a required field
     if (form && form.name) {
       this.props.createFormSchema(form, form._id);
     }
   }
 
+  public cancelUpdateSchema = (): void => {
+    this.props.history.goBack();
+  }
   public renderSchema = (schema: any) => {
     //
   }
@@ -164,7 +174,7 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
       <div className="shadow-container">
         {!isLoading &&
           <React.Fragment>
-            <div className="row mb-10">
+            <div className="row mb-3">
               <div className="col-md-6">
                 <label className="control-label">
                   <Translate id="label.formName" />
@@ -177,6 +187,9 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
                   onChange={this.setFormNameAndType}
                   required={true}
                 />
+                {this.state.isFormNameEmpty &&
+                  <span className="error-text">Form Name is mandatory</span>
+                }
               </div>
               <div className="col-md-3">
                 <label className="control-label"><Translate id="label.formType" /></label> <span className="error-text">*</span>
@@ -199,7 +212,10 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
             />
           </React.Fragment>
         }
-        <div className="row text-right">
+        <div className="row text-right mt-3">
+          <button className="btn btn-primary mr-3" onClick={() => this.cancelUpdateSchema()} >
+            <Translate id="label.cancel" />
+          </button>
           <button className="btn btn-primary" onClick={() => this.saveFormSchema()} >
             <Translate id={form._id ? 'label.updateForm' : 'label.createForm'} />
           </button>

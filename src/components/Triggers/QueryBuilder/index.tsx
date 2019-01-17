@@ -191,8 +191,8 @@ class QueryBuilderContainer extends React.Component<IQueryBuilderProps> {
             fields: '',
             operators: '',
             queryBuilder: '',
-            removeGroup: 'pl-10',
-            removeRule: 'pl-10',
+            removeGroup: 'pl-3',
+            removeRule: 'pl-3',
             rule: 'rule',
             ruleGroup: 'rule-group',
             value: ''

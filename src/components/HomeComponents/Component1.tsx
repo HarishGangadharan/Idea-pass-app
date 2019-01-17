@@ -12,12 +12,12 @@ class Component1 extends React.Component<{}, any> {
     // You can render any custom fallback UI
     return (
       <div className="shadow-container">
-        <div className="row pt-10">
+        <div className="row pt-3">
           <div className="col-md-4 text-center">
             <img src={img} />
           </div>
           <div className="col-md-8">
-            <h3 className="m-0 pb-10">Anniversary celebration 2018</h3>
+            <h3 className="m-0 pb-3">Anniversary celebration 2018</h3>
             <p>
               Being the savage's bowsman, that is, the person who pulled the
               bow-oar in his boat (the second one from forward),

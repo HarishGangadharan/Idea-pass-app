@@ -1,4 +1,5 @@
 import Constants from './constants';
+import { IOrganization } from '../../reducers/organization';
 
 export const createOrganizationRequest = (data: any, organizationId?: string) => ({
   organizationId,
@@ -6,7 +7,7 @@ export const createOrganizationRequest = (data: any, organizationId?: string) =>
   type: Constants.CREATE_ORGANIZATION_REQUEST
 });
 
-export const createOrganizationSuccess = (data: any) => ({
+export const createOrganizationSuccess = (data: IOrganization) => ({
   payload: data,
   type: Constants.CREATE_ORGANIZATION_SUCCESS
 });
@@ -22,7 +23,7 @@ export const fetchOrganizationRequest = (organizationId: string, callback?: (dat
   type: Constants.FETCH_ORGANIZATION_REQUEST
 });
 
-export const fetchOrganizationSuccess = (data: any) => ({
+export const fetchOrganizationSuccess = (data: IOrganization) => ({
   payload: data,
   type: Constants.FETCH_ORGANIZATION_SUCCESS
 });
@@ -38,7 +39,7 @@ export const fetchOrganizationListRequest = (limit: number, currentPage: number)
   type: Constants.FETCH_ORGANIZATION_LIST_REQUEST
 });
 
-export const fetchOrganizationListSuccess = (data: any) => ({
+export const fetchOrganizationListSuccess = (data: IOrganization[]) => ({
   payload: data,
   type: Constants.FETCH_ORGANIZATION_LIST_SUCCESS
 });

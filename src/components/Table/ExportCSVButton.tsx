@@ -1,4 +1,5 @@
 import * as React from 'react';
+import CButton from '../Button/CButton';
 
 interface IExportButtonProps {
   onExport?: any,
@@ -10,7 +11,11 @@ interface IExportButtonProps {
 export default class ExportCSVButton extends React.Component<IExportButtonProps, object> {
   public render() {
     return (
-      <button className="btn btn-primary" onClick={this.handleClick}>{this.props.children}</button>
+      <CButton
+        className="btn btn-primary"
+        name={this.props.children}
+        onClick={this.handleClick}
+      />
     );
   }
 

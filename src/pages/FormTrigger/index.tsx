@@ -11,6 +11,7 @@ import { IState } from '../../reducers';
 import { IFormSchema } from '../../reducers/formschema';
 import { ITrigger, ITriggerAction } from '../../reducers/formTrigger';
 import './formTrigger.css';
+import CButton from '../../components/Button/CButton';
 
 interface ITriggerDispatchMap {
   fetchFormSchemaRequest: (schemaId: string, callBack?: (form: IFormSchema) => void) => void;
@@ -304,7 +305,11 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
                   <div className="panel-heading">
                     <div className="row">
                       Action - {actionIndex + 1}
-                      <button className="btn btn-primary pull-right" onClick={this.saveTriggerAction}>Add</button>
+                      <CButton
+                        className="btn btn-primary pull-right"
+                        onClick={this.saveTriggerAction}
+                        name="Add"
+                      />
                     </div>
                   </div>
                   <div className="panel-body">
@@ -366,7 +371,7 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
                 </div>}
             </div>
           </div>
-          <div className="footer-fab-right mb-10 mr-10">
+          <div className="footer-fab-right mb-3 mr-3">
             <div className="form-group">
               <button className="btn btn-primary btn-round" onClick={() => this.saveFormTrigger()}>
                 <BaseIcon
@@ -397,7 +402,7 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
                     <BaseIcon
                       name="Edit"
                       display="inline-block"
-                      classname="mr-10"
+                      classname="mr-3"
                       onClick={() => this.selectAction(savedAction, index)}
                     />
                     <BaseIcon

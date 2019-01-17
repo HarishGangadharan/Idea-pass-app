@@ -1,4 +1,4 @@
-import { IFormSchema } from '../../reducers/formschema';
+import { IFormSchema, IFormSchemas } from '../../reducers/formschema';
 import FormSchemaConstants from './constants';
 
 export const addFormSchema = (data: any) => ({
@@ -6,18 +6,18 @@ export const addFormSchema = (data: any) => ({
   type: FormSchemaConstants.ADD_FORM_SCHEMA
 });
 
-export const createFormSchemaRequest = (data: any, schemaId?: string) => ({
+export const createFormSchemaRequest = (data: IFormSchema, schemaId?: string) => ({
   payload: data,
   schemaId,
   type: FormSchemaConstants.CREATE_FORM_SCHEMA_REQUEST
 });
 
-export const createFormSchemaSuccess = (data: any) => ({
+export const createFormSchemaSuccess = (data: IFormSchema) => ({
   payload: data,
   type: FormSchemaConstants.CREATE_FORM_SCHEMA_SUCCESS
 });
 
-export const createFormSchemaFailure = (error: any) => ({
+export const createFormSchemaFailure = (error: Object) => ({
   error,
   type: FormSchemaConstants.CREATE_FORM_SCHEMA_FAILURE
 });
@@ -28,12 +28,12 @@ export const fetchFormSchemaRequest = (schemaId: string, callback?: (form: IForm
   type: FormSchemaConstants.FETCH_FORM_SCHEMA_REQUEST
 });
 
-export const fetchFormSchemaSuccess = (data: any) => ({
+export const fetchFormSchemaSuccess = (data: IFormSchema) => ({
   payload: data,
   type: FormSchemaConstants.FETCH_FORM_SCHEMA_SUCCESS
 });
 
-export const fetchFormSchemaFailure = (error: any) => ({
+export const fetchFormSchemaFailure = (error: Object) => ({
   error,
   type: FormSchemaConstants.FETCH_FORM_SCHEMA_FAILURE
 });
@@ -46,12 +46,12 @@ export const fetchFormSchemaList = (limit?: number, currentPage?: number, sortFi
   type: FormSchemaConstants.FETCH_FORM_SCHEMA_LIST
 });
 
-export const fetchFormSchemaListSuccess = (data: any) => ({
+export const fetchFormSchemaListSuccess = (data: IFormSchemas) => ({
   payload: data,
   type: FormSchemaConstants.FETCH_FORM_SCHEMA_LIST_SUCCESS
 });
 
-export const fetchFormSchemaListFailure = (error: any) => ({
+export const fetchFormSchemaListFailure = (error: Object) => ({
   error,
   type: FormSchemaConstants.FETCH_FORM_SCHEMA_LIST_FAILURE
 });
@@ -71,7 +71,7 @@ export const fetchTemplateListFailure = (error: any) => ({
   type: FormSchemaConstants.FETCH_TEMPLATE_LIST_FAILURE
 });
 
-export const updateFormSchemaState = (data?: any) => ({
+export const updateFormSchemaState = (data?: IFormSchema) => ({
   data,
   type: FormSchemaConstants.UPDATE_FORM_SCHEMA_STATE
 });

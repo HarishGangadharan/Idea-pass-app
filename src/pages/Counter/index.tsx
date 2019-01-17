@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { decrement, decrementAsync, increment, incrementAsync } from '../../actions/counter';
 import { IState } from '../../reducers';
+import CButton from '../../components/Button/CButton';
 
 interface IStateProps {
   count: number,
@@ -20,23 +21,39 @@ const Counter = (props: RouteComponentProps<any> & IStateProps & IDispatchProps)
   <div className="container justify-content-center align-items-center">
     <div className="row justify-content-around align-items-center">
       <div className="col-sm-4 col-lg-2 align-items-center justify-content-between">
-        <button className="btn btn-outline-primary mb-2" aria-label="Sub" onClick={props.decrement} disabled={props.isLoading}>
-          Decrement
-        </button>
-        <button className="btn btn-outline-primary" aria-label="Sub" onClick={props.decrementAsync} disabled={props.isLoading}>
-          Decrement Async
-        </button>
+        <CButton
+          className="btn btn-outline-primary mb-2"
+          name="Decrement"
+          onClick={props.decrement}
+          disabled={props.isLoading}
+          aria_label="Sub"
+        />
+        <CButton
+          className="btn btn-outline-primary"
+          name="Decrement Async"
+          onClick={props.decrementAsync}
+          disabled={props.isLoading}
+          aria_label="Sub"
+        />
       </div>
       <div className="col-sm-4 col-lg-2 align-items-center justify-content-between">
         <div>Counter: {props.count}</div>
       </div>
       <div className="col-sm-4 col-lg-2 align-items-center justify-content-between">
-        <button className="btn btn-outline-primary mb-2" aria-label="Add" onClick={props.increment} disabled={props.isLoading}>
-          Increment
-        </button>
-        <button className="btn btn-outline-primary" aria-label="Add" onClick={props.incrementAsync} disabled={props.isLoading}>
-          Increment Async
-        </button>
+        <CButton
+          className="btn btn-outline-primary mb-2"
+          name="Increment"
+          onClick={props.increment}
+          disabled={props.isLoading}
+          aria_label="Add"
+        />
+        <CButton
+          className="btn btn-outline-primary"
+          name="Increment Async"
+          onClick={props.incrementAsync}
+          disabled={props.isLoading}
+          aria_label="Add"
+        />
       </div>
     </div>
   </div>

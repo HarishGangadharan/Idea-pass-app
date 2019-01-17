@@ -1,4 +1,5 @@
 import Constants from './constants';
+import { IRole } from '../../reducers/role';
 
 export const createRoleRequest = (data: any, roleId?: string) => ({
   payload: data,
@@ -6,7 +7,7 @@ export const createRoleRequest = (data: any, roleId?: string) => ({
   type: Constants.CREATE_ROLE_REQUEST
 });
 
-export const createRoleSuccess = (data: any) => ({
+export const createRoleSuccess = (data: IRole) => ({
   payload: data,
   type: Constants.CREATE_ROLE_SUCCESS
 });
@@ -22,7 +23,7 @@ export const fetchRoleRequest = (roleId: string, callback?: (data: any) => void)
   type: Constants.FETCH_ROLE_REQUEST
 });
 
-export const fetchRoleSuccess = (data: any) => ({
+export const fetchRoleSuccess = (data: IRole) => ({
   payload: data,
   type: Constants.FETCH_ROLE_SUCCESS
 });
@@ -39,7 +40,7 @@ export const fetchRoleListRequest = (tenantId: string, limit: number, currentPag
   type: Constants.FETCH_ROLE_LIST_REQUEST
 });
 
-export const fetchRoleListSuccess = (data: any) => ({
+export const fetchRoleListSuccess = (data: IRole[]) => ({
   payload: data,
   type: Constants.FETCH_ROLE_LIST_SUCCESS
 });

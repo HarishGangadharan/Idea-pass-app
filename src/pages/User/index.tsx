@@ -7,10 +7,10 @@ import Table, { ITableUpdateProps } from '../../components/Table';
 import Column from '../../components/Table/Column';
 import { AppProperties } from '../../constants/application.properties';
 import { IState } from '../../reducers/index';
-
+import CButton from '../../components/Button/CButton';
 
 interface IUserProps extends IStateProps, IDispatchProps{
-
+  history: any
 }
 
 interface IUserState {
@@ -47,12 +47,11 @@ class Users extends React.Component<IUserProps, IUserState> {
       <div className="shadow-container">
         <Can I="read" a="admin">
           <div className="form-group">
-            <button
+            <CButton
               className="btn btn-primary pull-right"
               onClick={() => this.createNewUser()}
-            >
-              Create New User
-            </button>
+              name="Create New User"
+            />
           </div>
         </Can>
         <Table
@@ -74,6 +73,7 @@ class Users extends React.Component<IUserProps, IUserState> {
 
   private createNewUser = () : void => {
     // tslint:disable-next-line:no-console
+    this.props.history.push('/appforms/user');
     console.log('Called');
   }
 }

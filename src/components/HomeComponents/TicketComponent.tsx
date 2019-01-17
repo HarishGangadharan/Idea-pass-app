@@ -2,6 +2,7 @@ import * as React from 'react';
 import boy from '../../assets/img/boy.svg';
 import girl from '../../assets/img/girl.svg';
 import './index.css';
+import CButton from '../Button/CButton';
 
 class Ticket extends React.Component<{}, any> {
   constructor(props: any) {
@@ -53,7 +54,10 @@ class Ticket extends React.Component<{}, any> {
             <span>27 unresolved isssues</span>
           </div>
           <div>
-            <button className="btn btn-md btn-primary">See All</button>
+            <CButton
+              className="btn btn-md btn-primary"
+              name="See All"
+            />
           </div>
         </div>
         <div className="row ticket-content">

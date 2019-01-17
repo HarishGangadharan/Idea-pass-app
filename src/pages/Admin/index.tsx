@@ -11,6 +11,7 @@ import { fetchOrganizationListRequest, fetchOrganizationRequest } from '../../ac
 import { fetchRoleListRequest } from '../../actions/role';
 import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
+import CButton from '../../components/Button/CButton';
 
 import { createRolePermissionRequest, fetchRolePermissionRequest, updateRolePermissionState } from '../../actions/rolepermission';
 import Table, { ITableState } from '../../components/Table';
@@ -141,7 +142,12 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
           </div>
         </div>
         <div className="row">
-          <button className="btn btn-primary pull-right" disabled={saveDisabled} onClick={() => this.saveRolePermission()}>Save</button>
+          <CButton
+            className="btn btn-primary pull-right"
+            disabled={saveDisabled}
+            onClick={() => this.saveRolePermission()}
+            name="Save"
+          />
         </div>
         <Table
           keyField="name"

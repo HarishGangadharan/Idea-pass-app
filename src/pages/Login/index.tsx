@@ -70,7 +70,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                     <span className="error-text"><Translate id="validations.email" /></span>
                   }
                 </div>
-                <label className="mt-10" htmlFor="inputPassword"><Translate id="label.password" /></label>
+                <label className="mt-3" htmlFor="inputPassword"><Translate id="label.password" /></label>
                 <div className="form-label-group">
                   <input
                     value={password}

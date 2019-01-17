@@ -13,6 +13,7 @@ import Renderer from '../../components/FormRender';
 import '../../global/FormBuilder/formBuilder.css';
 import { IState } from '../../reducers';
 import { IFormSchema } from '../../reducers/formschema';
+import '../../global/FormBuilder/formBuilder.css';
 
 interface IRendererDispatchMap {
   fetchFormSchemaRequest: (

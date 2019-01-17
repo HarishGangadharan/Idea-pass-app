@@ -6,12 +6,12 @@ export const fetchConfigRequest = (configList: string, tenantId: string) => ({
   type: Constants.FETCH_CONFIG_REQUEST
 });
 
-export const fetchConfigSuccess = (data: any) => ({
+export const fetchConfigSuccess = (data: Object) => ({
   payload: data,
   type: Constants.FETCH_CONFIG_SUCCESS
 });
 
-export const fetchConfigFailure = (error: any) => ({
+export const fetchConfigFailure = (error: Object) => ({
   error,
   type: Constants.FETCH_CONFIG_FAILURE
 });

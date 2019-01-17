@@ -5,7 +5,7 @@ import { createOrUpdateGraphiQl, fetchGraphiQlById } from '../../actions/graphiQ
 import CustomGraphiql from '../../components/GraphiQl';
 import { AppProperties } from '../../constants/application.properties';
 import { IState } from '../../reducers';
-
+import CButton from '../../components/Button/CButton';
 interface IGraphiQlProps {
   createOrUpdateGraphiQl: (data: any) => void;
   fetchGraphiQlById: (id: any) => void;
@@ -138,9 +138,12 @@ class GraphiQl extends React.Component<IGraphiQlProps & RouteComponentProps<{ id
           </div>}
         </div>
         <div className="row text-right">
-          <button className="btn btn-primary" disabled={name === '' || queryError} onClick={this.handleSaveOrUpdate}>
-            submit
-          </button>
+          <CButton
+            className="btn btn-primary"
+            disabled={name === '' || queryError}
+            onClick={this.handleSaveOrUpdate}
+            name="submit"
+          />
           </div>
       </div>
     );
