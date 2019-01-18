@@ -6,6 +6,7 @@ import Table, { ITableUpdateProps } from '../../components/Table';
 import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
 import CButton from '../../components/Button/CButton';
+import { BaseIcon } from '../../components/index';
 
 interface IFormSchemasProps extends RouteComponentProps {
   data: object[],
@@ -30,7 +31,16 @@ class FormDataList extends React.Component<IFormSchemasProps, IFormSchemasState>
         (new Column()).withKey('createdAt').withLabel('Created At'),
         (new Column()).withKey('action').withLabel('Actions').withCellFormatter((cell: any, row: any) => (
           <div>
-            <i className="glyphicon glyphicon-edit cursor-pointer" onClick={() => this.editFormData(row._id)} />
+            <BaseIcon
+              display="inline"
+              name="Eye"
+              onClick={() => this.editFormData(row._id, 'view')}
+            />
+            <BaseIcon
+              display="inline"
+              name="Edit"
+              onClick={() => this.editFormData(row._id, 'edit')}
+            />
           </div>
         ))
       ],
@@ -39,14 +49,14 @@ class FormDataList extends React.Component<IFormSchemasProps, IFormSchemasState>
     };
   }
 
-  public renderFormSchema = () => {
+  public renderFormSchema = (pageType: string) => {
     const { formId } = this.props.match.params;
-    this.props.history.push(`/formrenderer/${formId}`);
+    this.props.history.push(`/formrenderer/${formId}/${pageType}`);
   }
 
-  public editFormData = (submissionId: string) => {
+  public editFormData = (submissionId: string, pageType: string) => {
     const { formId } = this.props.match.params;
-    this.props.history.push(`/formrenderer/${formId}/${submissionId}`);
+    this.props.history.push(`/formrenderer/${formId}/${submissionId}/${pageType}`);
   }
 
   public componentDidMount() {
@@ -60,7 +70,7 @@ class FormDataList extends React.Component<IFormSchemasProps, IFormSchemasState>
       <div className="shadow-container">
         <CButton
           className="btn btn-primary pull-right"
-          onClick={() => this.renderFormSchema()}
+          onClick={() => this.renderFormSchema('create')}
           name="Add Data"
         />
         <Table

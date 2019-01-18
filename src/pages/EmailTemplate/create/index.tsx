@@ -178,6 +178,7 @@ class EmailTemplate extends React.Component<IEmailTemplateProps & RouteComponent
           <CButton
             className="mt-20 ml-3 btn btn-primary"
             type="button"
+            disabled={!name}
             onClick={this.saveOrUpdateEmailTemplate}
             name="Save"
           />

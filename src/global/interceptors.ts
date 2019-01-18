@@ -84,6 +84,8 @@ export const setupInterceptors = (store: any) => {
           throw new ApiError(ERRORS.SERVER_ERROR);
         case 409:
           throw new ApiError(ERRORS.SERVER_CONFLICT);
+        case 401:
+          throw response.data.code;
       }
     } else {
       return response;

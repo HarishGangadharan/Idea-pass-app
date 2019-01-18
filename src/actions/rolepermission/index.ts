@@ -38,3 +38,7 @@ export const fetchRolePermissionFailure = (error: any) => ({
   error,
   type: Constants.FETCH_ROLE_PERMISSION_FAILURE
 });
+
+export const resetPermissionState = () => ({
+  type: Constants.RESET_PERMISSION_STATE
+});

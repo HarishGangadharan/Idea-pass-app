@@ -1,5 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 import { IRequestFilter } from 'request-filter';
+import { toast } from 'react-toastify';
 import { updateLoggedInStatus } from '../actions/global';
 import { fetchUsersFail, fetchUsersSuccess } from '../actions/user';
 import {
@@ -12,6 +13,7 @@ import { AppProperties } from '../constants/application.properties';
 import { updateUserSession } from '../global/interceptors';
 import { fetchRolePermissionRules } from '../sagas/rolepermission';
 import { getUsers, loginUser, logoutUser } from '../services/user';
+import ErrorConstants from '../constants/errorConstants';
 import storage from '../utils/storage';
 
 function* onFetchUsers(requestFilter: IRequestFilter) {
@@ -38,6 +40,9 @@ function* onLoginUser(action: any) {
     yield put(updateLoggedInStatus({ loggedIn: Boolean(response) }));
     yield put(loginUserSuccess(response));
   } catch (error) {
+    if(error === 401) {
+      toast.error(ErrorConstants.USER_NOT_FOUND.message);
+    }
     yield put(loginUserFail(error));
   }
 }

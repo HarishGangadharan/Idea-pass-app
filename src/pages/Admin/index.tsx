@@ -13,7 +13,7 @@ import Column from '../../components/Table/Column';
 import { IState } from '../../reducers';
 import CButton from '../../components/Button/CButton';
 
-import { createRolePermissionRequest, fetchRolePermissionRequest, updateRolePermissionState } from '../../actions/rolepermission';
+import { createRolePermissionRequest, fetchRolePermissionRequest, updateRolePermissionState, resetPermissionState } from '../../actions/rolepermission';
 import Table, { ITableState } from '../../components/Table';
 import { AppProperties } from '../../constants/application.properties';
 import { IOrganization } from '../../reducers/organization';
@@ -33,6 +33,7 @@ interface IAdminState {
   currentPage: number;
   length: number;
   tenantAdmin: boolean;
+  isOptionDisable: boolean;
 }
 
 class Admin extends React.Component<IAdminProps, IAdminState> {
@@ -57,7 +58,8 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
       ],
       currentPage: 1,
       length: 10,
-      tenantAdmin: false
+      tenantAdmin: false,
+      isOptionDisable: true
     };
   }
 
@@ -74,6 +76,10 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
     }
   }
 
+  public componentWillUnmount() {
+    this.props.resetPermissionState();
+  }
+
   public handleChangeEvent = (newPermission: IPermission, updatedPermissions: []) => {
     this.props.updateRolePermissionState(newPermission, updatedPermissions);
   }
@@ -82,6 +88,7 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
     const tenant = e.target.value;
     this.props.rolePermission.tenant_id = tenant;
     this.props.fetchConfigList('registeredModels,permissionCategory,permissionTable', tenant);
+    this.setState({isOptionDisable: false});
   }
 
   public getRolePermission = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -104,20 +111,20 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
 
   public render() {
     const { organization, organizations, models, categories, rolePermission, saveDisabled } = this.props;
-    const { categoryName, length, currentPage, columns, tenantAdmin } = this.state;
+    const { categoryName, length, currentPage, columns, tenantAdmin, isOptionDisable } = this.state;
     return (
       <div className="shadow-container">
         <div className="row">
           <div className="col-md-offset-1 col-md-2">
             <h4>Organization</h4>
           </div>
-          <div className="col-md-6">
+          <div className="col-md-6 option-placeholder">
             {tenantAdmin ?
               <select className="form-control" defaultValue={rolePermission.tenant_id} disabled={true}>
                 <option value={organization._id}>{organization.name}</option>
               </select> :
               <select className="form-control upper-case" defaultValue={rolePermission.tenant_id} onChange={(e) => this.getConfigList(e)}>
-                <option value="">SELECT ORGANIZATION</option>
+                <option value="" disabled>SELECT ORGANIZATION</option>
                 {organizations.map((org, i) => <option key={i} value={org._id}>{org.name}</option>)}
               </select>
             }
@@ -127,16 +134,16 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
           <div className="col-md-offset-1 col-md-2">
             <h4>Category</h4>
           </div>
-          <div className="col-md-3">
-            <select className="form-control upper-case" defaultValue={categoryName}>
-              <option value="">SELECT CATEGORY</option>
+          <div className="col-md-3 option-placeholder">
+            <select className="form-control upper-case" disabled={isOptionDisable} defaultValue={categoryName}>
+              <option value="" disabled >SELECT CATEGORY</option>
               {categories.map((category, i) => <option key={i}>{category}</option>)}
             </select>
           </div>
-          <div className="col-md-3">
-            <select className="form-control upper-case" defaultValue={rolePermission.subject}
+          <div className="col-md-3 option-placeholder">
+            <select className="form-control upper-case" disabled={isOptionDisable} defaultValue={rolePermission.subject}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => this.getRolePermission(e)}>
-              <option value="">SELECT MODEL</option>
+              <option value="" disabled>SELECT MODEL</option>
               {models.map((model, i) => <option key={i}>{model}</option>)}
             </select>
           </div>
@@ -191,7 +198,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   fetchOrganizationRequest: (tenantId: string) => dispatch(fetchOrganizationRequest(tenantId)),
   fetchRoleList: (tenantId: string, limit: number, currentPage: number) => dispatch(fetchRoleListRequest(tenantId, limit, currentPage)),
   fetchRolePermission: (tenantId: string, modelName: string) => dispatch(fetchRolePermissionRequest(tenantId, modelName)),
-  updateRolePermissionState: (rolePermission: IPermission, updatedPermissions: []) => dispatch(updateRolePermissionState(rolePermission, updatedPermissions))
+  updateRolePermissionState: (rolePermission: IPermission, updatedPermissions: []) => dispatch(updateRolePermissionState(rolePermission, updatedPermissions)),
+  resetPermissionState: ()=> dispatch(resetPermissionState())
 });
 
 interface IStateProps {
@@ -218,6 +226,7 @@ interface IDispatchProps {
   fetchRolePermission: (tenantId: string, modelName: string) => void;
   updateRolePermissionState: (rolePermission: IPermission, updatedPermissions: []) => void;
   createRolePermission: (updatedRolePermissions: IRolePermissionReducer, rolePermission: IRolePermissionReducer) => void;
+  resetPermissionState: () => void;
 }
 
 export default compose(

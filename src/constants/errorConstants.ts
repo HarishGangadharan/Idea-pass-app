@@ -14,6 +14,10 @@ const ERRORS = {
   SERVER_ERROR: {
     message: 'Unexpected server error.',
     name: 'SERVER_ERROR'
+  },
+  USER_NOT_FOUND: {
+    message: 'User not found.',
+    name: 'USER_NOT_FOUND'
   }
 };
 export default ERRORS;

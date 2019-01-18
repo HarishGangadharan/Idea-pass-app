@@ -55,7 +55,7 @@ const currentFormTriggerInitialState = {
     actions: [],
     description: '',
     form: '',
-    is_active: false,
+    is_active: true,
     is_async: false,
     name: '',
     on_create: false,

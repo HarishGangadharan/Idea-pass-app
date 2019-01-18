@@ -87,6 +87,8 @@ class FormRenderer extends React.Component<IMergedProps, { formId: string }> {
       isSubmissionLoading,
       formRendererSchema
     } = this.props;
+    const match: any = this.props.match;
+    const options={readOnly: match.params.pageType === 'view' ? true : false};
     return (
       <div className="shadow-container full-height">
         {!isLoading && !isSubmissionLoading && (
@@ -101,6 +103,7 @@ class FormRenderer extends React.Component<IMergedProps, { formId: string }> {
               submission={{ data: submissionData }}
               handleSubmit={this.handleSubmit}
               getFormio={this.getFormio}
+              options={options}
             />
           </Fragment>
         )}

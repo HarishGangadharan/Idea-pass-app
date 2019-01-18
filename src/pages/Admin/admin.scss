@@ -7,3 +7,9 @@
 .upper-case {
   text-transform: uppercase;
 }
+
+.option-placeholder {
+  option[value=""][disabled] {
+    display: none;
+  }
+}

@@ -90,6 +90,11 @@ export const rolePermissionReducer = (state: IRolePermissionReducer = rolePermis
         isSaveDisabled: false,
         loading: false
       };
+    case Constants.RESET_PERMISSION_STATE:
+      return {
+        ...rolePermissionInitialState,
+        tenant_id: ''
+      };
     default:
       return state;
   }

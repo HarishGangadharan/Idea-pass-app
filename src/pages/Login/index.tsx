@@ -53,6 +53,11 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                     onChange={event => {
                       this.setState({
                         email: event.target.value,
+                        emailValid: isEmailValid(event.target.value)
+                      });
+                    }}
+                    onBlur={event => {
+                      this.setState({
                         emailValid: isEmailValid(event.target.value),
                         pristine: false
                       });
@@ -96,7 +101,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                 <button
                   className="mt-20 btn btn-lg btn-primary btn-block text-uppercase"
                   type="submit"
-                  disabled={(!emailValid && !password) || loading}
+                  disabled={!emailValid || !password || loading || !email}
                   onClick={this.onLoginClick}
                 >
                   <Translate id="login" />

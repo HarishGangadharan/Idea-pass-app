@@ -49,12 +49,12 @@ export class LoggedInRoutes extends React.Component {
       {
         component: FormRenderer,
         exact: true,
-        path: '/formRenderer/:id'
+        path: '/formRenderer/:id/:pageType'
       },
       {
         component: FormRenderer,
         exact: true,
-        path: '/formRenderer/:id/:submissionId'
+        path: '/formRenderer/:id/:submissionId/:pageType'
       },
       {
         component: FormTrigger,
