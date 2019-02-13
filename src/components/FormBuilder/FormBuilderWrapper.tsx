@@ -34,21 +34,13 @@ export default class extends React.Component<IFormBuilder> {
   }
 
   public componentWillUnmount = () => {
-    if (this.builder !== undefined) {
+    if (this.builder) {
       this.builder.instance.destroy(true);
     }
-  }
-
-  public componentDidUpdate = (prevProps: IFormBuilder) => {
-    if (this.builder !== undefined) {
-      this.builder.instance.destroy(true);
-    }
-    this.initializeBuilder();
   }
 
   public initializeBuilder = () => {
     const {options, form} = this.props;
-
     this.builder = new FormBuilder(this.element.current, form, options);
     this.builderReady = this.builder.setDisplay(form.display);
 

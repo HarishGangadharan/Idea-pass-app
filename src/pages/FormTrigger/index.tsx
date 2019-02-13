@@ -1,3 +1,4 @@
+import { find } from 'lodash';
 import * as React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
@@ -5,13 +6,13 @@ import { RouteComponentProps } from 'react-router';
 import { fetchFormSchemaList, fetchFormSchemaRequest } from '../../actions/formschema';
 import { fetchFormTriggerRequest, fetchSourceFormFieldsRequest, fetchTargetFormFieldsRequest, saveFormTriggerRequest, updateFormTriggerState } from '../../actions/formTrigger';
 import { BaseIcon } from '../../components';
+import CButton from '../../components/Button/CButton';
 import CreateTriggerComponent from '../../components/CreateTriggerComponent';
 import QueryBuilder from '../../components/Triggers/QueryBuilder';
 import { IState } from '../../reducers';
 import { IFormSchema } from '../../reducers/formschema';
 import { ITrigger, ITriggerAction } from '../../reducers/formTrigger';
 import './formTrigger.css';
-import CButton from '../../components/Button/CButton';
 
 interface ITriggerDispatchMap {
   fetchFormSchemaRequest: (schemaId: string, callBack?: (form: IFormSchema) => void) => void;
@@ -50,6 +51,17 @@ interface IMergedProps extends ITriggerStateMap, ITriggerDispatchMap, RouteCompo
 }
 
 class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
+  public static getDerivedStateFromProps(props: any, state: ITriggerState) {
+    if (!state.targetForm && props.formList.length && state.action.form) {
+      const target = find(props.formList, { _id: state.action.form }) as IFormSchema;
+      if (target && target.name_singular) {
+        return {
+          targetForm: props.fetchTargetFormFieldsRequest(target.name_singular)
+        };
+      }
+    }
+    return null;
+  }
   public formio: any;
   constructor(props: IMergedProps) {
     super(props);
@@ -86,6 +98,7 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
         state.currentFormName = form.name;
         state.trigger.form = form._id,
           state.trigger.qualification = {
+            combinator: 'and',
             id: this.getRandom(),
             rules: []
           };
@@ -137,10 +150,13 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
     e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>,
     field: string) => {
     e.persist();
-    if (e.target.type === 'checkbox') {
-      this.setState((state: ITriggerState) => {
-        state.action[field] = !state.action[field];
-      });
+    const { action } = this.state;
+    if (e.target.type === 'number') {
+      action[field] = e.target.value;
+      this.setState({ action });
+    } else if (e.target.type === 'checkbox') {
+      action[field] = !action[`${field}`];
+      this.setState({ action });
     } else {
       this.setState((state: ITriggerState) => {
         if (field === 'form') {
@@ -151,8 +167,6 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
               this.props.fetchTargetFormFieldsRequest(form.name_singular);
             }
           });
-        } else {
-          state.action[field] = e.target.value;
         }
       });
     }
@@ -160,6 +174,7 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
 
   public addActionQualification(action: ITriggerAction, removeFieldMap?: boolean) {
     action.matching_qualification = {
+      combinator: 'and',
       id: this.getRandom(),
       rules: []
     };
@@ -179,6 +194,10 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
   public chooseActionType = (e: React.ChangeEvent<HTMLSelectElement>) => {
     e.persist();
     const type = e.target.value;
+    this.performAction(type);
+  }
+
+  public performAction = (type: string) => {
     let action = this.state.action;
     action = {
       sequence: '1',
@@ -235,13 +254,22 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
 
   public selectAction(action: ITriggerAction, actionIndex: number) {
     this.setState({ action, actionIndex });
+    this.props.fetchTargetFormFieldsRequest(this.state.currentFormName);
     this.handleHidePopup();
   }
 
   public removeAction = (index: number) => {
-    const { trigger } = this.state;
+    const { trigger, showPopup } = this.state;
+    let { actionIndex } = this.state;
     trigger.actions.splice(index, 1);
-    this.setState({});
+    if (typeof actionIndex !== 'undefined') {
+      actionIndex = undefined;
+    }
+    const stateObj = { actionIndex, showPopup };
+    if (!trigger.actions.length) {
+      stateObj.showPopup = false;
+    }
+    this.setState(stateObj);
   }
 
   public handleHidePopup = () => {
@@ -260,7 +288,8 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
 
   public render() {
     const { actionTypeList, trigger, actionIndex, action, currentFormName } = this.state;
-    const { formList, sourceFormFields, sourceFormFieldsLoading, targetFormFields, isTriggerLoading } = this.props;
+    const { formList, sourceFormFields, sourceFormFieldsLoading, targetFormFields, isTriggerLoading
+    } = this.props;
     return (
       <div className="row">
         {!isTriggerLoading && <div>
@@ -279,7 +308,7 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
                 fields={[{ label: 'Source', value: '' }, ...sourceFormFields]}
                 targetFields={[{ label: 'Target', value: '' }, ...sourceFormFields]}
                 query={trigger.qualification}
-                customRules={{ isOldValue: false}}
+                customRules={{ isOldValue: false }}
                 onQueryChange={this.logQualificationsQuery} />}
             </div>
           </div>
@@ -315,15 +344,16 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
                   <div className="panel-body">
                     <div className="form-group">
                       <label htmlFor="type">Type</label>
-                      <select className="form-control" defaultValue={action.type}
+                      <select className="form-control" defaultValue={action.type} value={action.type}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => this.chooseActionType(e)}>
                         <option value="">Select Action</option>
-                        {actionTypeList.map((actionType, actionTypeIndex) => (<option key={actionTypeIndex} value={actionType.value}>{actionType.label}</option>))}
+                        {actionTypeList.map((actionType, actionTypeIndex) => (
+                          <option key={actionTypeIndex} value={actionType.value}>{actionType.label}</option>))}
                       </select>
                     </div>
                     <div className="form-group">
                       <label htmlFor="sequence">Sequence</label>
-                      <input type="number" name="sequence" defaultValue={action.sequence} className="form-control" required={true}
+                      <input type="number" name="sequence" defaultValue={action.sequence} value={action.sequence} className="form-control" required={true}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.onActionChange(e, 'sequence')} />
                     </div>
                     {('isBefore' in action) &&
@@ -333,7 +363,7 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
                     </div>}
                     {('form' in action) &&
                       <div className="form-group">
-                        <label htmlFor="form">Form to fill</label>
+                        <label htmlFor="form">Form</label>
                         <select className="form-control" defaultValue={action.form}
                           onChange={(e: React.ChangeEvent<HTMLSelectElement>) => this.onActionChange(e, 'form')}>
                           <option value="">Select Form</option>
@@ -344,10 +374,16 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
                       <div className="panel panel-default">
                         <div className="panel-heading">Matching Qualifications</div>
                         <div className="panel-body">
-                          {!sourceFormFieldsLoading && <QueryBuilder
-                            fields={[{ label: 'Source', value: '' }, ...sourceFormFields]}
-                            targetFields={[{ label: 'Target', value: '' }, ...targetFormFields]}
-                            operators={[{ name: '=', label: '=' }, { name: 'null', label: 'isNull' }]}
+                        {!sourceFormFieldsLoading && <QueryBuilder
+                          fields={[{
+                            label: (action.type === 'insert' || action.type === 'update') ? 'Source' : 'Target',
+                            value: ''
+                          }, ...sourceFormFields]}
+                          targetFields={[{
+                            label: (action.type === 'insert' || action.type === 'update') ? 'Target' : 'Source',
+                            value: ''
+                          }, ...targetFormFields]}
+                            operators={[{ name: 'equal', label: '=' }, { name: 'is_null', label: 'isNull' }]}
                             query={action.matching_qualification}
                             onQueryChange={(query: any) => this.logMatchingQualificationsQuery(query)} />}
                         </div>
@@ -356,9 +392,15 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
                       <div className="panel panel-default">
                         <div className="panel-heading">Mapping Fields</div>
                         <div className="panel-body">
-                          {!sourceFormFieldsLoading && <QueryBuilder
-                            fields={[{ label: 'Source', value: '' }, ...sourceFormFields]}
-                            targetFields={[{ label: 'Target', value: '' }, ...targetFormFields]}
+                        {!sourceFormFieldsLoading && <QueryBuilder
+                          fields={[{
+                            label: (action.type === 'insert' || action.type === 'update') ? 'Source' : 'Target',
+                            value: ''
+                          }, ...sourceFormFields]}
+                          targetFields={[{
+                            label: (action.type === 'insert' || action.type === 'update') ? 'Target' : 'Source',
+                            value: ''
+                          }, ...targetFormFields]}
                             disableCombinators={true}
                             disableGroupAction={true}
                             operators={[{ name: '=', label: '=' }]}
@@ -378,7 +420,6 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
                   name="Save"
                   display="inline-block"
                   size={24}
-                  classname="ml-5"
                 />
               </button>
             </div>

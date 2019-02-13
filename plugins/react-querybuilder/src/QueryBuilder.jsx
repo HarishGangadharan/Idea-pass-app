@@ -174,6 +174,37 @@ export default class QueryBuilder extends React.Component {
     });
   }
 
+  componentWillReceiveProps(nextProps) {
+    const {
+      fields,
+      operators,
+      combinators,
+      controlElements,
+      controlClassnames,
+      customRules
+    } = nextProps;
+    const classNames = {
+      ...QueryBuilder.defaultControlClassnames,
+      ...controlClassnames
+    };
+    const controls = {
+      ...QueryBuilder.defaultControlElements,
+      ...controlElements
+    };
+    this.setState(state => ({
+      root: nextProps.query,
+      schema: {
+        ...state.schema,
+        fields,
+        operators,
+        combinators,
+        customRules,
+        classNames,
+        controls
+      }
+    }));
+  }
+
   getInitialQuery(props) {
     return props.query || this.createRuleGroup();
   }

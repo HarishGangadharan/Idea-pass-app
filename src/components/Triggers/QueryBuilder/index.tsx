@@ -59,6 +59,7 @@ interface IRemoveActionProps {
 }
 
 class QueryBuilderContainer extends React.Component<IQueryBuilderProps> {
+  public operators: Array<{ name: string, label: string }>;
   /*
    * Doc => https://www.npmjs.com/package/react-querybuilder
    * */
@@ -86,6 +87,18 @@ class QueryBuilderContainer extends React.Component<IQueryBuilderProps> {
     if (!props.disableCombinators) {
       delete this.controlElements.combinatorSelector;
     }
+    this.operators = [
+      { name: 'is_null', label: 'Is Null' },
+      { name: 'is_not_null', label: 'Is Not Null' },
+      { name: 'between', label: 'In' },
+      { name: 'not_between', label: 'Not In' },
+      { name: 'equal', label: '=' },
+      { name: 'not_equal', label: '!=' },
+      { name: 'less', label: '<' },
+      { name: 'greater', label: '>' },
+      { name: 'less_or_equal', label: '<=' },
+      { name: 'greater_or_equal', label: '>=' }
+    ];
   }
 
   public onCustomFieldChange = (
@@ -183,7 +196,7 @@ class QueryBuilderContainer extends React.Component<IQueryBuilderProps> {
           fields={this.props.fields}
           customRules={this.props.customRules || {}}
           controlElements={this.controlElements}
-          operators={this.props.operators}
+          operators={this.props.operators || this.operators}
           controlClassnames={{
             addGroup: 'rule-btn',
             addRule: 'rule-btn',

@@ -13,6 +13,7 @@ import { IFormSchema } from '../../reducers/formschema';
 interface IFBuilderStateMap {
   form: any;
   isLoading: boolean;
+  isTemplateLoading: boolean;
   templates: IFormSchema[];
 }
 
@@ -26,7 +27,6 @@ interface IFBuilderDispatchMap {
 interface IFBuilderStateProps {
   formData: any;
   formSchemaId: string;
-  name: string;
   isFormNameEmpty: boolean;
 }
 
@@ -84,7 +84,6 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
     this.state = {
       formData: {},
       formSchemaId: this.props.match ? this.props.match.params.id : '',
-      name: '',
       isFormNameEmpty: false
     };
     this.formTypes = [{ id: 'data', name: 'Data' }, { id: 'ticket', name: 'Ticket' }];
@@ -115,10 +114,6 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
       });
     };
     this.props.fetchTemplateList(renderTemplateList);
-  }
-
-  public componentWillUnmount() {
-    this.props.updateFormSchemaState();
   }
 
   public setFormNameAndType = (e: any) => {
@@ -168,7 +163,7 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
   }
 
   public render() {
-    const { isLoading, form } = this.props;
+    const { isLoading, form, isTemplateLoading } = this.props;
     const { formTypes, templateTypes } = this;
     return (
       <div className="shadow-container">
@@ -204,12 +199,12 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
                 </select>
               </div>
             </div>
-            <Builder
+            {!isTemplateLoading && <Builder
               formBuilderSchema={form.form_data}
               builderOptions={this.builderOptions}
               renderSchema={this.renderSchema}
               renderComponent={this.renderComponent}
-            />
+            />}
           </React.Fragment>
         }
         <div className="row text-right mt-3">
@@ -235,6 +230,7 @@ const mapDispatchToProps = ({
 const mapStateToProps = (state: IState) => ({
   form: state.formSchema.currentFormSchema,
   isLoading: state.formSchema.currentFormSchema.loading,
+  isTemplateLoading: state.formSchema.templateList.loading,
   templates: state.formSchema.templateList.data
 });
 
