@@ -22,6 +22,10 @@ export const createFormSchemaFailure = (error: Object) => ({
   type: FormSchemaConstants.CREATE_FORM_SCHEMA_FAILURE
 });
 
+export const clearFormSchemeData = () => ({
+  type: FormSchemaConstants.CLEAR_FORM_SCHEMA_DATA
+});
+
 export const fetchFormSchemaRequest = (schemaId: string, callback?: (form: IFormSchema) => void) => ({
   callback,
   schemaId,

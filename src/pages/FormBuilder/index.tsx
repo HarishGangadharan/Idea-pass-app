@@ -6,7 +6,7 @@ import {
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { compose } from 'redux';
-import { createFormSchemaRequest, fetchFormSchemaRequest, fetchTemplateList, updateFormSchemaState } from '../../actions/formschema';
+import { createFormSchemaRequest, fetchFormSchemaRequest, fetchTemplateList, updateFormSchemaState, clearFormSchemeData } from '../../actions/formschema';
 import Builder from '../../components/FormBuilder';
 import { IState } from '../../reducers';
 import { IFormSchema } from '../../reducers/formschema';
@@ -22,6 +22,7 @@ interface IFBuilderDispatchMap {
   fetchFormSchemaRequest: (schemaId: string) => void;
   fetchTemplateList: (callback?: (templates: IFormSchema[]) => void) => void;
   updateFormSchemaState: (data?: any) => void;
+  clearFormSchemeData: () => void
 }
 
 interface IFBuilderStateProps {
@@ -116,6 +117,11 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
     this.props.fetchTemplateList(renderTemplateList);
   }
 
+  public componentWillUnmount() {
+    this.props.updateFormSchemaState();
+    this.props.clearFormSchemeData();
+  }
+
   public setFormNameAndType = (e: any) => {
     const fieldName = e.target.id;
     this.props.form[fieldName] = e.target.value;
@@ -131,7 +137,6 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
     if (!form._id) {
       delete form._id;
     }
-    form.template_type = 'default';
     // name is a required field
     if (form && form.name) {
       this.props.createFormSchema(form, form._id);
@@ -224,7 +229,8 @@ const mapDispatchToProps = ({
   createFormSchema: createFormSchemaRequest,
   fetchFormSchemaRequest,
   fetchTemplateList,
-  updateFormSchemaState
+  updateFormSchemaState,
+  clearFormSchemeData
 });
 
 const mapStateToProps = (state: IState) => ({

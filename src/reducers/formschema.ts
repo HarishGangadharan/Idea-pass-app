@@ -56,7 +56,7 @@ const templateList: ITemplateFormSchema = {
 };
 
 const formSchemaReducer = (
-  state: IFormSchema = currentFormInitialState,
+  state: IFormSchema = {...currentFormInitialState},
   action: IActionProps
 ): IFormSchema => {
   switch (action.type) {
@@ -66,9 +66,9 @@ const formSchemaReducer = (
         loading: true
       };
     case FormSchemaConstants.CREATE_FORM_SCHEMA_SUCCESS:
-      return currentFormInitialState;
+      return {...currentFormInitialState};
     case FormSchemaConstants.CREATE_FORM_SCHEMA_FAILURE:
-      return currentFormInitialState;
+      return {...currentFormInitialState};
     case FormSchemaConstants.FETCH_FORM_SCHEMA_REQUEST:
       return {
         ...state,
@@ -87,6 +87,13 @@ const formSchemaReducer = (
         ...state,
         ...action.data ? action.data : currentFormInitialState,
         isLoading: false
+      };
+    case FormSchemaConstants.CLEAR_FORM_SCHEMA_DATA:
+      return {
+        ...currentFormInitialState,
+        form_data: {
+          display: 'form'
+        }
       };
     default:
       return state;

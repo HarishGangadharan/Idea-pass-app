@@ -67,7 +67,7 @@ class FormSchemaList extends React.Component<
   }
 
   public renderFormSchema(id: string) {
-    this.props.history.push(`/formrenderer/${id}`);
+    this.props.history.push(`/formrenderer/${id}/create`);
   }
 
   public builderFormSchema(id?: string) {
