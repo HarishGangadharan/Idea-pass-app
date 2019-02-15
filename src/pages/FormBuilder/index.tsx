@@ -28,7 +28,12 @@ interface IFBuilderDispatchMap {
 interface IFBuilderStateProps {
   formData: any;
   formSchemaId: string;
+  name: string;
   isFormNameEmpty: boolean;
+  isFormPrefixValid: boolean;
+  templateType: string;
+  isActive: boolean;
+  sequence: number;
 }
 
 interface IFormBuildSchema {
@@ -85,13 +90,19 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
     this.state = {
       formData: {},
       formSchemaId: this.props.match ? this.props.match.params.id : '',
-      isFormNameEmpty: false
+      name: '',
+      isFormNameEmpty: false,
+      isFormPrefixValid: false,
+      templateType : 'Default',
+      isActive: true,
+      sequence: 1
     };
     this.formTypes = [{ id: 'data', name: 'Data' }, { id: 'ticket', name: 'Ticket' }];
     this.templateTypes = [
       { id: 'default', name: 'Default' },
       { id: 'app_form', name: 'Application Form' },
-      { id: 'template_form', name: 'Template Form' }
+      { id: 'template_form', name: 'Template Form' },
+      { id: 'core_fields', name: 'Core Fields' }
     ];
   }
 
@@ -125,20 +136,40 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
   public setFormNameAndType = (e: any) => {
     const fieldName = e.target.id;
     this.props.form[fieldName] = e.target.value;
+    this.setState({
+      templateType: e.target.value,
+      isFormNameEmpty: false
+    })
+  }
+
+  public setFormPrefix = (e: any) => {
+    const fieldName = e.target.id;
+    this.props.form[fieldName] = e.target.value;
+    this.setState({isFormPrefixValid: false});
   }
 
   public saveFormSchema = (): void => {
-    const { form } = this.props;
+    let { form } = this.props;
+    const {isActive, sequence, templateType} = this.state 
+    const isPrefixValid = !form.prefix || (form.prefix && form.prefix.length < 6);
     if (form && form.name === '') {
       this.setState({
         isFormNameEmpty: true
       });
     }
+    if(isPrefixValid) {
+      this.setState({
+        isFormPrefixValid: true
+      })
+    }
     if (!form._id) {
       delete form._id;
     }
     // name is a required field
-    if (form && form.name) {
+    if (form && form.name && !isPrefixValid) {
+      if (templateType === "core_fields") {
+        form = Object.assign(form, {is_active: isActive, sequence: sequence })
+      }
       this.props.createFormSchema(form, form._id);
     }
   }
@@ -169,13 +200,32 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
 
   public render() {
     const { isLoading, form, isTemplateLoading } = this.props;
+    const { isActive, sequence, templateType, isFormPrefixValid } = this.state;
     const { formTypes, templateTypes } = this;
     return (
       <div className="shadow-container">
         {!isLoading &&
           <React.Fragment>
             <div className="row mb-3">
-              <div className="col-md-6">
+              
+              <div  className="col-md-2">
+                <label className="control-label">
+                  <Translate id="label.prefix" />
+                </label> <span className="error-text">*</span>
+                <input
+                  type="text"
+                  id="prefix"
+                  defaultValue={form.prefix}
+                  className="form-control"
+                  onChange={this.setFormPrefix}
+                  required={true}
+                />
+                {isFormPrefixValid &&
+                  <span className="error-text">Provide a valid prefix</span>
+                }
+              </div>
+              
+              <div className="col-md-4">
                 <label className="control-label">
                   <Translate id="label.formName" />
                 </label> <span className="error-text">*</span>
@@ -191,6 +241,7 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
                   <span className="error-text">Form Name is mandatory</span>
                 }
               </div>
+              
               <div className="col-md-3">
                 <label className="control-label"><Translate id="label.formType" /></label> <span className="error-text">*</span>
                 <select className="form-control" id="form_type" defaultValue={form.form_type} onChange={this.setFormNameAndType}>
@@ -204,6 +255,31 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
                 </select>
               </div>
             </div>
+
+            {templateType === "core_fields" &&
+            <div className="row mb-3 d-flex align-items-center">
+              <div className="col-md-3">
+              <label className="control-label">
+                Sequence
+              </label>
+              <input 
+                type="number" 
+                name="sequence" 
+                value={sequence}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.setState({sequence: parseInt(e.target.value)})}
+                className="form-control"
+                />
+              </div>
+              <div className="col-md-3 mt-20">
+              <input 
+                type="checkbox" 
+                name="is_active" 
+                defaultChecked={isActive} 
+                className="mt-0 mr-2"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.setState({isActive: e.target.checked})} /> 
+                <span>Is Active</span>
+              </div>
+            </div>}
             {!isTemplateLoading && <Builder
               formBuilderSchema={form.form_data}
               builderOptions={this.builderOptions}

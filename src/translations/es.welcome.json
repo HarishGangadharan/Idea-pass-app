@@ -17,6 +17,7 @@
   "label": {
     "emailAddress": "Email Address",
     "password":"Password",
+    "prefix": "Prefix",
     "formName": "Form Name",
     "formType": "Form Type",
     "templateType": "Template Type",

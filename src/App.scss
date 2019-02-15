@@ -36,6 +36,12 @@
         border-bottom: 1px solid $border-color;
       }
     }
+    .d-flex {
+      display: flex;
+    }
+    .align-items-center {
+      align-items: center;
+    }
   }
 
   .full-height{

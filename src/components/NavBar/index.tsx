@@ -25,18 +25,20 @@ interface INavProps extends LocalizeContextProps, IStateProps, IDispatchProps {
 }
 
 class NavBar extends React.Component<INavProps, INavState> {
+
+  // Todo: Dynamic theme injection
   private static loadStyleSheet(theme: string) {
-    const styleSheets = document.querySelectorAll('link[rel=stylesheet]');
-    styleSheets.forEach((styleSheet: any) => {
-      if (styleSheet.parentNode && styleSheet.sheet && styleSheet.sheet.href && !styleSheet.sheet.href.includes('chunk')) {
-        styleSheet.parentNode.removeChild(styleSheet);
-      }
-    });
-    const sheet = document.createElement('link');
-    sheet.rel = 'stylesheet';
-    sheet.href = `./static/css/${theme}/theme.min.css`;
-    sheet.type = 'text/css';
-    if (document.head) { document.head.appendChild(sheet); }
+    // const styleSheets = document.querySelectorAll('link[rel=stylesheet]');
+    // styleSheets.forEach((styleSheet: any) => {
+    //   if (styleSheet.parentNode && styleSheet.sheet && styleSheet.sheet.href && !styleSheet.sheet.href.includes('chunk')) {
+    //     styleSheet.parentNode.removeChild(styleSheet);
+    //   }
+    // });
+    // const sheet = document.createElement('link');
+    // sheet.rel = 'stylesheet';
+    // sheet.href = `./static/css/${theme}/theme.min.css`;
+    // sheet.type = 'text/html';
+    // if (document.head) { document.head.appendChild(sheet); }
   }
   private userMenu: any[];
 
@@ -58,7 +60,7 @@ class NavBar extends React.Component<INavProps, INavState> {
   }
 
   public componentWillMount = () => {
-    NavBar.loadStyleSheet(this.props.activeTheme);
+    // NavBar.loadStyleSheet(this.props.activeTheme);
   }
 
   public render() {
