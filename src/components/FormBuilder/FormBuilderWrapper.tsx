@@ -3,10 +3,21 @@ import Components from 'formiojs/components/Components';
 import * as React from 'react';
 Components.setComponents(AllComponents);
 import FormBuilder from 'formiojs/FormBuilder';
+import SelectComponent from './customComponents/select/select';
 import TemplateComponent from './customComponents/template/template';
 declare const Formio: any;
 
+const plugin = {
+  priority: 0,
+  requestOptions: (value: any) => {
+    value.credentials = 'include';
+    return value;
+  }
+};
+
+Formio.registerPlugin(plugin, 'enableCredentials');
 Formio.registerComponent('template', TemplateComponent);
+Formio.registerComponent('select', SelectComponent);
 interface IFormBuilder {
   form: {
     display: string,

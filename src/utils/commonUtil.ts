@@ -44,3 +44,14 @@ export const constructUrl = (requestQuery: IRequestQuery) =>  {
   }
   return queryString;
 };
+
+export const interpolateUrl = (url: string) => {
+  if (url.indexOf('http') !== 0) {
+    if (url.substring(0, 1) === '/') {
+      return `${process.env.REACT_APP_BASE_URL}${url}`;
+    } else {
+      return `${process.env.REACT_APP_BASE_URL}/${url}`;
+    }
+  }
+  return url;
+};
