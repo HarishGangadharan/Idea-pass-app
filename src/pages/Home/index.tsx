@@ -49,8 +49,8 @@ class Home extends React.PureComponent<IProps, IHomeState> {
   public render() {
     const { activeLanguage }: any = this.props;
     return (
-      <div className="row flex-column">
-        <div className="col-md-8 p-x-0">
+      <div className="row">
+        <div className="col-lg-8 p-x-0">
           <Component1 />
           <FormSchemaList {...this.props}/>
           <div className="shadow-container">
@@ -63,7 +63,7 @@ class Home extends React.PureComponent<IProps, IHomeState> {
             </h3>
           </div>
         </div>
-        <div className="col-md-4">
+        <div className="col-lg-4">
           <div className="shadow-container">
             <ResponsiveLineChart />
           </div>

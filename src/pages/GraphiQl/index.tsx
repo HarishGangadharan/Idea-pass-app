@@ -137,7 +137,7 @@ class GraphiQl extends React.Component<IGraphiQlProps & RouteComponentProps<{ id
               />}
           </div>}
         </div>
-        <div className="row text-right">
+        <div className="row d-flex justify-content-end">
           <CButton
             className="btn btn-primary"
             disabled={name === '' || queryError}

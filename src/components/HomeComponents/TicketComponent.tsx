@@ -61,7 +61,7 @@ class Ticket extends React.Component<{}, any> {
           </div>
         </div>
         <div className="row ticket-content">
-          <ul className="tickets">
+          <ul className="tickets w-100">
             {this.state.tickets.map((ticket: any, index: number) => (
               <li className="ticket row" key={index}>
                 <div className="col-lg-3 col-sm-3 col-md-3">

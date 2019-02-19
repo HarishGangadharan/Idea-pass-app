@@ -33,15 +33,15 @@ class Component1 extends React.Component<{}, any> {
             <div className="col-md-6 icon">
               <BaseIcon name="Clock" label="23 October 2018, 10:00AM"/>
             </div>
-            <div className="col-md-6 text-right">
+            <div className="col-md-6 text-right d-flex align-items-center">
               <span className="icon">
-                <BaseIcon name="Share2" display="inline" label="Share"/>
+                <BaseIcon name="Share2" display="inline" label="Share" classname="d-flex align-items-center" />
               </span>
               <span className="icon">
-                <BaseIcon name="Pocket" display="inline" label="Saved"/>
+                <BaseIcon name="Pocket" display="inline" label="Saved" classname="d-flex align-items-center" />
               </span>
               <span className="icon">
-                <BaseIcon name="MoreHorizontal" display="inline" label="More"/>
+                <BaseIcon name="MoreHorizontal" display="inline" label="More" classname="d-flex align-items-center"/>
               </span>
             </div>
           </div>

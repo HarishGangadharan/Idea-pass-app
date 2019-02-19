@@ -288,7 +288,7 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
             />}
           </React.Fragment>
         }
-        <div className="row text-right mt-3">
+        <div className="row d-flex justify-content-end mt-3">
           <button className="btn btn-primary mr-3" onClick={() => this.cancelUpdateSchema()} >
             <Translate id="label.cancel" />
           </button>

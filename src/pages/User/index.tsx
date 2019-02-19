@@ -48,7 +48,7 @@ class Users extends React.Component<IUserProps, IUserState> {
         <Can I="read" a="admin">
           <div className="form-group">
             <CButton
-              className="btn btn-primary pull-right"
+              className="btn btn-primary pull-right mb-2"
               onClick={() => this.createNewUser()}
               name="Create New User"
             />

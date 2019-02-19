@@ -292,125 +292,129 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
     } = this.props;
     return (
       <div className="row">
-        {!isTriggerLoading && <div>
+        {!isTriggerLoading && <React.Fragment>
           <div className="col-md-4 col-xs-12">
             <CreateTriggerComponent
               trigger={trigger}
               formName={currentFormName}
               onTriggerChange={this.handleTriggerChange} />
           </div>
-          <div className="col-md-8 col-xs-12">
-            <div className="shadow-container">
-              <div className="title">
-                <h4>Qualifications</h4>
+          <div className="col-xs-12 col-md-8">
+            <div className="row">
+              <div className="col-12">
+                <div className="shadow-container">
+                  <div className="title">
+                    <h4>Qualifications</h4>
+                  </div>
+                  {!sourceFormFieldsLoading && <QueryBuilder
+                    fields={[{ label: 'Source', value: '' }, ...sourceFormFields]}
+                    targetFields={[{ label: 'Target', value: '' }, ...sourceFormFields]}
+                    query={trigger.qualification}
+                    customRules={{ isOldValue: false }}
+                    onQueryChange={this.logQualificationsQuery} />}
+                </div>
               </div>
-              {!sourceFormFieldsLoading && <QueryBuilder
-                fields={[{ label: 'Source', value: '' }, ...sourceFormFields]}
-                targetFields={[{ label: 'Target', value: '' }, ...sourceFormFields]}
-                query={trigger.qualification}
-                customRules={{ isOldValue: false }}
-                onQueryChange={this.logQualificationsQuery} />}
-            </div>
-          </div>
-          <div className="col-md-8 col-xs-12">
-            <div className="shadow-container">
-              <div className="title">
-                <h4>Actions {trigger.actions.length > 0 &&
-                  <span className="badge btn btn-primary" onClick={() => this.setState({ showPopup: true })}>
-                    {trigger.actions.length}
-                  </span>}
-                </h4>
-              </div>
-              {typeof actionIndex === 'undefined' ?
-                <div className="text-center">
-                  <BaseIcon
-                    display="inline"
-                    name="PlusCircle"
-                    size={28}
-                    onClick={this.addNewAction}
-                  />
-                </div> :
-                <div className="panel panel-default">
-                  <div className="panel-heading">
-                    <div className="row">
-                      Action - {actionIndex + 1}
-                      <CButton
-                        className="btn btn-primary pull-right"
-                        onClick={this.saveTriggerAction}
-                        name="Add"
+              <div className="col-12">
+                <div className="shadow-container">
+                  <div className="title">
+                    <h4>Actions {trigger.actions.length > 0 &&
+                      <span className="badge btn btn-primary" onClick={() => this.setState({ showPopup: true })}>
+                        {trigger.actions.length}
+                      </span>}
+                    </h4>
+                  </div>
+                  {typeof actionIndex === 'undefined' ?
+                    <div className="text-center">
+                      <BaseIcon
+                        display="inline"
+                        name="PlusCircle"
+                        size={28}
+                        onClick={this.addNewAction}
                       />
-                    </div>
-                  </div>
-                  <div className="panel-body">
-                    <div className="form-group">
-                      <label htmlFor="type">Type</label>
-                      <select className="form-control" defaultValue={action.type} value={action.type}
-                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => this.chooseActionType(e)}>
-                        <option value="">Select Action</option>
-                        {actionTypeList.map((actionType, actionTypeIndex) => (
-                          <option key={actionTypeIndex} value={actionType.value}>{actionType.label}</option>))}
-                      </select>
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="sequence">Sequence</label>
-                      <input type="number" name="sequence" defaultValue={action.sequence} value={action.sequence} className="form-control" required={true}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.onActionChange(e, 'sequence')} />
-                    </div>
-                    {('isBefore' in action) &&
-                      <div className="form-group">
-                        <input type="checkbox" name="isBefore" defaultChecked={action.isBefore} required={true}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.onActionChange(e, 'isBefore')} /> Is Before
+                    </div> :
+                    <div className="panel panel-default">
+                      <div className="panel-heading">
+                        <div className="row d-flex align-items-center justify-content-between">
+                          Action - {actionIndex + 1}
+                          <CButton
+                            className="btn btn-primary pull-right"
+                            onClick={this.saveTriggerAction}
+                            name="Add"
+                          />
+                        </div>
+                      </div>
+                      <div className="panel-body">
+                        <div className="form-group">
+                          <label htmlFor="type">Type</label>
+                          <select className="form-control" defaultValue={action.type} value={action.type}
+                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => this.chooseActionType(e)}>
+                            <option value="">Select Action</option>
+                            {actionTypeList.map((actionType, actionTypeIndex) => (
+                              <option key={actionTypeIndex} value={actionType.value}>{actionType.label}</option>))}
+                          </select>
+                        </div>
+                        <div className="form-group">
+                          <label htmlFor="sequence">Sequence</label>
+                          <input type="number" name="sequence" defaultValue={action.sequence} value={action.sequence} className="form-control" required={true}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.onActionChange(e, 'sequence')} />
+                        </div>
+                        {('isBefore' in action) &&
+                          <div className="form-group">
+                            <input type="checkbox" name="isBefore" defaultChecked={action.isBefore} required={true}
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.onActionChange(e, 'isBefore')} /> Is Before
+                        </div>}
+                        {('form' in action) &&
+                          <div className="form-group">
+                            <label htmlFor="form">Form</label>
+                            <select className="form-control" defaultValue={action.form}
+                              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => this.onActionChange(e, 'form')}>
+                              <option value="">Select Form</option>
+                              {formList.map((form: any, formIndex: number) => (<option key={formIndex} value={form._id}>{form.name}</option>))}
+                            </select>
+                          </div>}
+                        {('matching_qualification' in action) &&
+                          <div className="panel panel-default">
+                            <div className="panel-heading">Matching Qualifications</div>
+                            <div className="panel-body">
+                            {!sourceFormFieldsLoading && <QueryBuilder
+                              fields={[{
+                                label: (action.type === 'insert' || action.type === 'update') ? 'Source' : 'Target',
+                                value: ''
+                              }, ...sourceFormFields]}
+                              targetFields={[{
+                                label: (action.type === 'insert' || action.type === 'update') ? 'Target' : 'Source',
+                                value: ''
+                              }, ...targetFormFields]}
+                                operators={[{ name: 'equal', label: '=' }, { name: 'is_null', label: 'isNull' }]}
+                                query={action.matching_qualification}
+                                onQueryChange={(query: any) => this.logMatchingQualificationsQuery(query)} />}
+                            </div>
+                          </div>}
+                        {('field_mapping' in action) &&
+                          <div className="panel panel-default">
+                            <div className="panel-heading">Mapping Fields</div>
+                            <div className="panel-body">
+                            {!sourceFormFieldsLoading && <QueryBuilder
+                              fields={[{
+                                label: (action.type === 'insert' || action.type === 'update') ? 'Source' : 'Target',
+                                value: ''
+                              }, ...sourceFormFields]}
+                              targetFields={[{
+                                label: (action.type === 'insert' || action.type === 'update') ? 'Target' : 'Source',
+                                value: ''
+                              }, ...targetFormFields]}
+                                disableCombinators={true}
+                                disableGroupAction={true}
+                                operators={[{ name: '=', label: '=' }]}
+                                customRules={{ customValue: '' }}
+                                query={action.field_mapping}
+                                onQueryChange={(query: any) => this.logFieldMapping(query)} />}
+                            </div>
+                          </div>}
+                      </div>
                     </div>}
-                    {('form' in action) &&
-                      <div className="form-group">
-                        <label htmlFor="form">Form</label>
-                        <select className="form-control" defaultValue={action.form}
-                          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => this.onActionChange(e, 'form')}>
-                          <option value="">Select Form</option>
-                          {formList.map((form: any, formIndex: number) => (<option key={formIndex} value={form._id}>{form.name}</option>))}
-                        </select>
-                      </div>}
-                    {('matching_qualification' in action) &&
-                      <div className="panel panel-default">
-                        <div className="panel-heading">Matching Qualifications</div>
-                        <div className="panel-body">
-                        {!sourceFormFieldsLoading && <QueryBuilder
-                          fields={[{
-                            label: (action.type === 'insert' || action.type === 'update') ? 'Source' : 'Target',
-                            value: ''
-                          }, ...sourceFormFields]}
-                          targetFields={[{
-                            label: (action.type === 'insert' || action.type === 'update') ? 'Target' : 'Source',
-                            value: ''
-                          }, ...targetFormFields]}
-                            operators={[{ name: 'equal', label: '=' }, { name: 'is_null', label: 'isNull' }]}
-                            query={action.matching_qualification}
-                            onQueryChange={(query: any) => this.logMatchingQualificationsQuery(query)} />}
-                        </div>
-                      </div>}
-                    {('field_mapping' in action) &&
-                      <div className="panel panel-default">
-                        <div className="panel-heading">Mapping Fields</div>
-                        <div className="panel-body">
-                        {!sourceFormFieldsLoading && <QueryBuilder
-                          fields={[{
-                            label: (action.type === 'insert' || action.type === 'update') ? 'Source' : 'Target',
-                            value: ''
-                          }, ...sourceFormFields]}
-                          targetFields={[{
-                            label: (action.type === 'insert' || action.type === 'update') ? 'Target' : 'Source',
-                            value: ''
-                          }, ...targetFormFields]}
-                            disableCombinators={true}
-                            disableGroupAction={true}
-                            operators={[{ name: '=', label: '=' }]}
-                            customRules={{ customValue: '' }}
-                            query={action.field_mapping}
-                            onQueryChange={(query: any) => this.logFieldMapping(query)} />}
-                        </div>
-                      </div>}
-                  </div>
-                </div>}
+                </div>
+              </div>
             </div>
           </div>
           <div className="footer-fab-right mb-3 mr-3">
@@ -424,7 +428,7 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
               </button>
             </div>
           </div>
-        </div>}
+        </React.Fragment>}
         {!isTriggerLoading && <Modal
           show={this.state.showPopup}
           onHide={this.handleHidePopup}

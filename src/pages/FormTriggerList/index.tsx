@@ -61,7 +61,7 @@ class FormTriggerList extends React.Component<IFormSchemasProps & RouteComponent
     return (
       <div className="shadow-container">
         <CButton
-          className="btn btn-primary pull-right"
+          className="btn btn-primary pull-right mb-2"
           onClick={() => this.addFormTrigger()}
           name="Add Trigger"
         />

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Glyphicon, MenuItem, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Glyphicon, Navbar, Dropdown} from 'react-bootstrap';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -59,15 +59,11 @@ class NavBar extends React.Component<INavProps, INavState> {
     ];
   }
 
-  public componentWillMount = () => {
-    // NavBar.loadStyleSheet(this.props.activeTheme);
-  }
-
   public render() {
     const { activeLanguage, activeTheme, languages } = this.props;
     const { availableThemes } = this.state;
     return (
-      <div className="navbar-container">
+      <div className="navbar-container fixed-top">
         <Navbar collapseOnSelect={true} fixedTop={true} fluid={true}>
           <Navbar.Header>
             <Navbar.Brand>
@@ -75,38 +71,53 @@ class NavBar extends React.Component<INavProps, INavState> {
               <img className="logo" src={logo} />
               </a>
             </Navbar.Brand>
-            <Navbar.Toggle />
           </Navbar.Header>
-          <Navbar.Collapse>
-            <Nav pullRight={true}>
-              <NavDropdown eventKey={3} title={activeLanguage ? activeLanguage.name : ''} id="basic-nav-dropdown">
-                {languages.map((lang, index) => (
-                  <MenuItem
-                    key={index}
-                    eventKey={4.1}
-                    onClick={() => this.handleLangSelection(lang)}
-                  >{lang.name}</MenuItem>
-                ))}
-              </NavDropdown>
-              <NavDropdown eventKey={4} title={activeTheme} id="basic-nav-dropdown-2">
-                {availableThemes.map((availableTheme: any, index) => (
-                  <MenuItem key={index} eventKey={5.1} className="themeName"
-                    onClick={() => this.handleThemeSelection(availableTheme.code)}>
-                    <span style={{ backgroundColor: availableTheme.primaryColor }} className="themeIcon" />
-                    {availableTheme.code}
-                  </MenuItem>
-                ))}
-              </NavDropdown>
-              <NavDropdown eventKey={5} title={<Glyphicon glyph="user"/>} id="basic-nav-dropdown-2">
-                    {this.userMenu.map((menu: any, index) => (
-                      <MenuItem key={index} eventKey={5.1} className="themeName"
-                      onClick={() => menu.onClick()}>
-                         <Translate id={menu.name} />
-                      </MenuItem>
+            <div>
+              <Dropdown id="language-dropdown" className="transparent-button">
+                <Dropdown.Toggle>
+                  {activeLanguage ? activeLanguage.name : ''}
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  {languages.map(lang => (
+                    <li
+                      key={lang.name}
+                      className="dropdown-item"
+                      onClick={() => this.handleLangSelection(lang)}
+                    >
+                      {lang.name}
+                    </li>
                     ))}
-              </NavDropdown>
-            </Nav>
-          </Navbar.Collapse>
+                </Dropdown.Menu>
+              </Dropdown>
+              <Dropdown id="theme-dropdown" className="transparent-button">
+                <Dropdown.Toggle>
+                  {activeTheme}
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  {availableThemes.map((availableTheme: any, index) => (
+                    <li
+                      className="dropdown-item themeName"
+                      onClick={() => this.handleThemeSelection(availableTheme.code)}
+                    >
+                      <span style={{ backgroundColor: availableTheme.primaryColor }} className="themeIcon" />
+                      {availableTheme.code}
+                    </li>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+              <Dropdown id="user-dropdown" className="transparent-button">
+                <Dropdown.Toggle>
+                  <Glyphicon glyph="user"/>
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  {this.userMenu.map((menu: any, index) => (
+                    <li className="dropdown-item" onClick={() => menu.onClick()}>
+                      <Translate id={menu.name} />
+                    </li>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
         </Navbar>
       </div>
     );

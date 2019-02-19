@@ -114,8 +114,8 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
     const { categoryName, length, currentPage, columns, tenantAdmin, isOptionDisable } = this.state;
     return (
       <div className="shadow-container">
-        <div className="row">
-          <div className="col-md-offset-1 col-md-2">
+        <div className="row mb-2">
+          <div className="offset-md-1 col-md-2">
             <h4>Organization</h4>
           </div>
           <div className="col-md-6 option-placeholder">
@@ -131,7 +131,7 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
           </div>
         </div>
         <div className="row">
-          <div className="col-md-offset-1 col-md-2">
+          <div className="offset-md-1 col-md-2">
             <h4>Category</h4>
           </div>
           <div className="col-md-3 option-placeholder">
@@ -148,9 +148,9 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
             </select>
           </div>
         </div>
-        <div className="row">
+        <div className="row float-right">
           <CButton
-            className="btn btn-primary pull-right"
+            className="btn btn-primary mb-2"
             disabled={saveDisabled}
             onClick={() => this.saveRolePermission()}
             name="Save"

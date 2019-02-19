@@ -1,7 +1,6 @@
 @import '../../_theme.scss';
 
 .navbar-container {
-  margin-bottom: 10px;
 
   .logo{
     height: 30px;
@@ -32,6 +31,40 @@
       color: $contrastTextColour;
     }
 
+    .dropdown.open {
+      .dropdown-menu {
+        display: block;
+        top: 45px;
+        right: -15px;
+        left: -70px;
+        box-shadow: $box-light-shadow;
+        .dropdown-item {
+          &:active,
+          &:hover,
+          &:focus {
+            background-color: $lightGreyBackground;
+          }
+        }
+        .dropdown-item {
+          cursor: pointer;
+        }
+      }
+    }
+    .transparent-button {
+      .btn-default {
+        color: $white !important;
+        background-color: transparent !important;
+        border-color: transparent !important;
+        &:hover,
+        &:focus,
+        &:active,
+        &.active {
+          color: $white !important;
+          background-color: transparent !important;
+          border-color: transparent !important;
+        }
+      }
+    }
     .dropdown-toggle {
       text-transform: capitalize;
       &:active,

@@ -162,7 +162,7 @@ class EmailTemplate extends React.Component<IEmailTemplateProps & RouteComponent
               {...this.editorProps}
             />
         }
-        <div className="row text-right mb-20">
+        <div className="row d-flex justify-content-end mb-20">
           <CButton
             className="mt-20 btn btn-primary"
             type="button"

@@ -8,36 +8,46 @@
   background-color: $background;
   border-color: $border;
 
+  &:hover,
   &:focus,
   &.focus {
-    color: $color;
-    background-color: darken($background, 10%);
-    border-color: darken($border, 25%);
+    color: $background;
+    background-color: $color;
+    border-color: $border;
+    box-shadow: none;
   }
   &:active,
   &.active,
   .open > &.dropdown-toggle {
-    color: $color;
-    background-color: darken($background, 10%);
-    background-image: none;
-    border-color: darken($border, 12%);
+    color: $color !important;
+    background-color: $background !important;
+    background-image: none !important;
+    border-color: darken($border, 12%) !important;
+    box-shadow: none;
 
     &:hover,
     &:focus,
     &.focus {
-      color: $color;
-      background-color: darken($background, 17%);
-      border-color: darken($border, 25%);
+      color: $color !important;
+      background-color: $background !important;
+      border-color: darken($border, 25%) !important;
+      box-shadow: none;
     }
   }
   &.disabled,
   &[disabled],
-  fieldset[disabled] & {
+  &:disabled,
+  fieldset[disabled] {
+    color: $color;
+    background-color: $background;
+    border-color: $border;
     &:hover,
     &:focus,
     &.focus {
-      background-color: $background;
-      border-color: $border;
+      color: $color;
+      background-color: $background !important;
+      border-color: $border !important;
+      box-shadow: none;
     }
   }
 
@@ -60,4 +70,21 @@
   &:focus  {
     background-color: $btn-color;
   }
+}
+
+@mixin user-select($select) {
+  -webkit-user-select: $select;
+     -moz-user-select: $select;
+      -ms-user-select: $select; // IE10+
+          user-select: $select;
+}
+@mixin tab-focus() {
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
+@mixin opacity($opacity) {
+  $opacity-ie: ($opacity * 100);  // IE8 filter
+  filter: alpha(opacity=$opacity-ie);
+  opacity: $opacity;
 }

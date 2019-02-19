@@ -42,7 +42,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
         <img src={Image} />
       </div>
         <div className="content">
-          <div className="card center-block card-signin">
+          <div className="card m-auto card-signin border-0">
             <div className="card-body">
               <h5 className="card-title text-center">Sign In</h5>
               <form className="form-signin">
