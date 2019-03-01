@@ -1,4 +1,4 @@
-import Choices from 'formiojs/node_modules/choices.js/public/assets/scripts/choices';
+import Choices from 'choices.js/public/assets/scripts/choices';
 import _ from 'lodash';
 import Components from 'formiojs/components/Components';
 import BaseComponent from 'formiojs/components/base/Base';
