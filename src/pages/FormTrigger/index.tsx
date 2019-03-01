@@ -127,6 +127,11 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
 
   public saveTriggerAction = () => {
     const { action, actionIndex } = this.state;
+    const { field_mapping } = action;
+    if (field_mapping && field_mapping.rules.length > 0 &&
+      field_mapping.rules[0] && field_mapping.rules[0].customValue) {
+        field_mapping.rules[0].field = '';
+    }
     this.setState((state: ITriggerState) => {
       if (actionIndex !== undefined) {
         state.trigger.actions[actionIndex] = action;
@@ -286,9 +291,18 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
     this.props.updateFormTriggerState();
   }
 
+  getTargetOrSourceFields = (fieldType: string) => {
+    const { action } = this.state;
+    const { targetFormFields, sourceFormFields } = this.props;
+    if ((action.type === 'insert' || action.type === 'update') && fieldType === 'Target') {
+      return targetFormFields;
+    }
+    return sourceFormFields;
+  }
+
   public render() {
     const { actionTypeList, trigger, actionIndex, action, currentFormName } = this.state;
-    const { formList, sourceFormFields, sourceFormFieldsLoading, targetFormFields, isTriggerLoading
+    const { formList, sourceFormFields, sourceFormFieldsLoading, isTriggerLoading
     } = this.props;
     return (
       <div className="row">
@@ -378,13 +392,13 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
                             <div className="panel-body">
                             {!sourceFormFieldsLoading && <QueryBuilder
                               fields={[{
-                                label: (action.type === 'insert' || action.type === 'update') ? 'Source' : 'Target',
+                                label: 'Target',
                                 value: ''
-                              }, ...sourceFormFields]}
+                              }, ...this.getTargetOrSourceFields('Target')]}
                               targetFields={[{
-                                label: (action.type === 'insert' || action.type === 'update') ? 'Target' : 'Source',
+                                label: 'Source',
                                 value: ''
-                              }, ...targetFormFields]}
+                              }, ...this.getTargetOrSourceFields('Source')]}
                                 operators={[{ name: 'equal', label: '=' }, { name: 'is_null', label: 'isNull' }]}
                                 query={action.matching_qualification}
                                 onQueryChange={(query: any) => this.logMatchingQualificationsQuery(query)} />}
@@ -396,13 +410,13 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
                             <div className="panel-body">
                             {!sourceFormFieldsLoading && <QueryBuilder
                               fields={[{
-                                label: (action.type === 'insert' || action.type === 'update') ? 'Source' : 'Target',
+                                label: 'Target',
                                 value: ''
-                              }, ...sourceFormFields]}
+                              }, ...this.getTargetOrSourceFields('Target')]}
                               targetFields={[{
-                                label: (action.type === 'insert' || action.type === 'update') ? 'Target' : 'Source',
+                                label: 'Source',
                                 value: ''
-                              }, ...targetFormFields]}
+                              }, ...this.getTargetOrSourceFields('Source')]}
                                 disableCombinators={true}
                                 disableGroupAction={true}
                                 operators={[{ name: '=', label: '=' }]}
