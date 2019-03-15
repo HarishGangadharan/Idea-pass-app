@@ -8,7 +8,6 @@ import {
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose } from 'redux';
-import { fetchUsers } from '../../actions/user';
 import { Component1, ResponsiveLineChart } from '../../components';
 import Ticket from '../../components/HomeComponents/TicketComponent';
 import Column from '../../components/Table/Column';
@@ -20,7 +19,6 @@ import './home.css';
 interface IProps extends LocalizeContextProps, RouteComponentProps {
   value: string;
   activeLanguage: Language;
-  fetchUsers: () => void;
   users: object[];
   loading: boolean;
 }
@@ -40,10 +38,6 @@ class Home extends React.PureComponent<IProps, IHomeState> {
         new Column().withKey('company.name').withLabel('Company')
       ]
     };
-  }
-
-  public componentDidMount() {
-    this.props.fetchUsers();
   }
 
   public render() {
@@ -79,24 +73,16 @@ const mapStateToProps = (state: IState) => ({
   users: state.user.users
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
-  fetchUsers: () => dispatch(fetchUsers())
-});
-
 interface IStateProps {
   users: any[];
   loading: boolean;
 }
 
-interface IDispatchProps {
-  fetchUsers: () => void;
-}
-
 export default compose(
   withRouter,
-  connect<IStateProps, IDispatchProps, IProps, IState>(
+  connect<IStateProps, null, IProps, IState>(
     mapStateToProps,
-    mapDispatchToProps
+    null
   ),
   withLocalize
 )(Home);

@@ -64,6 +64,7 @@ interface ITableContext {
   sortOrder: number;
   filters: string;
   selected: string[];
+  data: object[]
 }
 
 /**
@@ -119,15 +120,21 @@ export default class Table extends React.Component<ITableProps, ITableContext> {
         .map(col => col.getKey()),
       selected: [],
       sortField: props.keyField,
-      sortOrder: 1
+      sortOrder: 1,
+      data: []
     };
     if (this.props.assignRef) {
       this.props.assignRef(this);
     }
   }
+  componentWillReceiveProps(props: any) {
+    if (props.data !== this.props.data) {
+      this.setState({ data: props.data });
+    }
+  }
 
-  public render() {
-    const { keyField, data, loading, total, onRowClick, remote, isExportable, enableColumnHide,
+  renderTable = (data: object[]) => {
+    const { keyField, loading, total, onRowClick, remote, isExportable, enableColumnHide,
       enableGlobalSearch, selectable, rowSelectForExport, enableInfiniteScroll,
       expandRow } = this.props;
     const { length, currentPage, columns, searchableColumns } = this.state;
@@ -139,140 +146,149 @@ export default class Table extends React.Component<ITableProps, ITableContext> {
         onSelectAll: this.handleOnSelectAll,
         selected: this.state.selected
       }} : {};
+    return (
+      <ToolkitProvider
+        keyField={keyField}
+        data={data}
+        columns={columns}
+        search={enableGlobalSearch || false}
+        exportCSV={isExportable ? { onlyExportSelection: (selectable && rowSelectForExport) || false } : false}
+      >
+        {(props: IToolkitProps) => (
+          <React.Fragment>
+            <div className="row table-toolbar">
+              <div className="col-md-6">
+                {enableGlobalSearch && <React.Fragment>
+                    <SearchBar { ...props.searchProps } className="globalSearch" delay={1000} placeholder="Search Something!!!" />
+                    <DropdownButton
+                        title="Searchable Columns"
+                        key="column-search"
+                        id="column-search"
+                        open={this.state.searchColumnToggle}
+                        // @ts-ignore
+                        onToggle={(open: false, event: any, source: any) => {
+                          if (source.source !== 'select') {
+                            this.setState({
+                              searchColumnToggle: open
+                            });
+                          }
+                        }}
+                        // @ts-ignore
+                        onSelect={(eventKey: any, event: any): void => {
+                          this.onColumnSearchToggle(searchableColumns.find(searchColumn => searchColumn === eventKey) !== undefined, eventKey);
+                        }}
+                    >
+                      {columns
+                        .filter(col => col.type === 'TEXT')
+                        .map((column: IBootstrapColumn) => (
+                        <MenuItem key={`${column.searchKey}-search`} eventKey={column.searchKey}>
+                          <Checkbox
+                            checked={searchableColumns.find(searchColumn => searchColumn === column.searchKey) !== undefined}
+                            onChange={(e) => e.preventDefault()}
+                          >
+                            {column.text}
+                          </Checkbox>
+                        </MenuItem>
+                      ))}
+                    </DropdownButton>
+                </React.Fragment>}
+              </div>
+              <div className="col-md-6 table-options">
+                {selectable && <span className="selection-renderer">
+                  {`Selected ${this.state.selected.length} of ${this.props.total}`}
+                </span>}
+                {enableColumnHide &&
+                <DropdownButton
+                    title="Columns"
+                    key="column-toggle"
+                    id="column-toggle"
+                    open={this.state.columnToggleOpen}
+                    // @ts-ignore
+                    onToggle={(open: false, event: any, source: any) => {
+                      if (source.source !== 'select') {
+                        this.setState({
+                          columnToggleOpen: open
+                        });
+                      }
+                    }}
+                    // @ts-ignore
+                    onSelect={this.onColumnHide}
+                >
+                  {columns.map((column: IBootstrapColumn, index) => (
+                    <MenuItem key={column.text} eventKey={column.text}>
+                      <Checkbox
+                        checked={!column.hidden}>
+                        {column.text}
+                      </Checkbox>
+                    </MenuItem>
+                  ))}
+                </DropdownButton>}
+                {isExportable && <ExportCSVButton
+                  { ...props.csvProps }
+                  onFetchAll={this.onFetchAllForExport}
+                  remote={remote || false}
+                >Export CSV!!</ExportCSVButton>}
+              </div>
+            </div>
+            <Table.ScrollDiv
+              hasMore={(currentPage * length) < total}
+              enabled={enableInfiniteScroll || false}
+              onScroll={() => {
+                this.setState({
+                  currentPage: this.state.currentPage + 1
+                }, () => this.refreshTable(true));
+              }}
+              content={<BootstrapTable
+                {...props.baseProps}
+                expandRow={expandRow}
+                remote={remote || false}
+                loading={loading}
+                onTableChange={this.onTableChange}
+                headerClasses="table-header"
+                rowClasses={`table-rows ${selectable ? 'selectable' : ''}`}
+                noDataIndication={this.customNoDataIndication}
+                defaultSorted={[{
+                  dataField: keyField,
+                  order: 'asc'
+                }]}
+                pagination={ !enableInfiniteScroll ? PaginationFactory({
+                  firstPageTitle: 'Go to first',
+                  hidePageListOnlyOnePage: true,
+                  hideSizePerPage: total === 0,
+                  lastPageTitle: 'Go to last',
+                  nextPageTitle: 'Go to next',
+                  page: currentPage,
+                  paginationTotalRenderer: this.customPaginationTotal,
+                  prePageTitle: 'Go to previous',
+                  showTotal: total !== 0,
+                  sizePerPage: length,
+                  totalSize: total
+                }) : undefined}
+                rowEvents={{
+                  onClick: (e: any, row: object, rowIndex: number) => {
+                    if (onRowClick) {
+                      onRowClick(row);
+                    }
+                  }
+                }}
+                filter={FilterFactory()}
+                {...selectionProps}
+              />}
+            />
+          </React.Fragment>
+        )}
+      </ToolkitProvider>
+    );
+  }
+
+  public render() {
+    const { loading, total } = this.props;
+    const { data } = this.state;
     // @ts-ignore
     return (
       <div className={`customTableContainer ${loading ? 'loading' : ''} ${!loading && total === 0 ? 'noData' : ''}`}>
-        <ToolkitProvider
-          keyField={keyField}
-          data={data}
-          columns={columns}
-          search={enableGlobalSearch || false}
-          exportCSV={isExportable ? { onlyExportSelection: (selectable && rowSelectForExport) || false } : false}
-        >
-          {(props: IToolkitProps) => (
-            <React.Fragment>
-              <div className="row table-toolbar">
-                <div className="col-md-6">
-                  {enableGlobalSearch && <React.Fragment>
-                      <SearchBar { ...props.searchProps } className="globalSearch" delay={1000} placeholder="Search Something!!!" />
-                      <DropdownButton
-                          title="Searchable Columns"
-                          key="column-search"
-                          id="column-search"
-                          open={this.state.searchColumnToggle}
-                          // @ts-ignore
-                          onToggle={(open: false, event: any, source: any) => {
-                            if (source.source !== 'select') {
-                              this.setState({
-                                searchColumnToggle: open
-                              });
-                            }
-                          }}
-                          // @ts-ignore
-                          onSelect={(eventKey: any, event: any): void => {
-                            this.onColumnSearchToggle(searchableColumns.find(searchColumn => searchColumn === eventKey) !== undefined, eventKey);
-                          }}
-                      >
-                        {columns
-                          .filter(col => col.type === 'TEXT')
-                          .map((column: IBootstrapColumn) => (
-                          <MenuItem key={`${column.searchKey}-search`} eventKey={column.searchKey}>
-                            <Checkbox
-                              checked={searchableColumns.find(searchColumn => searchColumn === column.searchKey) !== undefined}
-                              onChange={(e) => e.preventDefault()}
-                            >
-                              {column.text}
-                            </Checkbox>
-                          </MenuItem>
-                        ))}
-                      </DropdownButton>
-                  </React.Fragment>}
-                </div>
-                <div className="col-md-6 table-options">
-                  {selectable && <span className="selection-renderer">
-                    {`Selected ${this.state.selected.length} of ${this.props.total}`}
-                  </span>}
-                  {enableColumnHide &&
-                  <DropdownButton
-                      title="Columns"
-                      key="column-toggle"
-                      id="column-toggle"
-                      open={this.state.columnToggleOpen}
-                      // @ts-ignore
-                      onToggle={(open: false, event: any, source: any) => {
-                        if (source.source !== 'select') {
-                          this.setState({
-                            columnToggleOpen: open
-                          });
-                        }
-                      }}
-                      // @ts-ignore
-                      onSelect={this.onColumnHide}
-                  >
-                    {columns.map((column: IBootstrapColumn, index) => (
-                      <MenuItem key={column.text} eventKey={column.text}>
-                        <Checkbox
-                          checked={!column.hidden}>
-                          {column.text}
-                        </Checkbox>
-                      </MenuItem>
-                    ))}
-                  </DropdownButton>}
-                  {isExportable && <ExportCSVButton
-                    { ...props.csvProps }
-                    onFetchAll={this.onFetchAllForExport}
-                    remote={remote || false}
-                  >Export CSV!!</ExportCSVButton>}
-                </div>
-              </div>
-              <Table.ScrollDiv
-                hasMore={(currentPage * length) < total}
-                enabled={enableInfiniteScroll || false}
-                onScroll={() => {
-                  this.setState({
-                    currentPage: this.state.currentPage + 1
-                  }, () => this.refreshTable(true));
-                }}
-                content={<BootstrapTable
-                  {...props.baseProps}
-                  expandRow={expandRow}
-                  remote={remote || false}
-                  loading={loading}
-                  onTableChange={this.onTableChange}
-                  headerClasses="table-header"
-                  rowClasses={`table-rows ${selectable ? 'selectable' : ''}`}
-                  noDataIndication={this.customNoDataIndication}
-                  defaultSorted={[{
-                    dataField: keyField,
-                    order: 'asc'
-                  }]}
-                  pagination={ !enableInfiniteScroll ? PaginationFactory({
-                    firstPageTitle: 'Go to first',
-                    hidePageListOnlyOnePage: true,
-                    hideSizePerPage: total === 0,
-                    lastPageTitle: 'Go to last',
-                    nextPageTitle: 'Go to next',
-                    page: currentPage,
-                    paginationTotalRenderer: this.customPaginationTotal,
-                    prePageTitle: 'Go to previous',
-                    showTotal: total !== 0,
-                    sizePerPage: length,
-                    totalSize: total
-                  }) : undefined}
-                  rowEvents={{
-                    onClick: (e: any, row: object, rowIndex: number) => {
-                      if (onRowClick) {
-                        onRowClick(row);
-                      }
-                    }
-                  }}
-                  filter={FilterFactory()}
-                  {...selectionProps}
-                />}
-              />
-            </React.Fragment>
-          )}
-        </ToolkitProvider>
+        {data.length === 0 && this.renderTable([])}
+        {data.length > 0 && this.renderTable(data)}
       </div>
     );
   }

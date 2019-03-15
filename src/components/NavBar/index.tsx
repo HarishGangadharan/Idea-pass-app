@@ -96,6 +96,7 @@ class NavBar extends React.Component<INavProps, INavState> {
                 <Dropdown.Menu>
                   {availableThemes.map((availableTheme: any, index) => (
                     <li
+                      key={index}
                       className="dropdown-item themeName"
                       onClick={() => this.handleThemeSelection(availableTheme.code)}
                     >
@@ -111,7 +112,7 @@ class NavBar extends React.Component<INavProps, INavState> {
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   {this.userMenu.map((menu: any, index) => (
-                    <li className="dropdown-item" onClick={() => menu.onClick()}>
+                    <li key={index} className="dropdown-item" onClick={() => menu.onClick()}>
                       <Translate id={menu.name} />
                     </li>
                   ))}

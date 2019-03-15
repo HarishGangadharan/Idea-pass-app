@@ -1,5 +1,4 @@
 import { call, put } from 'redux-saga/effects';
-import { IRequestFilter } from 'request-filter';
 import { toast } from 'react-toastify';
 import { updateLoggedInStatus } from '../actions/global';
 import { fetchUsersFail, fetchUsersSuccess } from '../actions/user';
@@ -16,7 +15,8 @@ import { getUsers, loginUser, logoutUser } from '../services/user';
 import ErrorConstants from '../constants/errorConstants';
 import storage from '../utils/storage';
 
-function* onFetchUsers(requestFilter: IRequestFilter) {
+function* onFetchUsers(action: any) {
+  const { requestFilter } = action;
   try {
     const data = yield call(getUsers, requestFilter);
     yield put(fetchUsersSuccess(data));
