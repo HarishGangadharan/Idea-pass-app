@@ -14,10 +14,6 @@
 # IDE
 /.idea
 
-# docker
-Dockerfile.dev
-docker-compose.yml
-
 # misc
 .DS_Store
 .env
