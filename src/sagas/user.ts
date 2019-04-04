@@ -30,7 +30,18 @@ function* onLoginUser(action: any) {
   try {
     const response = yield call(loginUser, email, password);
     updateUserSession(true);
-    const assignedRoles = response.data.roles.join(',');
+    const responseRoles: object = response.data.roles;
+    let assignedRoles: string = '';
+    let constructedRoles: string[] = [];
+    if (Array.isArray(responseRoles)) {
+      assignedRoles = responseRoles.join(',');
+    } else if (Object.keys(responseRoles).length > 0) {
+      Object.keys(responseRoles).forEach(item => {
+        constructedRoles = [...constructedRoles, ...responseRoles[item]];
+      });
+      const uniqueRoles = (roles: string[]) => roles.filter((value: string, index) => roles.indexOf(value) === index);
+      assignedRoles = uniqueRoles(constructedRoles).join(',');
+    }
     storage.setItem(AppProperties.USER_ID, response.data._id);
     storage.setItem(AppProperties.ROLES, assignedRoles);
     if (response.data.tenant) {
@@ -40,7 +51,7 @@ function* onLoginUser(action: any) {
     yield put(updateLoggedInStatus({ loggedIn: Boolean(response) }));
     yield put(loginUserSuccess(response));
   } catch (error) {
-    if(error === 401) {
+    if (error === 401) {
       toast.error(ErrorConstants.USER_NOT_FOUND.message);
     }
     yield put(loginUserFail(error));
