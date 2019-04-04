@@ -193,7 +193,7 @@ export default [
       return newItems;
     },
     data: {
-      url: '/form/{{ data.resource }}'
+      url: '/{{ data.resource }}'
     },
     conditional: {
       json: {
@@ -233,7 +233,6 @@ export default [
       json: {
         and: [
           { '!==': [{ var: 'data.dataSrc' }, 'values'] },
-          { '!==': [{ var: 'data.dataSrc' }, 'resource'] },
           { '!==': [{ var: 'data.dataSrc' }, 'custom'] }
         ]
       }

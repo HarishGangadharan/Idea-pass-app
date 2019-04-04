@@ -195,9 +195,7 @@ export default class SelectComponent extends BaseComponent {
       if (this.choices) {
         // Add the currently selected choices if they don't already exist.
         const currentChoices = Array.isArray(this.dataValue) ? this.dataValue : [this.dataValue];
-        return currentChoices.reduce((defaultAdded, choice) => {
-          return (this.addCurrentChoices(choice, items) || defaultAdded);
-        }, false);
+        return this.addCurrentChoices(currentChoices, items);
       }
       else if (!this.component.multiple) {
         this.addPlaceholder(this.selectInput);
@@ -213,7 +211,7 @@ export default class SelectComponent extends BaseComponent {
   get scrollLoading() {
     return this.isScrollLoading;
   }
-    /**
+  /**
    * Sets the scroll loading state.
    *
    * @param isScrolling
@@ -293,6 +291,7 @@ export default class SelectComponent extends BaseComponent {
         _.isEqual(this.currentItems[1], items[1])
       ) {
         this.stopInfiniteScroll();
+        this.loading = false;
         return;
       }
 
@@ -417,7 +416,7 @@ export default class SelectComponent extends BaseComponent {
 
     // Add filter capability
     if (this.component.filter) {
-      url += `&${this.interpolate(this.component.filter)}`;
+      url += (!url.includes('?') ? '?' : '&') + this.interpolate(this.component.filter);
     }
 
     // Make the request.
@@ -429,9 +428,10 @@ export default class SelectComponent extends BaseComponent {
     url = utils.interpolateUrl(url);
     Formio.makeRequest(this.options.formio, 'select', url, method, body, options)
       .then((response) => {
+        this.loading = false;
         const scrollTop = !this.scrollLoading && (this.currentItems.length === 0);
         this.setItems(response, !!search);
-        if (scrollTop) {
+        if (scrollTop && this.choices) {
           this.choices.choiceList.scrollToTop();
         }
       })
@@ -452,7 +452,7 @@ export default class SelectComponent extends BaseComponent {
    */
   get requestHeaders() {
     // Create the headers object.
-    const headers = new Headers();
+    const headers = new Formio.Headers();
 
     // Add custom headers to the url.
     if (this.component.data && this.component.data.headers) {
@@ -512,10 +512,9 @@ export default class SelectComponent extends BaseComponent {
           return;
         }
         // let resourceUrl = this.options.formio ? this.options.formio.formsUrl : `${Formio.getProjectUrl()}/form`;
-        // resourceUrl += (`/${this.component.data.resource}/submission`);
-
+        let resourceUrl = (`${this.component.data.resource}`);
         try {
-          this.loadItems(this.component.data.resource, searchInput, this.requestHeaders);
+          this.loadItems(resourceUrl, searchInput, this.requestHeaders);
         }
         catch (err) {
           console.warn(`Unable to load resources for ${this.key}`);
@@ -536,7 +535,7 @@ export default class SelectComponent extends BaseComponent {
           if (!baseUrl) {
             baseUrl = Formio.getBaseUrl();
           }
-          url = baseUrl + this.component.data.url;
+          url = this.component.data.url;
         }
 
         if (!this.component.data.method) {
@@ -630,7 +629,6 @@ export default class SelectComponent extends BaseComponent {
     }
 
     const choicesOptions = {
-      ...customOptions,
       removeItemButton: this.component.disabled ? false : _.get(this.component, 'removeItemButton', true),
       itemSelectText: '',
       classNames: {
@@ -652,7 +650,8 @@ export default class SelectComponent extends BaseComponent {
         include: 'score',
         threshold: _.get(this, 'component.searchThreshold', 0.3),
       }, _.get(this, 'component.fuseOptions', {})),
-      itemComparer: _.isEqual
+      itemComparer: _.isEqual,
+      ...customOptions,
     };
 
     const tabIndex = input.tabIndex;
@@ -704,7 +703,10 @@ export default class SelectComponent extends BaseComponent {
     }
 
     this.addEventListener(input, 'showDropdown', () => {
-      this.triggerUpdate();
+      if (this.dataValue || this.component.key === 'data.resource') {
+        this.triggerUpdate();
+      }
+      this.update();
     });
     if (placeholderValue && this.choices._isSelectOneElement) {
       this.addEventListener(input, 'removeItem', () => {
@@ -767,9 +769,17 @@ export default class SelectComponent extends BaseComponent {
    * @param {*} value
    * @param {Array} items
    */
-  addCurrentChoices(value, items) {
-    if (value) {
+  addCurrentChoices(values, items) {
+    if (!values) {
+      return false;
+    }
+    const notFoundValuesToAdd = [];
+    const added = values.reduce((defaultAdded, value) => {
+      if (!value) {
+        return defaultAdded;
+      }
       let found = false;
+
       // Make sure that `items` and `this.selectOptions` points
       // to the same reference. Because `this.selectOptions` is
       // internal property and all items are populated by
@@ -790,19 +800,25 @@ export default class SelectComponent extends BaseComponent {
 
       // Add the default option if no item is found.
       if (!found) {
-        if (this.choices) {
-          this.choices.setChoices([{
-            value: this.itemValue(value),
-            label: this.itemTemplate(value)
-          }], 'value', 'label', true);
-        }
-        else {
-          this.addOption(this.itemValue(value), this.itemTemplate(value));
-        }
+        notFoundValuesToAdd.push({
+          value: this.itemValue(value),
+          label: this.itemTemplate(value)
+        });
         return true;
       }
+      return found || defaultAdded;
+    }, false);
+    if (notFoundValuesToAdd.length) {
+      if (this.choices) {
+        this.choices.setChoices(notFoundValuesToAdd, 'value', 'label', true);
+      }
+      else {
+        notFoundValuesToAdd.forEach(notFoundValue => {
+          this.addOption(notFoundValue.value, notFoundValue.label);
+        });
+      }
     }
-    return false;
+    return added;
   }
 
   getView(data) {
@@ -889,9 +905,7 @@ export default class SelectComponent extends BaseComponent {
         this.choices.removeActiveItems();
         // Add the currently selected choices if they don't already exist.
         const currentChoices = Array.isArray(this.dataValue) ? this.dataValue : [this.dataValue];
-        _.each(currentChoices, (choice) => {
-          this.addCurrentChoices(choice, this.selectOptions);
-        });
+        this.addCurrentChoices(currentChoices, this.selectOptions);
         this.choices.setChoices(this.selectOptions, 'value', 'label', true).setChoiceByValue(value);
       }
       else if (hasPreviousValue) {
