@@ -184,6 +184,13 @@ const formTriggerReducer = (state: IFormTrigger = currentFormTriggerInitialState
         data: action.data ? { ...action.data } : currentFormTriggerInitialState.data ,
         isLoading: false
       };
+    case FormTriggerConstants.CLEAR_FORM_TRIGGER_DATA:
+      return {
+        data: {
+          ...currentFormTriggerInitialState.data,
+          actions: []
+        }
+      };
     default:
       return state;
   }

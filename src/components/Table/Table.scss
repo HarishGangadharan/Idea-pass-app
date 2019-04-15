@@ -112,4 +112,22 @@ $table-border-color: #dddddd;
     display: inline-block;
     width: 50%;
   }
+  .dropdown.open {
+    .dropdown-menu {
+      display: block;
+      top: 45px;
+      right: -15px;
+      left: -70px;
+      box-shadow: $box-light-shadow;
+      li {
+        padding: 0.25rem 0.5rem;
+        a {
+          color: $primaryTextColor;
+          input[type="checkbox"] {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
 }

@@ -4,7 +4,14 @@ import { Button, Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { fetchFormSchemaList, fetchFormSchemaRequest } from '../../actions/formschema';
-import { fetchFormTriggerRequest, fetchSourceFormFieldsRequest, fetchTargetFormFieldsRequest, saveFormTriggerRequest, updateFormTriggerState } from '../../actions/formTrigger';
+import {
+  fetchFormTriggerRequest,
+  fetchSourceFormFieldsRequest,
+  fetchTargetFormFieldsRequest,
+  saveFormTriggerRequest,
+  updateFormTriggerState,
+  clearTriggerData
+} from '../../actions/formTrigger';
 import { BaseIcon } from '../../components';
 import CButton from '../../components/Button/CButton';
 import CreateTriggerComponent from '../../components/CreateTriggerComponent';
@@ -19,6 +26,7 @@ interface ITriggerDispatchMap {
   fetchFormTriggerRequest: (triggerId: string, callBack?: (trigger: ITrigger) => void) => void;
   saveFormTriggerRequest: (data: any, triggerId?: string) => void;
   updateFormTriggerState: (data?: any) => void;
+  clearTriggerData: () => void;
   fetchFormSchemaList: () => void;
   fetchSourceFormFieldsRequest: (formName: string) => void;
   fetchTargetFormFieldsRequest: (formName: string) => void;
@@ -130,7 +138,7 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
     const { field_mapping } = action;
     if (field_mapping && field_mapping.rules.length > 0 &&
       field_mapping.rules[0] && field_mapping.rules[0].customValue) {
-        field_mapping.rules[0].field = '';
+        field_mapping.rules[0].value = '';
     }
     this.setState((state: ITriggerState) => {
       if (actionIndex !== undefined) {
@@ -289,6 +297,7 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
 
   public componentWillUnmount = () => {
     this.props.updateFormTriggerState();
+    this.props.clearTriggerData();
   }
 
   getTargetOrSourceFields = (fieldType: string) => {
@@ -447,8 +456,9 @@ class FormTrigger extends React.Component<IMergedProps, ITriggerState> {
           show={this.state.showPopup}
           onHide={this.handleHidePopup}
           container={this}
-          aria-labelledby="contained-modal-title">
-          <Modal.Header closeButton={true}>
+          aria-labelledby="contained-modal-title"
+          className={`${this.state.showPopup ? 'show' : ''}`}>
+          <Modal.Header closeButton={true} className="action-header">
             <Modal.Title id="contained-modal-title">
               Actions
             </Modal.Title>
@@ -490,7 +500,8 @@ const mapDispatchToProps : ITriggerDispatchMap = ({
   fetchSourceFormFieldsRequest,
   fetchTargetFormFieldsRequest,
   saveFormTriggerRequest,
-  updateFormTriggerState
+  updateFormTriggerState,
+  clearTriggerData
 });
 
 const mapStateToProps = (state: IState): ITriggerStateMap => ({

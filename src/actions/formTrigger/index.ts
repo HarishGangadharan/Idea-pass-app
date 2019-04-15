@@ -84,3 +84,8 @@ export const updateFormTriggerState = (data?: ITrigger) => ({
   data,
   type: FormTriggerConstants.UPDATE_FORM_TRIGGER_STATE
 });
+
+export const clearTriggerData = () => ({
+  type: FormTriggerConstants.CLEAR_FORM_TRIGGER_DATA
+});
+
