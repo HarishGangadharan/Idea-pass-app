@@ -13,34 +13,55 @@ Ref `README.info.md`
 
 ## Getting Started
 
+1. Clone the application repository
+    ```
+    $ git clone https://github.com/Ideas2IT/idea-paas-app.git --branch dev
+    ```
+
+2. Environment Config
+
+Before start the application need to configure the environment variables.
+Sample environment config file `.env.example` rename the file to `.env` and customize the variable `REACT_APP_BASE_URL`.
+
+3. Install your dependencies
+    ```
+    $ npm install
+    ```
+
+4. Start your application
+    ```
+    $ npm start
+    ```
+## Docker setup
+
 1. Make sure you have [docker-compose](https://docs.docker.com/compose/install/#install-compose)
  or ref [digitalocean](https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-16-04)
 installed.
 
 2. Clone the application repository
     ```
-    $ git clone https://github.com/Ideas2IT/idea-paas-app.git
+    $ git clone https://github.com/Ideas2IT/idea-paas-app.git --branch dev
     ```
 
-3. Build your application using docker
+3. Environment Config
+
+Before start the application need to configure the environment variables.
+Sample environment config file `.env.example` rename the file to `.env` and customize the variable `REACT_APP_BASE_URL`.
+
+4. Build your application using docker
     ```
     $ docker-compose build web
     ```
 
-4. Install your dependencies
+5. Install your dependencies
     ```
     $ docker-compose run --rm web npm install
     ```
 
-5. Start your application
+6. Start your application
     ```
     $ docker-compose up web
     ```
-
-## Environment Config
-
-Before start the application need to configure the environment variables.
-Sample environment config file `.env.example` has to be renamed to `.env` and customize the variable `REACT_APP_BASE_URL`. 
 
 ## Web URL
 
