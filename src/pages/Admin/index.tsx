@@ -157,7 +157,8 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
             <select className="form-control upper-case" disabled={isOptionDisable} defaultValue={rolePermission.subject}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => this.getRolePermission(e)}>
               <option value="" disabled={!isOrganizationChoosed} selected={isOrganizationChoosed}>SELECT MODEL</option>
-              {models.map((model, i) => <option key={i}>{model}</option>)}
+              <option value="" disabled={isOrganizationChoosed} selected={!isOrganizationChoosed}></option>
+              {models.map((model: any, i) => <option key={i} value={Object.keys(model)[0]}>{model[Object.keys(model)[0]]}</option>)}
             </select>
           </div>
         </div>

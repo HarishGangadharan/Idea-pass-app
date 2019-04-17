@@ -85,7 +85,10 @@ export const rolePermissionReducer = (state: IRolePermissionReducer = rolePermis
     case Constants.FETCH_ROLE_PERMISSION_FAILURE:
       return rolePermissionInitialState;
     case Constants.RESET_ROLE_PERMISSION:
-      return {...rolePermissionInitialState};
+      return {
+        ...rolePermissionInitialState,
+        updatedPermissions: []
+      };
     case Constants.UPDATE_MANAGE_STATE:
       return {
         ...state,
