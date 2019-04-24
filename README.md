@@ -55,7 +55,7 @@ Sample environment config file `.env.example` rename the file to `.env` and cust
 
 5. Install your dependencies
     ```
-    $ docker-compose run --rm web npm install
+    $ docker-compose run --rm web npm install --unsafe-perm
     ```
 
 6. Start your application
