@@ -78,6 +78,10 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-react": "^7.0.0",
     "gulp": "^4.0.0",
     "gulp-typedoc": "^2.2.1"
   }

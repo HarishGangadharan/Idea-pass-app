@@ -25,29 +25,29 @@ const sagaMiddleware = createSagaMiddleware();
 const history = createBrowserHistory();
 
 const composeEnhancer: typeof compose =
-  (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(
+export const store = createStore(
   connectRouter(history)(rootReducer),
   composeEnhancer(applyMiddleware(routerMiddleware(history), sagaMiddleware))
-);
-
-// then run the saga
-sagaMiddleware.run(rootSaga);
-
-setupInterceptors(store);
-
-class Main extends React.Component<any, any> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      store
-    };
-  }
-
-  public render() {
-    return (
-      <Provider store={store}>
+  );
+  
+  // then run the saga
+  sagaMiddleware.run(rootSaga);
+  
+  setupInterceptors(store);
+  
+  class Main extends React.Component<any, any> {
+    constructor(props: any) {
+      super(props);
+      this.state = {
+        store
+      };
+    }
+    
+    public render() {
+      return (
+        <Provider store={store}>
         <LocalizeProvider store={this.state.store}>
           <AbilityContext.Provider value={ability}>
             <App history={history} />
@@ -62,4 +62,4 @@ ReactDOM.render(<Main />, document.getElementById('root') as HTMLElement);
 
 registerServiceWorker();
 
-export default store;
+export { routes } from '../src/routes';
