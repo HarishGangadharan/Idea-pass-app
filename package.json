@@ -45,7 +45,7 @@
     "react-email-editor": "^0.9.0",
     "react-feather": "^1.1.4",
     "react-localize-redux": "^3.3.2",
-    "react-querybuilder": "file:plugins/react-querybuilder",
+    "react-querybuilder": "git+https://21183b793376a1cdf6c3f2c85b8a0f4a569c09d1:x-oauth-basic@github.com/HarishGangadharan/react-query-builder.git#master",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.3",
