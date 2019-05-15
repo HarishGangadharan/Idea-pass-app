@@ -22,6 +22,7 @@
     "formType": "Form Type",
     "templateType": "Template Type",
     "createForm": "Create Form",
+    "idType": "Id Type",
     "updateForm": "Update Form"
   },
 

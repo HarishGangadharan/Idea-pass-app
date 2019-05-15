@@ -32,6 +32,7 @@ interface IFBuilderStateProps {
   isFormNameEmpty: boolean;
   isFormPrefixValid: boolean;
   templateType: string;
+  idType: string;
   isActive: boolean;
   sequence: number;
 }
@@ -66,6 +67,8 @@ interface IFBuilderMergedProps extends IFBuilderStateMap, IFBuilderDispatchMap, 
 class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStateProps> {
   public formTypes: Array<{ id: string, name: string }>;
   public templateTypes: Array<{ id: string, name: string }>;
+  public idTypes: Array<{ id: string, name: string }>;
+
   public formBuildSchema: IFormBuildSchema = {
     icon: 'fa fa-folder',
     key: '',
@@ -94,6 +97,7 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
       isFormNameEmpty: false,
       isFormPrefixValid: false,
       templateType : 'Default',
+      idType:'Auto increment',
       isActive: true,
       sequence: 1
     };
@@ -104,7 +108,11 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
       { id: 'template_form', name: 'Template Form' },
       { id: 'core_fields', name: 'Core Fields' }
     ];
-  }
+    this.idTypes = [
+      { id: 'auto_increment', name: 'Auto increment' },
+      { id: 'custom', name: 'Custom' }
+    ]; 
+   }
 
   public componentDidMount() {
     if (this.props.match && this.props.match.params.id) {
@@ -142,6 +150,15 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
     })
   }
 
+  public setIdTpyes = (e: any) => {
+    console.log('1111111111', e.target.value)
+    this.props.form[e.target.id] = e.target.value;
+    this.setState({
+      idType: e.target.value,
+      isFormNameEmpty: false
+    })
+  }
+  
   public setFormPrefix = (e: any) => {
     const fieldName = e.target.id;
     this.props.form[fieldName] = e.target.value;
@@ -170,6 +187,7 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
       if (templateType === "core_fields") {
         form = Object.assign(form, {is_active: isActive, sequence: sequence })
       }
+      console.log('**************', form)
       this.props.createFormSchema(form, form._id);
     }
   }
@@ -200,8 +218,9 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
 
   public render() {
     const { isLoading, form, isTemplateLoading } = this.props;
+    console.log('form', form, this.state.idType, this.state.templateType)
     const { isActive, sequence, templateType, isFormPrefixValid } = this.state;
-    const { formTypes, templateTypes } = this;
+    const { formTypes, templateTypes, idTypes } = this;
     return (
       <div className="shadow-container">
         {!isLoading &&
@@ -242,16 +261,22 @@ class FormBuilder extends React.Component<IFBuilderMergedProps, IFBuilderStatePr
                 }
               </div>
               
-              <div className="col-md-3">
+              <div className="col-md-2">
                 <label className="control-label"><Translate id="label.formType" /></label> <span className="error-text">*</span>
                 <select className="form-control" id="form_type" defaultValue={form.form_type} onChange={this.setFormNameAndType}>
                   {formTypes.map((type) => <option key={type.id} value={type.id}>{type.name}</option>)}
                 </select>
               </div>
-              <div className="col-md-3">
+              <div className="col-md-2">
                 <label className="control-label"><Translate id="label.templateType" /></label> <span className="error-text">*</span>
                 <select className="form-control" id="template_type" defaultValue={form.template_type} onChange={this.setFormNameAndType}>
                   {templateTypes.map((template) => <option key={template.id} value={template.id}>{template.name}</option>)}
+                </select>
+              </div>
+              <div className="col-md-2">
+                <label className="control-label"><Translate id="label.idType" /></label> <span className="error-text">*</span>
+                <select className="form-control" id="id_type" defaultValue={form.id_type} onChange={this.setFormNameAndType}>
+                  {idTypes.map((template) => <option key={template.id} value={template.id}>{template.name}</option>)}
                 </select>
               </div>
             </div>

@@ -1,4 +1,4 @@
-import { store } from '../';
+import  { store }  from '../';
 
 class Logger {
   public log(message: string) {

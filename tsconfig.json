@@ -25,7 +25,7 @@
     "strict": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true
+    "noEmit": true    
   },
   "exclude": [
     "build-plugins.js",
@@ -43,5 +43,6 @@
   ],
   "include": [
     "src"
-  ]
+  ],
+  
 }
