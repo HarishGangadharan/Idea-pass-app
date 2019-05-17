@@ -4,6 +4,16 @@
 	],
 	"plugins": [
 			"@babel/proposal-class-properties",
-			"@babel/proposal-object-rest-spread"
+			"@babel/proposal-object-rest-spread",
+			[
+				"file-loader",
+				{
+					"name": "[name].[ext]",
+					"extensions": ["png","gif", "svg"],
+					"outputPath": "/lib/assets",
+					"context": "",
+					"limit": 0
+				}
+			]
 	]
 }

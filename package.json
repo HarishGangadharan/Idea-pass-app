@@ -79,7 +79,14 @@
     "type-check:watch": "npm run type-check -- --watch",
     "bundle": "npm run build:types && npm run build:js",
     "build:types": "tsc",
-    "build:js": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline"
+    "build:js": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline",
+    "dist": "npm-run-all --parallel build-css css",
+    "css": "npm-run-all css-compile",
+    "css-compile": "npm-run-all --parallel css-compile-main",
+    "css-compile-main": "node-sass src/global/FormBuilder/*.css dist/src/global/FormBuilder/FormBuilder.css"
+
+
+
     },
   "browserslist": [
     ">0.2%",
