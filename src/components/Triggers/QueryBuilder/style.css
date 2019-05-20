@@ -1,0 +1,48 @@
+.rule-group {
+  padding: 1rem !important;
+  margin: 5px; }
+
+.rule-btn {
+  background: #4CAF50 !important;
+  color: #fff !important;
+  float: right; }
+
+.rule-combinator {
+  background: #ffc107 !important;
+  color: #fff !important; }
+  .rule-combinator option {
+    background: #fff !important;
+    color: #777 !important; }
+
+.rule {
+  margin-top: 5px !important; }
+  .rule .ruleGroup {
+    margin-top: 0.5rem;
+    margin-left: 0.5rem; }
+  .rule .checkbox {
+    display: inline;
+    margin-left: 10px; }
+
+.ruleGroup {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #efefef;
+  display: inline-block;
+  width: 100%; }
+  .ruleGroup button, .ruleGroup select, .ruleGroup input {
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    padding: 4px 6px;
+    background: #fff;
+    color: #777; }
+  .ruleGroup input {
+    color: #777; }
+
+.shrink pre {
+  overflow-y: auto;
+  max-height: 200px; }
+
+.show-inline {
+  display: inline;
+  margin-left: 10px; }

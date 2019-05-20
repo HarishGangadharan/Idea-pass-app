@@ -1,0 +1,59 @@
+.chartHead {
+  margin: 0; }
+
+.lineChart {
+  height: 250px;
+  width: 100%; }
+
+.footer {
+  border-top: 1px solid #ddd;
+  padding: 10px 0 0 0; }
+  .footer .icon-list .icon {
+    padding: 0 10px; }
+    .footer .icon-list .icon span {
+      display: inline-block;
+      font-size: 16px;
+      line-height: 1;
+      margin-left: 5px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden; }
+
+.ticket-wrapper {
+  margin-top: 10px;
+  padding: 15px;
+  background: ghostwhite;
+  border-radius: 4px; }
+  .ticket-wrapper .ticket-wrapper-header {
+    color: #777;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; }
+    .ticket-wrapper .ticket-wrapper-header h4 {
+      margin-bottom: 2px; }
+  .ticket-wrapper .ticket-content ul {
+    list-style-type: none;
+    list-style: none;
+    padding: 20px 0 0 0 !important; }
+    .ticket-wrapper .ticket-content ul li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd; }
+      .ticket-wrapper .ticket-content ul li img {
+        width: 65px;
+        height: 65px;
+        border: 1px solid #ddd;
+        border-radius: 50%; }
+      .ticket-wrapper .ticket-content ul li .ticket-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px; }
+        .ticket-wrapper .ticket-content ul li .ticket-header .user-name {
+          font-size: 14px;
+          font-weight: 600; }
+        .ticket-wrapper .ticket-content ul li .ticket-header .time {
+          font-size: 12px;
+          font-weight: 500;
+          font-style: italic; }

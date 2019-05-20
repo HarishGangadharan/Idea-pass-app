@@ -1,0 +1,21 @@
+.scroll-container thead tr {
+  display: table;
+  table-layout: fixed;
+  width: calc(100% - 1.1em); }
+
+.scroll-container tbody {
+  display: block;
+  max-height: 150px;
+  overflow-y: scroll; }
+
+.scroll-container tbody tr {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  position: relative; }
+
+.scroll-container th, .scroll-container td {
+  width: auto; }
+
+.scroll-container .table-rows.selectable td:first-child {
+  width: 30px; }

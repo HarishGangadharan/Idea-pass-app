@@ -1,0 +1,26 @@
+.edit-grid {
+  word-wrap: break-word; }
+
+.panel {
+  border-radius: 0; }
+
+.remv-padd .col:nth-child(odd) {
+  padding-left: 0; }
+
+.remv-padd .col:nth-child(even) {
+  padding-right: 0; }
+
+.d-i-block {
+  display: inline-block; }
+
+.m-t-30 {
+  margin-top: 30px; }
+
+.form-control {
+  border-color: #c7c7c7;
+  border-radius: 0px;
+  background: #FAFAFA; }
+
+.radio {
+  display: inline-block;
+  margin-right: 10px; }

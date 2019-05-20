@@ -1,0 +1,29 @@
+.action-icon, .row-layout .col-layout:hover .editComponent-btn, .row-layout .col-layout:hover .deleteComponent-btn, .row-layout:hover .delete-row i {
+  color: var(--primaryColor);
+  cursor: pointer;
+  z-index: 10;
+  background-color: #ffffff; }
+
+.row-layout {
+  min-height: 100px;
+  position: relative; }
+  .row-layout .addComponent-btn,
+  .row-layout .editComponent-btn,
+  .row-layout .deleteComponent-btn,
+  .row-layout .delete-row {
+    position: absolute;
+    display: none; }
+  .row-layout .col-layout:hover .addComponent-btn, .row-layout .col-layout:hover .editComponent-btn,
+  .row-layout .col-layout:hover .deleteComponent-btn {
+    display: block; }
+  .row-layout:hover .delete-row {
+    display: block;
+    right: 10px;
+    top: 10px; }
+
+.without-component {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 0px;
+  font-size: 18px; }

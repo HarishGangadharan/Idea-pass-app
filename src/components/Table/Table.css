@@ -1,0 +1,86 @@
+.customTableContainer td,
+.customTableContainer th {
+  border: none !important; }
+
+.customTableContainer thead {
+  border-bottom: 1px solid #dddddd; }
+
+.customTableContainer tbody tr:nth-child(even) {
+  background-color: #f8f7f7;
+  color: #000;
+  border-color: #f8f7f7; }
+
+.customTableContainer.noData table {
+  min-height: calc(50vh); }
+
+.customTableContainer.loading thead {
+  background: #f8f7f7;
+  display: table;
+  table-layout: fixed;
+  width: 100%; }
+
+.customTableContainer.loading tbody {
+  display: block;
+  background-color: rgba(0, 0, 0, 0.1);
+  background-image: url("./loading.gif");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 50px 50px; }
+
+.customTableContainer.loading tbody tr {
+  display: table;
+  table-layout: fixed;
+  width: 100%; }
+
+.customTableContainer.loading th,
+.customTableContainer.loading td {
+  width: auto; }
+
+.customTableContainer .pagination > li > a {
+  color: #fc0067; }
+
+.customTableContainer .pagination > .active a {
+  color: #fff;
+  background-color: #fc0067;
+  border-color: #fc0067; }
+
+.customTableContainer .table-header {
+  background-color: #f8f7f7;
+  color: #000;
+  border-color: #f8f7f7; }
+
+.customTableContainer .table-rows {
+  color: #000; }
+
+.customTableContainer .table-toolbar {
+  margin-bottom: 20px; }
+  .customTableContainer .table-toolbar .table-options {
+    display: flex;
+    justify-content: flex-end; }
+    .customTableContainer .table-toolbar .table-options .selection-renderer {
+      margin-right: 10px; }
+
+.customTableContainer .noDataIndication {
+  display: table;
+  height: calc(50vh);
+  margin: auto; }
+  .customTableContainer .noDataIndication div {
+    display: table-cell;
+    vertical-align: middle; }
+
+.customTableContainer .globalSearch {
+  display: inline-block;
+  width: 50%; }
+
+.customTableContainer .dropdown.open .dropdown-menu {
+  display: block;
+  top: 45px;
+  right: -15px;
+  left: -70px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175); }
+  .customTableContainer .dropdown.open .dropdown-menu li {
+    padding: 0.25rem 0.5rem; }
+    .customTableContainer .dropdown.open .dropdown-menu li a {
+      color: #777; }
+      .customTableContainer .dropdown.open .dropdown-menu li a input[type="checkbox"] {
+        margin-right: 10px; }

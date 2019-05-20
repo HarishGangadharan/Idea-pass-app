@@ -29,9 +29,6 @@ yarn-error.log*
 # dependencies
 # package-lock.json
 
-# generated css
-/src/**/*.css
-
 # plugins
 /plugins/**/node_modules
 /plugins/**/dist

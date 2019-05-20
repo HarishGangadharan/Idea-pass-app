@@ -1,0 +1,48 @@
+.navbar-container .logo {
+  height: 30px; }
+
+.navbar-container .navbar {
+  border-radius: 0;
+  background-color: #fc0067; }
+  .navbar-container .navbar span[role=button] {
+    padding: 15px;
+    display: inline-block;
+    line-height: 20px; }
+  .navbar-container .navbar .navbar-brand {
+    color: #fff; }
+  .navbar-container .navbar .nav-link.active, .navbar-container .navbar .nav-link:hover {
+    color: #fff; }
+  .navbar-container .navbar .glyphicon {
+    color: #fff; }
+  .navbar-container .navbar .dropdown.open .dropdown-menu {
+    display: block;
+    top: 45px;
+    right: -15px;
+    left: -70px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175); }
+    .navbar-container .navbar .dropdown.open .dropdown-menu .dropdown-item:active, .navbar-container .navbar .dropdown.open .dropdown-menu .dropdown-item:hover, .navbar-container .navbar .dropdown.open .dropdown-menu .dropdown-item:focus {
+      background-color: rgba(0, 0, 0, 0.03); }
+    .navbar-container .navbar .dropdown.open .dropdown-menu .dropdown-item {
+      cursor: pointer; }
+  .navbar-container .navbar .transparent-button .btn-default {
+    color: #fff !important;
+    background-color: transparent !important;
+    border-color: transparent !important; }
+    .navbar-container .navbar .transparent-button .btn-default:hover, .navbar-container .navbar .transparent-button .btn-default:focus, .navbar-container .navbar .transparent-button .btn-default:active, .navbar-container .navbar .transparent-button .btn-default.active {
+      color: #fff !important;
+      background-color: transparent !important;
+      border-color: transparent !important; }
+  .navbar-container .navbar .dropdown-toggle {
+    text-transform: capitalize; }
+    .navbar-container .navbar .dropdown-toggle:active, .navbar-container .navbar .dropdown-toggle:hover {
+      color: #fff; }
+
+.navbar-container .themeName {
+  text-transform: capitalize; }
+
+.navbar-container .themeIcon {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 5px; }

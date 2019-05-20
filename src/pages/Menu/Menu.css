@@ -1,0 +1,32 @@
+.shadow-container.menu-container {
+  width: 100%;
+  color: #000000;
+  margin: 0.5em 0; }
+  .shadow-container.menu-container .menu-item {
+    width: 100%;
+    cursor: grab; }
+    .shadow-container.menu-container .menu-item:active {
+      cursor: grabbing; }
+    .shadow-container.menu-container .menu-item .content {
+      border-radius: 4px; }
+      .shadow-container.menu-container .menu-item .content .action-btn {
+        display: none;
+        float: left; }
+        .shadow-container.menu-container .menu-item .content .action-btn span {
+          font-size: 1rem;
+          float: left; }
+      .shadow-container.menu-container .menu-item .content:hover .action-btn {
+        display: block;
+        position: absolute;
+        right: 50px; }
+  .shadow-container.menu-container:last-child {
+    margin-bottom: 0; }
+
+.level-0 {
+  border: 1px solid #00ffff !important; }
+
+.level-1 {
+  border: 1px solid #33ff00 !important; }
+
+.level-2 {
+  border: 1px solid #ff8d00 !important; }

@@ -1,0 +1,22 @@
+.reports-container {
+  min-height: calc(100vh - 80px); }
+  .reports-container .tabs {
+    display: flex;
+    border-bottom: 1px solid var(--primaryColor); }
+    .reports-container .tabs .tab {
+      padding: 10px;
+      cursor: pointer; }
+      .reports-container .tabs .tab.active {
+        background: #ffffff;
+        border: 1px solid var(--primaryColor);
+        color: var(--primaryColor);
+        border-bottom: none; }
+  .reports-container .inner-scroll {
+    max-height: 540px;
+    overflow-y: auto; }
+    .reports-container .inner-scroll .options-tab label, .reports-container .inner-scroll .data-tab label {
+      margin: 0px; }
+    .reports-container .inner-scroll div {
+      border-color: var(--primary-border-color); }
+  .reports-container .rotate-icon {
+    transform: rotate(-45deg); }

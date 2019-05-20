@@ -1,0 +1,13 @@
+.modal.show {
+  opacity: 1;
+  display: block; }
+
+.modal .modal-body {
+  max-height: 360px;
+  overflow-y: auto; }
+  .modal .modal-body .layout-Details {
+    min-height: 100px;
+    cursor: pointer;
+    border-radius: 4px; }
+    .modal .modal-body .layout-Details.active {
+      background-color: var(--primaryColor); }

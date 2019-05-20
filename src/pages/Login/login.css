@@ -1,0 +1,34 @@
+.login-container {
+  background: linear-gradient(-60deg, #dd0155, #fc0067);
+  width: 100%;
+  height: 100vh;
+  display: flex; }
+  .login-container .shadow-container {
+    width: 60%;
+    margin: 100px 20%;
+    display: table;
+    height: calc(100vh - 200px); }
+    .login-container .shadow-container .head {
+      position: absolute; }
+      .login-container .shadow-container .head img {
+        height: 45px; }
+  .login-container .content {
+    display: table-cell;
+    vertical-align: middle; }
+    .login-container .content .card-signin {
+      width: 350px; }
+      .login-container .content .card-signin .card-title {
+        margin-bottom: 2rem;
+        font-size: 2rem; }
+      .login-container .content .card-signin .card-body {
+        padding: 2rem; }
+      .login-container .content .card-signin .form-signin .btn {
+        font-size: 80%;
+        border-radius: 5rem;
+        letter-spacing: .1rem;
+        font-weight: bold;
+        padding: 1rem;
+        transition: all 0.2s;
+        outline: none; }
+      .login-container .content .card-signin .form-signin .error-text {
+        position: absolute; }
